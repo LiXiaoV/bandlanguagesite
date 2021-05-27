@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bandlanguage.bandlanguagesite.mapper.WordMapper">
+    <resultMap id="WordVo" type="com.bandlanguage.bandlanguagesite.model.vo.WordVo">
+        <result property="wordId" column="word_id"></result>
+        <result property="name" column="name"></result>
+        <result property="description" column="description"></result>
+        <result property="example" column="example"></result>
+        <result property="type" column="type"></result>
+        <result property="synonym" column="synonym"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="username" column="username"></result>
+        <result property="nickname" column="nickname"></result>
+        <result property="sceneId" column="dept_id"></result>
+    </resultMap>
+    <select id="getAllWordsBySceneId" resultType="com.bandlanguage.bandlanguagesite.model.entity.Word">
+        select tb.* from bls_dept_word as ta left join bls_word as tb on ta.word_id = tb.word_id
+         where ta.dept_id = #{sceneId}
+    </select>
+    <select id="getWordsBySceneIdAndUserId" resultMap="WordVo">
+        select tb.word_id,tb.name,tb.description,tb.example,tb.type,tb.synonym,tc.user_id,tc.username,tc.nickname,ta.dept_id from bls_dept_word as ta
+            left join bls_word as tb on ta.word_id = tb.word_id
+            left join bls_user as tc on tb.creator_id = tc.user_id
+            where ta.dept_id = #{sceneId} and tb.creator_id = #{userId}
+    </select>
+</mapper>

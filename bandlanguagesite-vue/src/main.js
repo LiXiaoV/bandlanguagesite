@@ -1,0 +1,32 @@
+import Vue from 'vue'
+import App from './App.vue'
+import router from '@/router/index'
+import Element from 'element-ui'
+import axios from "axios"
+
+import "element-ui/lib/theme-chalk/index.css"
+import VueCodeMirror from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+
+// 引入jshint用于实现js自动补全提示
+import jshint from "jshint";
+
+// 引入全局变量
+import global from "@/store/global";
+window.JSHINT = jshint.JSHINT;
+
+// 引入vuex
+import store from '@/store/index'
+
+Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
+Vue.prototype.global = global;
+
+Vue.use(Element)
+Vue.use(VueCodeMirror)
+
+new Vue({
+  router,
+  store,
+  render: h => h(App),
+}).$mount('#app')

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bandlanguage.bandlanguagesite.mapper.SentenceMapper">
+
+    <select id="getAllSentencesBySceneId" resultType="Sentence">
+        select tb.* from bls_dept_sentence as ta left join bls_sentence as tb on ta.sentence_id = tb.sentence_id
+         where ta.dept_id = #{sceneId}
+    </select>
+</mapper>

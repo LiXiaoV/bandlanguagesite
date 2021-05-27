@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bandlanguage.bandlanguagesite.mapper.ScriptMapper">
+    <select id="getAllScriptsBySceneId" resultType="Script">
+        select tb.* from bls_dept_script as ta left join bls_script as tb on ta.script_id = tb.script_id
+        where ta.dept_id = #{sceneId}
+    </select>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bandlanguage.bandlanguagesite.mapper.SceneMapper">
+
+    <select id="getScenes" resultType="scene">
+        SELECT * from bls_dept;
+    </select>
+
+    <select id="getSceneById" resultType="scene" parameterType="long">
+        SELECT * from bls_dept where dept_id = #{id};
+    </select>
+</mapper>

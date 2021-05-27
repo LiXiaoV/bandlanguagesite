@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2443013 */
+  src: url('iconfont.woff2?t=1622084409648') format('woff2'),
+       url('iconfont.woff?t=1622084409648') format('woff'),
+       url('iconfont.ttf?t=1622084409648') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconguanzhu:before {
+  content: "\e60a";
+}
+
+.iconshoucang:before {
+  content: "\e60b";
+}
+
+.iconadd:before {
+  content: "\e672";
+}
+
+.iconsetting:before {
+  content: "\e600";
+}
+
+.iconcihui:before {
+  content: "\e690";
+}
+
+.iconjuxing:before {
+  content: "\e64c";
+}
+
+.iconkaifa:before {
+  content: "\e6d7";
+}
+
+.iconjuben:before {
+  content: "\e609";
+}
+
+.iconDebug:before {
+  content: "\e62a";
+}
+
+.icontaolun:before {
+  content: "\e611";
+}
+
+.icondianzan:before {
+  content: "\e60c";
+}
+
+.iconfenxiang:before {
+  content: "\e64f";
+}
+
+.iconyingji:before {
+  content: "\e623";
+}
+
+.iconjizhang:before {
+  content: "\e6bd";
+}
+
+.iconpinglun:before {
+  content: "\e6b3";
+}
+
+.iconbianji:before {
+  content: "\e636";
+}
+
+.icontongxunlu:before {
+  content: "\e622";
+}
+
+.iconmore:before {
+  content: "\e68f";
+}
+
+.iconyouxiang:before {
+  content: "\e678";
+}
+
+.iconluntan:before {
+  content: "\ebb9";
+}
+
