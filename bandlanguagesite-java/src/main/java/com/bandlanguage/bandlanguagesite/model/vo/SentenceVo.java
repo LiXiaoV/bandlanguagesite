@@ -23,5 +23,7 @@ public class SentenceVo implements Serializable {
     private String description;
     private String paradigm;
     private Long userId;
+    private String username;
+    private String nickname;
     private Long sceneId;
 }

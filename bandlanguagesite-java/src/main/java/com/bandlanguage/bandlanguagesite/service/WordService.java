@@ -23,5 +23,35 @@ public interface WordService{
      * @param SceneId 场景区ID
      * @return 词汇对象数组
      */
-    List<Word> getAllWordsBySceneId(Long SceneId);
+    List<WordVo> getAllWordsBySceneId(Long SceneId);
+
+    /**
+     * 通过场景区ID和用户ID获取所有词汇
+     * @param sceneId 场景区ID
+     * @param userId 用户ID
+     * @return 词汇视图类数组
+     */
+    List<WordVo> getWordsBySceneIdAndUserId(Long sceneId,Long userId);
+
+    /**
+     * 通过词汇ID获取词的详细信息
+     *
+     * @param wordId 词汇ID
+     * @return 词汇的视图实体类
+     */
+    WordVo getWordDetailById(Long wordId);
+
+    /**
+     * 修改词汇
+     * @param wordVo 词的视图类
+     * @return 影响的行数
+     */
+    Boolean editWord(WordVo wordVo);
+
+    /**
+     * 根据ID删除词汇
+     * @param wordId 词汇ID
+     * @return 是否成功
+     */
+    Boolean deleteWordById(Long wordId);
 }

@@ -29,7 +29,7 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left" label-width="60px" inline class="a-table-expand">
+          <el-form label-position="left" inline class="a-table-expand">
             <el-form-item label="词汇名">
               <span>{{ props.row.name }}</span>
             </el-form-item>
@@ -42,8 +42,11 @@
             <el-form-item label="例子">
               <span>{{ props.row.example }}</span>
             </el-form-item>
+            <el-form-item label="同义词">
+              <span>{{ props.row.synonym }}</span>
+            </el-form-item>
             <el-form-item label="状态">
-              <span>{{ props.row.statusString }}</span>
+              <span>{{ props.row.isTypeInString }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -63,9 +66,9 @@
       </el-table-column>
       <el-table-column prop="description" label="描述" header-align="center">
       </el-table-column>
-      <el-table-column prop="example" label="例子" header-align="center">
+      <el-table-column prop="example" label="例子" align="center">
       </el-table-column>
-      <el-table-column prop="statusString" label="状态" min-width="30" align="center">
+      <el-table-column prop="isTypeInString" label="状态" min-width="30" align="center">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -90,35 +93,7 @@ export default {
       clearFlag:true,
       //注册新词汇的对话框
       registerWordDlg: false,
-      wordTableData: [
-        {
-          name: "如果",
-          description: "表示‘假如’的意思，一般用于 如果句型",
-          example: "如果 陈聪颖的年龄大于20",
-          editor: "ccy",
-          updateTime: "2020-03-09 16:13:58",
-          type: "介词",
-          status: 1,
-        },
-        {
-          name: "则",
-          description: "介词，无实际意思，常用于表示当前面的条件成立将进行后面的操作",
-          example: "如果 陈聪颖的年龄大于20 ，则 输出 对 ，否则 输出 错",
-          editor: "ccy",
-          updateTime: "2020-03-09 16:13:58",
-          type: "介词",
-          status: 0,
-        },
-        {
-          name: "cch",
-          description: "介词，无实际意思，常用于表示当前面的条件成立将进行后面的操作",
-          example: "如果 陈聪颖的年龄大于20 ，则 输出 对 ，否则 输出 错",
-          editor: "ccy",
-          updateTime: "2020-03-09 16:13:58",
-          type: "动词",
-          status: 0,
-        },
-      ],
+      wordTableData: [],
       types: [
         // 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
         { text: "名词", value: "名词" },
@@ -178,16 +153,12 @@ export default {
         }
 
         // 词汇状态
-        if(element.status === 1){
-          element["statusString"] = "待开发"
-        }else if(element.status === 2){
-          element["statusString"] = "开发中"
-        }else if(element.status === 3){
-          element["statusString"] = "待审核"
-        }else if(element.status === 4){
-          element["statusString"] = "待发布"
-        }else if(element.status === 5){
-          element["statusString"] = "已发布"
+        if(element.isTypeIn === 0){
+          element["isTypeInString"] = "未录入"
+        }else if(element.isTypeIn === 1){
+          element["isTypeInString"] = "已录入"
+        }else {
+          element["isTypeInString"] = "其它"
         }
       })
       _this.wordTableData = words
@@ -198,14 +169,6 @@ export default {
   },
   methods:{
     initWordTableData() {
-      for (let j = 0; j < this.wordTableData.length; j++) {
-        if (this.wordTableData[j].status === 1) {
-          this.wordTableData[j].statusString = "已发布";
-        }
-        if (this.wordTableData[j].status === 0) {
-          this.wordTableData[j].statusString = "未发布";
-        }
-      }
     },
     //搜索词汇
     searchWord() {

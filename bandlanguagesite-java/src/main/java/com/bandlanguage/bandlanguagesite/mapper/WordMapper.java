@@ -18,16 +18,18 @@ public interface WordMapper extends BaseMapper<Word> {
 
     /**
      * 通过场景区Id获取所有词汇
+     *
      * @param sceneId 场景区ID
      * @return 词汇对象数组
      */
-    List<Word> getAllWordsBySceneId(Long sceneId);
+    List<WordVo> getAllWordsBySceneId(Long sceneId);
 
     /**
      * 通过场景区ID和用户ID获取所有词汇
-     * @param sceneId
-     * @param userId
-     * @return
+     *
+     * @param sceneId 场景区ID
+     * @param userId  用户ID
+     * @return 词汇视图类数组
      */
-    List<WordVo> getWordsBySceneIdAndUserId(Long sceneId,Long userId);
+    List<WordVo> getWordsBySceneIdAndUserId(Long sceneId, Long userId);
 }

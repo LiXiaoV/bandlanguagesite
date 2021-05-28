@@ -7,31 +7,33 @@
       label-position="right"
       :show-close="false"
     >
-      <el-form :form="form">
+      <el-form :form="detailWord">
         <el-form-item label="词汇名">
-          <span>{{ form.name }}</span>
+          <span>{{ detailWord.name }}</span>
         </el-form-item>
-        <el-form-item label="类型" v-if="form.status === 4">
-          <span>{{ form.type }}</span>
+        <el-form-item label="类型">
+          <span>{{ detailWord.typeString }}</span>
         </el-form-item>
         <el-form-item label="描述">
-          <span>{{ form.description }}</span>
+          <span>{{ detailWord.description }}</span>
         </el-form-item>
-        <el-form-item label="状态">
-          <span>{{ form.status }}</span>
+        <el-form-item label="例子">
+          <span>{{ detailWord.example }}</span>
         </el-form-item>
-        <el-form-item label="结论">
-          <span>{{ form.conclusion }}</span>
+        <el-form-item label="同义词">
+          <span>{{ detailWord.synonym }}</span>
         </el-form-item>
-        <el-form-item label="例子" v-if="form.status === 4">
-          <span>{{ form.example }}</span>
+        <el-form-item label="创建者">
+          <span>{{ detailWord.creatorNickname }}</span>
         </el-form-item>
-        <el-form-item label="同义词" v-if="form.status === 4">
-          <span>
-            <ul>
-              <li v-for="synonym in form.synonyms" :key="synonym">{{ synonym }}</li>
-            </ul>
-          </span>
+        <el-form-item label="最近的修改者">
+          <span>{{ detailWord.editorNickname }}</span>
+        </el-form-item>
+        <el-form-item label="最近的修改时间">
+          <span>{{ detailWord.updateTime }}</span>
+        </el-form-item>
+        <el-form-item label="录入状态">
+          <span>{{ detailWord.isTypeInString }}</span>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -45,15 +47,7 @@
 export default {
   data() {
     return {
-      form: {
-        name: "如果",
-        type: "介词",
-        description: "表示‘假如’的意思，一般用于 如果句型",
-        status: 5,
-        conclusion: "开发完成",
-        example: "如果 陈聪颖的年龄大于20",
-        synonyms: ["假如", "若"],
-      },
+      detailWord: {},
     };
   },
   methods: {
@@ -71,8 +65,57 @@ export default {
     wordDetailsVisible(newVal, oldVal) {
       if (oldVal === false && newVal === true) {
         //请求数据
+        const _this = this
+        let wordId = this.$props.wordId
+        this.$axios({
+          method: 'get',
+          url: `${this.global.serverUrl}/word/wordDetail/${wordId}`
+        }).then(res => {
+          let detailWord = res.data.data
+          // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
+          if(detailWord.type === 1){
+            detailWord["typeString"] = "名词"
+          }else if(detailWord.type === 2){
+            detailWord["typeString"] = "动词"
+          }else if(detailWord.type === 3){
+            detailWord["typeString"] = "形容词"
+          }else if(detailWord.type === 4){
+            detailWord["typeString"] = "副词"
+          }else if(detailWord.type === 5){
+            detailWord["typeString"] = "数词"
+          }else if(detailWord.type === 6){
+            detailWord["typeString"] = "量词"
+          }else if(detailWord.type === 7){
+            detailWord["typeString"] = "代词"
+          }else if(detailWord.type === 8){
+            detailWord["typeString"] = "叹词"
+          }else if(detailWord.type === 9){
+            detailWord["typeString"] = "拟声词"
+          }else if(detailWord.type === 10){
+            detailWord["typeString"] = "介词"
+          }else if(detailWord.type === 11){
+            detailWord["typeString"] = "连词"
+          }else if(detailWord.type === 12){
+            detailWord["typeString"] = "助词"
+          }
+
+          // 词汇状态
+          if(detailWord.isTypeIn === 0){
+            detailWord["isTypeInString"] = "未录入"
+          }else if(detailWord.isTypeIn === 1){
+            detailWord["isTypeInString"] = "已录入"
+          }else {
+            detailWord["isTypeInString"] = "其它"
+          }
+          _this.detailWord = detailWord
+        }).catch( error => {
+          console.log(error)
+        })
       }
     },
   },
+  created() {
+
+  }
 };
 </script>

@@ -1,10 +1,8 @@
 package com.bandlanguage.bandlanguagesite;
 
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
-import com.bandlanguage.bandlanguagesite.mapper.SceneMapper;
-import com.bandlanguage.bandlanguagesite.mapper.WordMapper;
-import com.bandlanguage.bandlanguagesite.model.entity.Scene;
-import com.bandlanguage.bandlanguagesite.model.entity.Word;
+import com.bandlanguage.bandlanguagesite.mapper.*;
+import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +25,15 @@ class BandlanguagesiteApplicationTests {
 
     @Autowired
     private WordMapper wordMapper;
+
+    @Autowired
+    private SentenceMapper sentenceMapper;
+
+    @Autowired
+    private WordUserMapper wordUserMapper;
+
+    @Autowired
+    private SentenceUserMapper sentenceUserMapper;
 
     @Test
     public void testGetScenes() {
@@ -67,6 +74,39 @@ class BandlanguagesiteApplicationTests {
     public void testGetWordsBySceneIdAndUserId(){
         List<WordVo> words = wordMapper.getWordsBySceneIdAndUserId(2L, 3L);
         System.out.println("words = " + words);
+    }
+
+    @Test
+    public void testInsertWordUser(){
+        List<Word> words = wordMapper.selectList(null);
+        for (Word word : words) {
+            WordUser wordUser = new WordUser();
+            wordUser.setWordId(word.getWordId());
+            wordUser.setUserId(word.getCreatorId());
+            wordUser.setUpdateTime(word.getUpdateTime());
+            int res = wordUserMapper.insert(wordUser);
+            System.out.println("res = " + res);
+            System.out.println("词汇id = " + wordUser.getWordId());
+            System.out.println("用户id = " + wordUser.getUserId());
+            System.out.println();
+        }
+
+    }
+
+    @Test
+    public void testInsertSentenceUser(){
+        List<Sentence> sentences = sentenceMapper.selectList(null);
+        for (Sentence sentence : sentences) {
+            SentenceUser sentenceUser = new SentenceUser();
+            sentenceUser.setSentenceId(sentence.getSentenceId());
+            sentenceUser.setUserId(sentence.getCreatorId());
+            sentenceUser.setUpdateTime(sentence.getUpdateTime());
+            int res = sentenceUserMapper.insert(sentenceUser);
+            System.out.println("res = " + res);
+            System.out.println("句型id = " + sentenceUser.getSentenceId());
+            System.out.println("用户id = " + sentenceUser.getUserId());
+            System.out.println();
+        }
 
     }
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author xiaov
@@ -25,8 +26,16 @@ public class WordVo implements Serializable {
     private String example;
     private Integer type;
     private String synonym;
+    private Long creatorId;
+    private String creatorUsername;
+    private String creatorNickname;
+    private Long editorId;
+    private String editorUsername;
+    private String editorNickname;
+    private Date updateTime;
+    private Integer isTypeIn;
+    private Integer status;
+    // 前端传进来的操作者的ID
     private Long userId;
-    private String username;
-    private String nickname;
     private Long sceneId;
 }

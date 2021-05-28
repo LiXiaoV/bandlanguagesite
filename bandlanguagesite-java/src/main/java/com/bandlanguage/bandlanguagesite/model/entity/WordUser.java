@@ -14,48 +14,31 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 词的实体类
+ * 词汇-用户实体类
+ * 用于记录参与词汇创建或修改的人
+ *
  * @author xiaov
- * @since 2021-05-21 17:08
+ * @since 2021-05-28 10:37
  */
 @Data
 @Builder
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("bls_word")
-public class Word implements Serializable {
+@TableName("bls_word_user")
+public class WordUser implements Serializable {
 
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id",type = IdType.AUTO)
+    private Long id;
+
+    @TableField(value = "word_id")
     private Long wordId;
 
-    @TableField(value = "name")
-    private String name;
-
-    @TableField(value = "description")
-    private String description;
-
-    @TableField(value = "example")
-    private String example;
-
-    @TableField(value = "type")
-    private Integer type;
-
-    @TableField(value = "synonym")
-    private String synonym;
-
-    @TableField(value = "creator_id")
-    private Long creatorId;
-
-    @TableField(value = "editor_id")
-    private Long editorId;
+    @TableField(value = "user_id")
+    private Long userId;
 
     @TableField(value = "update_time")
     private Date updateTime;
-
-    // 是否录入
-    @TableField(value = "is_type_in")
-    private Integer isTypeIn;
 
     @TableField(value = "status")
     private Integer status;

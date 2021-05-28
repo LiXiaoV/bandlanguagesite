@@ -2,8 +2,10 @@ package com.bandlanguage.bandlanguagesite.service.impl;
 
 import com.bandlanguage.bandlanguagesite.mapper.SceneSentenceMapper;
 import com.bandlanguage.bandlanguagesite.mapper.SentenceMapper;
+import com.bandlanguage.bandlanguagesite.mapper.SentenceUserMapper;
 import com.bandlanguage.bandlanguagesite.model.entity.SceneSentence;
 import com.bandlanguage.bandlanguagesite.model.entity.Sentence;
+import com.bandlanguage.bandlanguagesite.model.entity.SentenceUser;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.service.SentenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class SentenceServiceImpl implements SentenceService {
     @Autowired
     private SentenceMapper sentenceMapper;
 
+    @Autowired
+    private SentenceUserMapper sentenceUserMapper;
+
     @Override
     @Transactional
     public Boolean SaveSentence(SentenceVo sentenceVo) {
@@ -40,7 +45,12 @@ public class SentenceServiceImpl implements SentenceService {
             SceneSentence sceneSentence = SceneSentence.builder().sceneId(sentenceVo.getSceneId())
                     .sentenceId(sentence.getSentenceId()).build();
             int res1 = sceneSentenceMapper.insert(sceneSentence);
-            return res1 > 0;
+
+            SentenceUser sentenceUser = SentenceUser.builder().sentenceId(sentence.getSentenceId())
+                    .userId(sentenceVo.getUserId())
+                    .updateTime(new Date()).build();
+            int res2 = sentenceUserMapper.insert(sentenceUser);
+            return res1 > 0 && res2 >0;
         }
         return false;
     }

@@ -88,48 +88,7 @@ export default {
       activeIndex2: '1',
 
       default_avatar: defaultAvatar,
-      hot_scenes:[
-        // {
-        //   id:1,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:2,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:3,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:4,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:6,
-        //   name:'应急',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:7,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:8,
-        //   name:'影像库',
-        //   src:imageLibrary
-        // },
-        // {
-        //   id:9,
-        //   name:'应急',
-        //   src:imageLibrary
-        // },
-      ]
+      hot_scenes:[]
     };
   },
   methods: {

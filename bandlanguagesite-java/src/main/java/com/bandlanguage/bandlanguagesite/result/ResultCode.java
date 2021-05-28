@@ -79,7 +79,7 @@ public enum ResultCode {
 
     SERVER_ERROR(500100,"服务端异常"),
 
-    // y模块 5002XX
+    // 用户模块 5002XX
     SESSION_ERROR(500201,"Session不存在或者已经失效"),
     USERNAME_EMPTY(50002,"用户名不能为空"),
     USERNAME_NOT_EXIST(500203,"用户名不存在"),
@@ -94,6 +94,9 @@ public enum ResultCode {
     REGISTER_USERNAME_EXIST(500212,"注册用户名已存在"),
     REGISTER_MOBILE_EXISTZ(500213,"注册电话号码已存在"),
     REGISTER_EMAIL_EXIST(500214,"注册邮箱已存在"),
+
+    // 词汇模块 5003XX
+    DELETE_WORD_NOT_EXIST(500301,"要删除的词汇不存在"),
     /**
      * 成功状态码
      */

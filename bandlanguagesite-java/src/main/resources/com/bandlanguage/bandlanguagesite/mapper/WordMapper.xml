@@ -8,19 +8,25 @@
         <result property="example" column="example"></result>
         <result property="type" column="type"></result>
         <result property="synonym" column="synonym"></result>
+        <result property="creatorId" column="creator_id"></result>
+        <result property="editorId" column="editor_id"></result>
+        <result property="isTypeIn" column="is_type_in"></result>
+        <result property="status" column="status"></result>
         <result property="userId" column="user_id"></result>
-        <result property="username" column="username"></result>
-        <result property="nickname" column="nickname"></result>
         <result property="sceneId" column="dept_id"></result>
     </resultMap>
-    <select id="getAllWordsBySceneId" resultType="com.bandlanguage.bandlanguagesite.model.entity.Word">
-        select tb.* from bls_dept_word as ta left join bls_word as tb on ta.word_id = tb.word_id
-         where ta.dept_id = #{sceneId}
-    </select>
-    <select id="getWordsBySceneIdAndUserId" resultMap="WordVo">
-        select tb.word_id,tb.name,tb.description,tb.example,tb.type,tb.synonym,tc.user_id,tc.username,tc.nickname,ta.dept_id from bls_dept_word as ta
+    <select id="getAllWordsBySceneId" resultMap="WordVo">
+        select tb.*,ta.dept_id from bls_dept_word as ta
             left join bls_word as tb on ta.word_id = tb.word_id
-            left join bls_user as tc on tb.creator_id = tc.user_id
-            where ta.dept_id = #{sceneId} and tb.creator_id = #{userId}
+            where ta.dept_id = #{sceneId} and tb.status > 0
     </select>
+
+    <select id="getWordsBySceneIdAndUserId" resultMap="WordVo">
+        select td.word_id,td.name,td.type,td.is_type_in,ta.user_id,tc.dept_id from bls_word_user as ta
+            left join bls_user as tb on ta.user_id = tb.user_id
+            left join bls_dept_word as tc on ta.word_id = tc.word_id
+            left join bls_word as td on ta.word_id = td.word_id
+            where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
+    </select>
+
 </mapper>
