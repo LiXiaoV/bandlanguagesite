@@ -5,7 +5,6 @@
       :data="newSentencesList.slice(startPage, endPage)"
       border
       style="width: 100%"
-      :height="tableHeight"
     >
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -73,9 +72,6 @@ export default {
     },
     endPage: function () {
       return this.currentPage * this.pageSize;
-    },
-    tableHeight: function () {
-      return this.$store.state.MAIN.height - 140;
     },
   },
 };

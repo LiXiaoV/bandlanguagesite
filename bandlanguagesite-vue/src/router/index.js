@@ -4,8 +4,6 @@ import Index from '../components/home/Index.vue'
 import Scenes from "@/components/home/Scenes";
 import SceneDetail from "@/components/home/SceneDetail";
 import Discuss from "@/components/discuss/DiscussIndex";
-import Register from "@/components/account/Register";
-import LoginByUsername from "@/components/account/LoginByUsername";
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,17 +27,6 @@ const routes = [
         name: 'SceneDetail',
         component: SceneDetail
     },
-    {
-        path: '/register',
-        name: 'Register',
-        component: Register
-    },
-    {
-        path: '/login',
-        name: 'LoginByUsername',
-        component: LoginByUsername
-    },
-
 
 ]
 

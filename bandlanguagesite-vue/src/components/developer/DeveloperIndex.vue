@@ -8,34 +8,34 @@
       <v-SentenceTask></v-SentenceTask>
     </el-tab-pane>
 
-    <el-tab-pane label="场景管理"> </el-tab-pane>
+<!--    <el-tab-pane label="场景管理"> </el-tab-pane>-->
 
-    <el-tab-pane label="节点管理"> </el-tab-pane>
+<!--    <el-tab-pane label="节点管理"> </el-tab-pane>-->
 
-    <el-tab-pane label="规则管理"> </el-tab-pane>
+<!--    <el-tab-pane label="规则管理"> </el-tab-pane>-->
 
-    <el-tab-pane label="方法管理"> </el-tab-pane>
+<!--    <el-tab-pane label="方法管理"> </el-tab-pane>-->
 
-    <el-tab-pane>
-      <el-dropdown slot="label" placement="top" @command="scrollTo">
-        <span class="el-dropdown-link">
-          我的任务
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-plus" command="wordTable">词汇</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus" command="sentenceTable">句型</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus-outline" command="scene">场景</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <v-MyTask></v-MyTask>
-    </el-tab-pane>
+<!--    <el-tab-pane>-->
+<!--      <el-dropdown slot="label" placement="top" @command="scrollTo">-->
+<!--        <span class="el-dropdown-link">-->
+<!--          我的任务-->
+<!--        </span>-->
+<!--        <el-dropdown-menu slot="dropdown">-->
+<!--          <el-dropdown-item icon="el-icon-plus" command="wordTable">词汇</el-dropdown-item>-->
+<!--          <el-dropdown-item icon="el-icon-circle-plus" command="sentenceTable">句型</el-dropdown-item>-->
+<!--          <el-dropdown-item icon="el-icon-circle-plus-outline" command="scene">场景</el-dropdown-item>-->
+<!--        </el-dropdown-menu>-->
+<!--      </el-dropdown>-->
+<!--      <v-MyTask></v-MyTask>-->
+<!--    </el-tab-pane>-->
   </el-tabs>
 </template>
 
 <script>
-import WordTask from "../word/WordTask";
-import SentenceTask from "../sentence/SentenceTask";
-import MyTask from "./MyTask";
+import WordTask from "@/components/developer/WordTask";
+import SentenceTask from "@/components/developer/SentenceTask";
+// import MyTask from "./MyTask";
 export default {
   data() {
     return {};
@@ -52,7 +52,7 @@ export default {
   components: {
     "v-WordTask": WordTask,
     "v-SentenceTask": SentenceTask,
-    "v-MyTask": MyTask,
+    // "v-MyTask": MyTask,
   },
 };
 </script>
