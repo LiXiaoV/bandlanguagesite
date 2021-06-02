@@ -28,6 +28,11 @@ public class SentenceController {
         else return Result.fail(500,"注册句型失败");
     }
 
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public Result getAllSentences(){
+        return Result.success(sentenceService.getAllSentences());
+    }
+
     @RequestMapping(value = "/allSentences",method = RequestMethod.GET)
     public Result getAllSentencesBySceneId(@RequestParam Long sceneId){
         return Result.success(sentenceService.getAllSentencesBySceneId(sceneId));

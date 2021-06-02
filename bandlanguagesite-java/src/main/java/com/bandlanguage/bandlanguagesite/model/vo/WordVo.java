@@ -38,4 +38,5 @@ public class WordVo implements Serializable {
     // 前端传进来的操作者的ID
     private Long userId;
     private Long sceneId;
+    private String sceneName;
 }

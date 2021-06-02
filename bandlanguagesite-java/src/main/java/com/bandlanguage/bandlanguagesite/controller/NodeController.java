@@ -37,4 +37,18 @@ public class NodeController {
     public Result getAllWholeNodesBySceneId(@RequestParam Long sceneId) {
         return Result.success(nodeService.getAllWholeNodesBySceneId(sceneId));
     }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public Result getNodeDetailById(@PathVariable("id") Long id){
+        return Result.success(nodeService.getNodeDetailById(id));
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    public Result updateNode(@RequestBody NodeVo nodeVo){
+//        System.out.println("nodeVo = " + nodeVo);
+        Boolean res = nodeService.editNode(nodeVo);
+        if(res)
+            return Result.success("修改节点成功");
+        else return Result.fail(500,"修改节点失败");
+    }
 }

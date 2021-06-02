@@ -35,4 +35,18 @@ public interface RuleService {
      * @return RuleVo对象数组
      */
     List<RuleVo> getAllWholeRulesBySceneId(Long sceneId);
+
+    /**
+     * 根据ID查询rule
+     * @param ruleId 规则Id
+     * @return 规则的视图类
+     */
+    RuleVo getRuleDetailById(Long ruleId);
+
+    /**
+     * 修改规则
+     * @param ruleVo 规则的视图类
+     * @return 是否修改成功
+     */
+    Boolean editRule(RuleVo ruleVo);
 }

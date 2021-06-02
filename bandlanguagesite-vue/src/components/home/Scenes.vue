@@ -146,7 +146,7 @@ export default {
       method: 'get',
       url: `${this.global.serverUrl}/scene/scenes/`
     }).then(res => {
-      const scenes = res.data
+      const scenes = res.data.data
       if(scenes){
         scenes.forEach((element) =>{
           element.avatar = imageLibrary

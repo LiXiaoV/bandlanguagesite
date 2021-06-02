@@ -1,10 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service;
 
 
-import com.bandlanguage.bandlanguagesite.model.entity.Sentence;
-import com.bandlanguage.bandlanguagesite.model.entity.Word;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
-import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 public interface SentenceService {
     /**
      * 保存句型
+     *
      * @param sentenceVo 句型的实体类
      * @return 影响的行数
      */
@@ -22,8 +20,16 @@ public interface SentenceService {
 
     /**
      * 通过场景区Id获取所有句型
+     *
      * @param SceneId 场景区ID
      * @return 句型对象数组
      */
-    List<Sentence> getAllSentencesBySceneId(Long SceneId);
+    List<SentenceVo> getAllSentencesBySceneId(Long SceneId);
+
+    /**
+     * 获取所有的句型
+     *
+     * @return 句型的视图类数组
+     */
+    List<SentenceVo> getAllSentences();
 }

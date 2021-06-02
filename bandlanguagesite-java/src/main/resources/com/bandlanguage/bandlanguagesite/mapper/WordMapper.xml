@@ -11,9 +11,11 @@
         <result property="creatorId" column="creator_id"></result>
         <result property="editorId" column="editor_id"></result>
         <result property="isTypeIn" column="is_type_in"></result>
+        <result property="updateTime" column="update_time"></result>
         <result property="status" column="status"></result>
         <result property="userId" column="user_id"></result>
         <result property="sceneId" column="dept_id"></result>
+        <result property="sceneName" column="scene_name"></result>
     </resultMap>
     <select id="getAllWordsBySceneId" resultMap="WordVo">
         select tb.*,ta.dept_id from bls_dept_word as ta
@@ -27,6 +29,12 @@
             left join bls_dept_word as tc on ta.word_id = tc.word_id
             left join bls_word as td on ta.word_id = td.word_id
             where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
+    </select>
+    <select id="getAllWords" resultMap="WordVo">
+        select tb.*,tc.dept_id,tc.name as scene_name from bls_dept_word as ta
+            left join bls_word as tb on ta.word_id = tb.word_id
+            left join bls_dept as tc on ta.dept_id = tc.dept_id
+            where tb.status > 0 order by tc.dept_id,tb.word_id
     </select>
 
 </mapper>

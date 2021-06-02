@@ -48,6 +48,7 @@ public class WordServiceImpl implements WordService {
                 .example(wordVo.getExample())
                 .type(wordVo.getType())
                 .synonym(wordVo.getSynonym())
+                .isTypeIn(wordVo.getIsTypeIn())
                 .creatorId(wordVo.getUserId())
                 .editorId(wordVo.getUserId())
                 .updateTime(new Date()).build();
@@ -155,5 +156,10 @@ public class WordServiceImpl implements WordService {
         wordUserUpdateWrapper.eq("word_id",word.getWordId()).set("status",0);
         int cnt3 = wordUserMapper.update(null, wordUserUpdateWrapper);
         return cnt1 >0 && cnt2 > 0 && cnt3 > 0;
+    }
+
+    @Override
+    public List<WordVo> getAllWords() {
+        return wordMapper.getAllWords();
     }
 }

@@ -37,6 +37,7 @@ public class SentenceServiceImpl implements SentenceService {
         Sentence sentence = Sentence.builder().name(sentenceVo.getName())
                 .description(sentenceVo.getDescription())
                 .paradigm(sentenceVo.getParadigm())
+                .isTypeIn(sentenceVo.getIsTypeIn())
                 .creatorId(sentenceVo.getUserId())
                 .editorId(sentenceVo.getUserId())
                 .updateTime(new Date()).build();
@@ -56,7 +57,12 @@ public class SentenceServiceImpl implements SentenceService {
     }
 
     @Override
-    public List<Sentence> getAllSentencesBySceneId(Long SceneId) {
+    public List<SentenceVo> getAllSentencesBySceneId(Long SceneId) {
         return sentenceMapper.getAllSentencesBySceneId(SceneId);
+    }
+
+    @Override
+    public List<SentenceVo> getAllSentences() {
+        return sentenceMapper.getAllSentences();
     }
 }

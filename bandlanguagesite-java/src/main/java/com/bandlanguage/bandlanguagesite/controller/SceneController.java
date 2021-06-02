@@ -1,6 +1,7 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
 import com.bandlanguage.bandlanguagesite.model.entity.Scene;
+import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class SceneController {
     private SceneService sceneService;
 
     @RequestMapping(value = "/scenes",method = RequestMethod.GET)
-    public List<Scene> getScenes(){
-        return sceneService.getScenes();
+    public Result getScenes(){
+        return Result.success(sceneService.getScenes());
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)

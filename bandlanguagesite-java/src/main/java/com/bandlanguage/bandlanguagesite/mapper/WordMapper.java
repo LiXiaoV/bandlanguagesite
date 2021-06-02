@@ -32,4 +32,11 @@ public interface WordMapper extends BaseMapper<Word> {
      * @return 词汇视图类数组
      */
     List<WordVo> getWordsBySceneIdAndUserId(Long sceneId, Long userId);
+
+    /**
+     * 获取所有的词汇
+     *
+     * @return 词的视图类数组
+     */
+    List<WordVo> getAllWords();
 }

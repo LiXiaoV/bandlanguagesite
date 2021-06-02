@@ -23,7 +23,7 @@ public class RuleController {
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public Result registerRule(@RequestBody RuleVo ruleVo) {
-//        System.out.println("ruleVo = " + ruleVo);
+        System.out.println("ruleVo = " + ruleVo);
         Boolean res = ruleService.saveRule(ruleVo);
         if (res)
             return Result.success("注册规则成功");
@@ -38,5 +38,19 @@ public class RuleController {
     @RequestMapping(value = "/allWholeRules", method = RequestMethod.GET)
     public Result getAllWholeRulesBySceneId(@RequestParam Long sceneId) {
         return Result.success(ruleService.getAllWholeRulesBySceneId(sceneId));
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public Result getRuleDetailById(@PathVariable("id") Long id){
+        return Result.success(ruleService.getRuleDetailById(id));
+    }
+
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    public Result updateRule(@RequestBody RuleVo ruleVo){
+//        System.out.println("ruleVo = " + ruleVo);
+        Boolean res = ruleService.editRule(ruleVo);
+        if(res)
+            return Result.success("修改规则成功");
+        else return Result.fail(500,"修改规则失败");
     }
 }

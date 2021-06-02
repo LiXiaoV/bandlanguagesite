@@ -19,18 +19,18 @@
     >
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left" label-width="60px" inline class="a-table-expand">
-            <el-form-item label="句型名">
+          <el-form label-position="left" inline class="a-table-expand">
+            <el-form-item label="句型名：">
               <span>{{ props.row.name }}</span>
             </el-form-item>
-            <el-form-item label="描述">
+            <el-form-item label="描述：">
               <span>{{ props.row.description }}</span>
             </el-form-item>
-            <el-form-item label="巴克斯范式表示">
+            <el-form-item label="巴克斯范式表示：">
               <span>{{ props.row.paradigm }}</span>
             </el-form-item>
-            <el-form-item label="状态">
-              <span>{{ props.row.statusString }}</span>
+            <el-form-item label="状态：">
+              <span>{{ props.row.isTypeInString }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column prop="paradigm" label="巴克斯范式表示" header-align="center">
       </el-table-column>
-      <el-table-column prop="statusString" label="状态" min-width="30" align="center">
+      <el-table-column prop="isTypeInString" label="状态" min-width="30" align="center">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -83,17 +83,13 @@ export default {
       let sentences = res.data.data
       sentences.forEach( (element) => {
 
-        // 句型状态
-        if(element.status === 1){
-          element["statusString"] = "待开发"
-        }else if(element.status === 2){
-          element["statusString"] = "开发中"
-        }else if(element.status === 3){
-          element["statusString"] = "待审核"
-        }else if(element.status === 4){
-          element["statusString"] = "待发布"
-        }else if(element.status === 5){
-          element["statusString"] = "已发布"
+        // 是否录入状态
+        if(element.isTypeIn === 0){
+          element["isTypeInString"] = "未录入"
+        }else if(element.isTypeIn === 1){
+          element["isTypeInString"] = "已录入"
+        }else {
+          element["isTypeInString"] = "其它"
         }
       })
       _this.sentenceTableData = sentences

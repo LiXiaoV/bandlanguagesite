@@ -33,4 +33,18 @@ public interface NodeService {
      * @return NodeVo对象数组
      */
     List<NodeVo> getAllWholeNodesBySceneId(Long sceneId);
+
+    /**
+     * 通过节点ID获得节点
+     * @param nodeId 节点ID
+     * @return 节点的视图类
+     */
+    NodeVo getNodeDetailById(Long nodeId);
+
+    /**
+     * 修改节点
+     * @param nodeVo 节点的视图类
+     * @return 是否成功
+     */
+    Boolean editNode(NodeVo nodeVo);
 }

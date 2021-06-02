@@ -14,13 +14,7 @@
             @keyup.enter.native="searchWord"
         ></el-input>
       </el-col>
-      <el-col :span="1">
-        <el-button icon="iconfont iconadd" circle size="mini" @click="registerWord"></el-button>
-      </el-col>
     </el-row>
-    <v-word-register
-        :registerFormVisible="registerWordDlg"
-        @closeRegisterWordDialog="closeRegisterWordDialog"></v-word-register>
     <el-table
         :data="wordTableData.slice(startPage, endPage)"
         border
@@ -83,7 +77,6 @@
 </template>
 
 <script>
-import WordRegister from "@/components/word/WordRegister";
 export default {
   name: "WordAll",
   data(){
@@ -91,8 +84,6 @@ export default {
       //搜索
       searchText: "",
       clearFlag:true,
-      //注册新词汇的对话框
-      registerWordDlg: false,
       wordTableData: [],
       types: [
         // 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
@@ -178,12 +169,6 @@ export default {
     filterType(value, row) {
       return row.typeString === value;
     },
-    registerWord() {
-      this.registerWordDlg = true
-    },
-    closeRegisterWordDialog(flag){
-      this.registerWordDlg = flag
-    },
   },
   computed: {
     startPage: function () {
@@ -194,7 +179,7 @@ export default {
     },
   },
   components:{
-    "v-word-register": WordRegister,
+
   }
 }
 </script>
