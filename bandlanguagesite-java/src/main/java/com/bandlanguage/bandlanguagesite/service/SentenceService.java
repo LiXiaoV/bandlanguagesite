@@ -32,4 +32,37 @@ public interface SentenceService {
      * @return 句型的视图类数组
      */
     List<SentenceVo> getAllSentences();
+
+    /**
+     * 通过场景区ID和用户ID获取所有句型
+     *
+     * @param sceneId 场景区ID
+     * @param userId  用户ID
+     * @return 句型的视图类数组
+     */
+    List<SentenceVo> getMySentencesBySceneIdAndUserId(Long sceneId, Long userId);
+
+    /**
+     * 根据ID获取句型的详情
+     *
+     * @param sentenceId 句型ID
+     * @return 句型的视图类
+     */
+    SentenceVo getMySentenceDetailById(Long sentenceId);
+
+    /**
+     * 修改句型
+     *
+     * @param sentenceVo 句型的视图类
+     * @return 修改是否成功
+     */
+    Boolean editSentence(SentenceVo sentenceVo);
+
+    /**
+     * 根据ID删除句型
+     *
+     * @param sentenceId 句型ID
+     * @return 删除是否成功
+     */
+    Boolean deleteSentenceById(Long sentenceId);
 }

@@ -43,8 +43,6 @@
       </el-table-column>
       <el-table-column prop="paradigm" label="巴克斯范式表示" header-align="center">
       </el-table-column>
-      <el-table-column prop="isTypeInString" label="状态" min-width="30" align="center">
-      </el-table-column>
     </el-table>
     <el-pagination
         :current-page.sync="currentPage"

@@ -29,4 +29,13 @@ public interface SentenceMapper extends BaseMapper<Sentence> {
      * @return 句型的视图类数组
      */
     List<SentenceVo> getAllSentences();
+
+    /**
+     * 通过场景区ID和用户ID获取所有句型
+     *
+     * @param sceneId 场景区ID
+     * @param userId  用户ID
+     * @return 句型的视图类数组
+     */
+    List<SentenceVo> getMySentencesBySceneIdAndUserId(Long sceneId, Long userId);
 }

@@ -28,4 +28,12 @@
             left join bls_dept as tc on ta.dept_id = tc.dept_id
             where tb.status > 0 order by tc.dept_id,tb.sentence_id
     </select>
+
+    <select id="getMySentencesBySceneIdAndUserId" resultMap="SentenceVo">
+        select td.sentence_id,td.name,td.description,td.is_type_in,ta.user_id,tc.dept_id from bls_sentence_user as ta
+            left join bls_user as tb on ta.user_id = tb.user_id
+            left join bls_dept_sentence as tc on ta.sentence_id = tc.sentence_id
+            left join bls_sentence as td on ta.sentence_id = td.sentence_id
+            where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
+    </select>
 </mapper>
