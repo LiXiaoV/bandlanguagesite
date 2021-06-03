@@ -5,7 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        userInfo:JSON.parse(sessionStorage.getItem("userInfo"))
+        userInfo:JSON.parse(sessionStorage.getItem("userInfo")),
+        scriptSelected:{
+            isSelected:true,
+            text:"tttttttext"
+        },
+        contextPanelVisible:true,
     },
     mutations:{
         // set
@@ -16,6 +21,13 @@ export default new Vuex.Store({
         REMOVE_INFO:(state) => {
             state.userInfo = {}
             sessionStorage.setItem("userInfo",JSON.stringify(''))
+        },
+        SET_SCRIPT_SELECTED:(state,selectionInfo)=>{
+            state.scriptSelected.isSelected=selectionInfo.isSelected;
+            state.scriptSelected.text=selectionInfo.text;
+        },
+        SET_CONTEXT_PANEL_VISIBLE:(state,value)=>{
+            state.contextPanelVisible=value;
         }
     },
     getters:{
@@ -31,6 +43,12 @@ export default new Vuex.Store({
                 sessionStorage.setItem("userInfo",JSON.stringify(user))
             }
             return state.userInfo
+        },
+        getScriptSelected:state=>{
+            return state.scriptSelected;
+        },
+        getContextPanelVisible:state=>{
+            return state.contextPanelVisible;
         }
     },
     actions:{
