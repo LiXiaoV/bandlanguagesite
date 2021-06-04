@@ -2,7 +2,7 @@
   <div>
     <div class="">
       <el-table
-          :data="tableData.slice(startPage, endPage)"
+          :data="scriptTableData.slice(startPage, endPage)"
           style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -19,54 +19,31 @@
               <el-form-item label="剧本描述">
                 <span>{{ props.row.description }}</span>
               </el-form-item>
-              <el-form-item label="剧本编辑者">
-                <span>{{ props.row.editorId }}</span>
-              </el-form-item>
-              <el-form-item label="更新时间">
-                <span>{{ props.row.updateTime }}</span>
-              </el-form-item>
-              <el-form-item label="状态">
-                <span>{{ props.row.statusString }}</span>
-              </el-form-item>
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column
-            label="剧本 ID"
-            prop="scriptId">
+        <el-table-column type="index" label="序号" width="60" align="center">
         </el-table-column>
-        <el-table-column
-            label="剧本名称"
-            prop="name">
+        <el-table-column label="剧本名称" min-width="30" prop="name" align="center">
         </el-table-column>
-        <el-table-column
-            label="状态"
-            prop="statusString">
+        <el-table-column label="剧本描述" min-width="30" prop="description" align="center">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="30" align="center">
           <template slot-scope="scope">
             <el-button
                 size="mini"
                 @click="handleEdit(scope.$index, scope.row)">运行</el-button>
-            <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div class="a-pagination">
-        <el-pagination
-            :current-page.sync="currentPage"
-            :page-size="pageSize"
-            layout="prev, pager, next,total"
-            :total="tableData.length"
-        >
-        </el-pagination>
-      </div>
+      <el-pagination
+          :current-page.sync="currentPage"
+          :page-size="pageSize"
+          layout="prev, pager, next,total"
+          :total="scriptTableData.length"
+          class="a-pagination"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -76,7 +53,7 @@ export default {
   name: "ScriptAll",
   data() {
     return {
-      tableData: [{
+      scriptTableData: [{
         id: '1',
         name: "如果",
         content: "如果 陈聪颖的年龄大于20",
@@ -209,7 +186,7 @@ export default {
       },],
       //分页：页面控制
       currentPage: 1,
-      pageSize: 8,
+      pageSize: 10,
     }
   },
   created() {
@@ -237,14 +214,14 @@ export default {
           element["statusString"] = "已发布"
         }
       })
-      _this.tableData = scripts
+      _this.scriptTableData = scripts
     }).catch( error => {
       console.log(error)
     })
-    this.initScriptTableData();
+    this.initScriptscriptTableData();
   },
   methods: {
-    initScriptTableData(){
+    initScriptscriptTableData(){
 
     },
     handleEdit(index, row) {
@@ -276,7 +253,7 @@ export default {
 .demo-table-expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
-  width: 50%;
+  width: 100%;
 }
 .a-pagination{
   align-items: center;

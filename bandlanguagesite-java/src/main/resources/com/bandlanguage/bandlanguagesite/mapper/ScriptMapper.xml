@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bandlanguage.bandlanguagesite.mapper.ScriptMapper">
-    <select id="getAllScriptsBySceneId" resultType="Script">
-        select tb.* from bls_dept_script as ta left join bls_script as tb on ta.script_id = tb.script_id
-        where ta.dept_id = #{sceneId}
+
+    <resultMap id="ScriptVo" type="com.bandlanguage.bandlanguagesite.model.vo.ScriptVo">
+        <result property="scriptId" column="script_id"></result>
+        <result property="name" column="name"></result>
+        <result property="description" column="description"></result>
+        <result property="content" column="content"></result>
+        <result property="creatorId" column="creator_id"></result>
+        <result property="editorId" column="editor_id"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="runTimes" column="run_times"></result>
+        <result property="status" column="status"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="sceneId" column="dept_id"></result>
+        <result property="sceneName" column="scene_name"></result>
+    </resultMap>
+
+    <select id="getAllScriptsBySceneId" resultMap="ScriptVo">
+        select tb.*,ta.dept_id from bls_dept_script as ta
+            left join bls_script as tb on ta.script_id = tb.script_id
+            where ta.dept_id = #{sceneId} and tb.status > 0
+    </select>
+    <select id="getMyScriptsBySceneIdAndUserId" resultMap="ScriptVo">
+        select td.script_id,td.name,td.description,ta.user_id,tc.dept_id from bls_script_user as ta
+            left join bls_user as tb on ta.user_id = tb.user_id
+            left join bls_dept_script as tc on ta.script_id = tc.script_id
+            left join bls_script as td on ta.script_id = td.script_id
+            where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
     </select>
 </mapper>
