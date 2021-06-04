@@ -59,4 +59,18 @@ public class ScriptController {
     public Result deleteScriptById(@PathVariable("id") Long id) {
         return Result.success(scriptService.deleteScriptById(id));
     }
+
+    @RequestMapping(value = "/hotScripts", method = RequestMethod.GET)
+    public Result getHotScripts(@RequestParam Long limitCount) {
+        return Result.success(scriptService.getHotScripts(limitCount));
+    }
+
+    @RequestMapping(value = "/increaseRunTimes/{id}",method = RequestMethod.PUT)
+    public Result increaseRunTimesByScriptId(@PathVariable("id") Long id){
+//        System.out.println("id = " + id);
+        Boolean res = scriptService.increaseRunTimesByScriptId(id);
+        if(res)
+            return Result.success("增加剧本运行次数成功");
+        else return Result.fail(500,"增加剧本运行次数失败");
+    }
 }

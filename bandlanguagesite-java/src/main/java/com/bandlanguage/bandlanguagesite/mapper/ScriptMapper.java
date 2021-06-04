@@ -32,4 +32,12 @@ public interface ScriptMapper extends BaseMapper<Script> {
      * @return 剧本的视图类数组
      */
     List<ScriptVo> getMyScriptsBySceneIdAndUserId(Long sceneId, Long userId);
+
+    /**
+     * 获取火热的剧本
+     *
+     * @param limitCount 获取的数量
+     * @return 剧本视图类数组
+     */
+    List<ScriptVo> getHotScripts(Long limitCount);
 }

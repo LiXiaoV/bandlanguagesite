@@ -165,4 +165,22 @@ public class ScriptServiceImpl implements ScriptService {
 
         return true;
     }
+
+    @Override
+    public List<ScriptVo> getHotScripts(Long limitCount) {
+        return scriptMapper.getHotScripts(limitCount);
+    }
+
+    @Override
+    public Boolean increaseRunTimesByScriptId(Long ScriptId) {
+        Script script = scriptMapper.selectById(ScriptId);
+        if(script == null)
+            throw new GlobalException(ResultCode.EDIT_SCRIPT_NOT_EXIST);
+
+        script.setRunTimes(script.getRunTimes() + 1);
+        int res = scriptMapper.updateById(script);
+        if(res <= 0)
+            throw new GlobalException(ResultCode.INCREASE_SCRIPT_RUNTIMES_FAIL);
+        return true;
+    }
 }

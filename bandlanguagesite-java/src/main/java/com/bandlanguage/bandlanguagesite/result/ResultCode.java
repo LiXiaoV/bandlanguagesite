@@ -124,6 +124,8 @@ public enum ResultCode {
     UPDATE_SCRIPT_USER_FAIL(500506,"更新剧本-用户关联表失败"),
     SAVE_SCENE_SCRIPT_FAIL(500507,"保存场景区-剧本关联表的记录失败"),
     SAVE_SCRIPT_USER_FAIL(500508,"保存剧本-用户关联表的记录失败"),
+    EDIT_SCRIPT_NOT_EXIST(500509,"要修改的剧本不存在"),
+    INCREASE_SCRIPT_RUNTIMES_FAIL(500510,"增加剧本运行次数失败"),
 
     // 规则模块 5006XX
     SELECT_RULE_NOT_EXIST(500601,"要查询的规则不存在"),

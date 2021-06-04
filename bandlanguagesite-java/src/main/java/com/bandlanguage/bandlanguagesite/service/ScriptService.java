@@ -58,4 +58,20 @@ public interface ScriptService {
      * @return 删除是否成功
      */
     Boolean deleteScriptById(Long scriptId);
+
+    /**
+     * 获取火热的剧本
+     *
+     * @param limitCount 获取的数量
+     * @return 剧本视图类数组
+     */
+    List<ScriptVo> getHotScripts(Long limitCount);
+
+    /**
+     * 给剧本运行次数+1
+     *
+     * @param ScriptId 剧本ID
+     * @return 增加运行次数是否成功
+     */
+    Boolean increaseRunTimesByScriptId(Long ScriptId);
 }
