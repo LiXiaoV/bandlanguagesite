@@ -77,9 +77,9 @@
 
     </div>
 
-    <div v-if="navIndex === '4'" :class="isContextPanelHide?'vcontextHide':'vcontextShow'">
+    <div v-if="navIndex === '4'" :class="!isContextPanelHide?'vcontextShow':'vcontextHide'">
           <v-context></v-context>
-        </div>
+    </div>
   </div>
 </template>
 

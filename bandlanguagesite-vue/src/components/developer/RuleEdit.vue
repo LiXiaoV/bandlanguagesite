@@ -35,8 +35,8 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
-      <el-button @click="cancel">撤销修改</el-button>
+    <div slot="footer" style="text-align: center; margin-top: 1vh;">
+      <el-button @click="cancel">取消</el-button>
       <el-button type="primary" @click="confirmRuleEdit">确认修改</el-button>
     </div>
   </div>
@@ -46,6 +46,10 @@
 
 export default {
   name: "RuleEdit",
+  props:{
+    sceneId: Number,
+    ruleObjId: Number,
+  },
   data(){
     return {
       ruleObj: {
@@ -60,35 +64,31 @@ export default {
   },
   methods:{
     cancel() {
-      this.ruleObj.rule = ""
-      this.ruleObj.chineseName = ""
-      this.ruleObj.express = ""
-      this.ruleObj.description = ""
-      this.ruleObj.code = ""
-      this.$emit('closeRegisterRuleDialog',false)
+      this.updateRuleObj()
     },
     confirmRuleEdit() {
       const _this = this
       let registerRuleObj = {}
+      registerRuleObj["ruleId"] = _this.ruleObj.ruleId
       registerRuleObj["rule"] = _this.ruleObj.rule
       registerRuleObj["chineseName"] = _this.ruleObj.chineseName
       registerRuleObj["express"] = _this.ruleObj.express
       registerRuleObj["description"] = _this.ruleObj.description
       registerRuleObj["code"] = _this.ruleObj.code
       registerRuleObj["userId"] = _this.$store.getters.getUser.userId
-      registerRuleObj["sceneId"] = _this.$route.params.id
+      registerRuleObj["sceneId"] = _this.sceneId
       this.$axios({
-        method: 'post',
-        url: `${this.global.serverUrl}/developer/registerRule`,
+        method: 'put',
+        url: `${this.global.serverUrl}/rule/update`,
         data: registerRuleObj
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
             showClose: true,
-            message: "注册规则成功",
+            message: "修改规则成功",
             type: 'success'
           });
-          this.cancel()
+          _this.$emit("updateRuleOptionsEvent")
         }
         else {
           _this.$message({
@@ -100,13 +100,38 @@ export default {
       }).catch( () => {
         _this.$message({
           showClose: true,
-          message: "注册规则失败",
+          message: "修改规则失败",
           type: 'error'
         });
       })
     },
+    updateRuleObj(){
+      const _this = this
+      let ruleId = _this.ruleObjId
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/rule/${ruleId}/`,
+      }).then(res => {
+        _this.ruleObj = res.data.data
+      }).catch( error => {
+        console.log(error)
+      })
+    },
   },
   created() {
+    this.updateRuleObj()
+  },
+  mounted() {
+    // console.log("this.ruleObj:")
+    // console.log(this.ruleObj)
+  },
+  watch:{
+    ruleObjId(newValue,oldValue){
+      // console.log("ruleObjId",newValue,oldValue)
+      if(newValue !== oldValue){
+        this.updateRuleObj()
+      }
+    }
   }
 }
 </script>

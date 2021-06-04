@@ -40,9 +40,11 @@
         title="录入词汇"
         :visible.sync="wordTypeInDialogVisible"
         width="60%"
-        center
-        modal="false">
-      <v-word-type-in @closeWordTypeInDialog="closeWordTypeInDialog"></v-word-type-in>
+        center>
+      <v-type-in @closeWordTypeInDialog="closeWordTypeInDialog"></v-type-in>
+      <div slot="footer" style="text-align: right;margin-top: 3vh;">
+        <el-button @click="confirm">确认并返回</el-button>
+      </div>
     </el-dialog>
     <el-pagination
         :current-page.sync="currentPage"
@@ -57,7 +59,7 @@
 </template>
 
 <script>
-import WordTypeIn from "@/components/developer/WordTypeIn";
+import TypeIn from "@/components/developer/TypeIn";
 export default {
   data() {
     return {
@@ -111,7 +113,7 @@ export default {
     },
   },
   components:{
-    "v-word-type-in": WordTypeIn,
+    "v-type-in": TypeIn,
   },
   computed: {
     startPage: function () {

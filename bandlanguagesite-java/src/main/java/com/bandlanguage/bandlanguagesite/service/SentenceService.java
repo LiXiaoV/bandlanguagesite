@@ -1,10 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service;
 
 
-import com.bandlanguage.bandlanguagesite.model.entity.Sentence;
-import com.bandlanguage.bandlanguagesite.model.entity.Word;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
-import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 public interface SentenceService {
     /**
      * 保存句型
+     *
      * @param sentenceVo 句型的实体类
      * @return 影响的行数
      */
@@ -22,8 +20,54 @@ public interface SentenceService {
 
     /**
      * 通过场景区Id获取所有句型
+     *
      * @param SceneId 场景区ID
      * @return 句型对象数组
      */
-    List<Sentence> getAllSentencesBySceneId(Long SceneId);
+    List<SentenceVo> getAllSentencesBySceneId(Long SceneId);
+
+    /**
+     * 获取所有的句型
+     *
+     * @return 句型的视图类数组
+     */
+    List<SentenceVo> getAllSentences();
+
+    /**
+     * 通过场景区ID和用户ID获取所有句型
+     *
+     * @param sceneId 场景区ID
+     * @param userId  用户ID
+     * @return 句型的视图类数组
+     */
+    List<SentenceVo> getMySentencesBySceneIdAndUserId(Long sceneId, Long userId);
+
+    /**
+     * 根据ID获取句型的详情
+     *
+     * @param sentenceId 句型ID
+     * @return 句型的视图类
+     */
+    SentenceVo getMySentenceDetailById(Long sentenceId);
+
+    /**
+     *通过关键字查找句型
+     **/
+    List<SentenceVo> getSentencesByKeyword(String keyword);
+
+    /**
+     * 修改句型
+     *
+     * @param sentenceVo 句型的视图类
+     * @return 修改是否成功
+     */
+    Boolean editSentence(SentenceVo sentenceVo);
+
+    /**
+     * 根据ID删除句型
+     *
+     * @param sentenceId 句型ID
+     * @return 删除是否成功
+     */
+    Boolean deleteSentenceById(Long sentenceId);
 }

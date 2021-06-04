@@ -97,6 +97,24 @@ public enum ResultCode {
 
     // 词汇模块 5003XX
     DELETE_WORD_NOT_EXIST(500301,"要删除的词汇不存在"),
+
+    // 句型模块 5004XX
+    SAVE_SENTENCE_FAIL(500401,"保存句型失败"),
+    SELECT_SENTENCE_NOT_EXIST(500402,"要查询的句型不存在"),
+    EDIT_SENTENCE_FAIL(500403,"修改句型失败"),
+    DELETE_SENTENCE_NOT_EXIST(500404,"要删除的句型不存在"),
+    UPDATE_SCENE_SENTENCE_FAIL(500405,"更新场景区-句型关联表失败"),
+    UPDATE_SENTENCE_USER_FAIL(500406,"更新句型-用户关联表失败"),
+    SAVE_SCENE_SENTENCE_FAIL(500407,"保存场景区-句型关联表的记录失败"),
+    SAVE_SENTENCE_USER_FAIL(500408,"保存句型-用户关联表的记录失败"),
+    // 剧本模块 5005XX
+
+    // 规则模块 5006XX
+    SELECT_RULE_NOT_EXIST(500601,"要查询的规则不存在"),
+    EDIT_RULE_FAIL(500602,"修改规则失败"),
+    // 节点模块 5007XX
+    SELECT_NODE_NOT_EXIST(500701,"要查询的节点不存在"),
+    EDIT_NODE_FAIL(500702,"修改规则失败"),
     /**
      * 成功状态码
      */

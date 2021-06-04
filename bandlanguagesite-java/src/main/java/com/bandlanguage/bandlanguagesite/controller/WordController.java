@@ -28,6 +28,11 @@ public class WordController {
         else return Result.fail(500,"注册词汇失败");
     }
 
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public Result getAllWords(){
+        return Result.success(wordService.getAllWords());
+    }
+
     @RequestMapping(value = "/allWords",method = RequestMethod.GET)
     public Result getAllWordsBySceneId(@RequestParam Long sceneId){
         return Result.success(wordService.getAllWordsBySceneId(sceneId));

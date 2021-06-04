@@ -4,19 +4,19 @@
       <v-sentence-all></v-sentence-all>
     </el-tab-pane>
 
-    <el-tab-pane label="注册新句型">
-      <v-sentence-in-process></v-sentence-in-process>
+    <el-tab-pane label="我提交的句型">
+      <v-my-sentence></v-my-sentence>
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import SentenceInProcess from "./SentenceInProcess";
 import SentenceAll from "@/components/sentence/SentenceAll";
+import MySentence from "@/components/sentence/MySentence";
 export default {
   components: {
-    "v-sentence-in-process": SentenceInProcess,
     "v-sentence-all": SentenceAll,
+    "v-my-sentence": MySentence,
   },
   data() {
     return {};

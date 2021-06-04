@@ -2,6 +2,7 @@ package com.bandlanguage.bandlanguagesite.controller;
 
 import com.bandlanguage.bandlanguagesite.model.vo.ScriptVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
+import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.ScriptService;
 import com.bandlanguage.bandlanguagesite.service.SentenceService;
@@ -9,6 +10,10 @@ import com.bandlanguage.bandlanguagesite.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiaov
@@ -42,10 +47,18 @@ public class ScriptController {
         return Result.success(scriptService.getAllScriptsBySceneId(sceneId));
     }
 
+    @RequestMapping(value = "/getWordsAndSentencesByKeyword",method = RequestMethod.GET)
     public Result searchWordsOrSentenceByKeyword(@RequestParam String keyword){
+        System.out.println(keyword);
+        List<WordVo> words = wordService.getWordsByKeyword(keyword);
+        List<SentenceVo> sentences = sentenceService.getSentencesByKeyword(keyword);
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("words",words);
+        map.put("sentences",sentences);
+        System.out.println(words);
+        System.out.println(sentences);
 
-
-        return null;
+        return Result.success(map);
     }
 
 

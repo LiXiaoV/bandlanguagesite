@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author xiaov
@@ -19,11 +20,20 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SentenceVo implements Serializable {
 
+    private Long sentenceId;
     private String name;
     private String description;
     private String paradigm;
+    private Long creatorId;
+    private String creatorUsername;
+    private String creatorNickname;
+    private Long editorId;
+    private String editorUsername;
+    private String editorNickname;
+    private Date updateTime;
+    private Integer isTypeIn;
+    private Integer status;
     private Long userId;
-    private String username;
-    private String nickname;
     private Long sceneId;
+    private String sceneName;
 }

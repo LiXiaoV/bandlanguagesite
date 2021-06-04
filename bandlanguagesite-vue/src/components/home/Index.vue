@@ -25,7 +25,74 @@
 
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span style="float: left;font-size: 1.5rem">常用剧本</span>
+          <span style="float: left;font-size: 1.5rem">词汇</span>
+          <el-button icon="iconfont iconadd" circle size="mini" @click="registerWord" style="margin-left: 1vw;"></el-button>
+          <v-word-register
+              :registerFormVisible="registerWordDlg"
+              @closeRegisterWordDialog="closeRegisterWordDialog"></v-word-register>
+        </div>
+        <el-table
+            :data="words.slice(wordStartPage, wordEndPage)"
+        >
+          <el-table-column type="index" label="序号" width="60" align="center">
+          </el-table-column>
+          <el-table-column prop="name" label="词汇名" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column
+              prop="typeString"
+              label="类型"
+              min-width="30"
+              align="center"
+          >
+          </el-table-column>
+          <el-table-column prop="sceneName" label="词汇所在的场景区" min-width="30" align="center">
+          </el-table-column>
+        </el-table>
+        <el-pagination
+            :current-page.sync="wordCurrentPage"
+            :page-size="wordPageSize"
+            layout="prev, pager, next,total"
+            :total="words.length"
+            class="a-pagination"
+            hide-on-single-page
+        >
+        </el-pagination>
+      </el-card>
+
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span style="float: left;font-size: 1.5rem">句型</span>
+          <el-button icon="iconfont iconadd" circle size="mini" @click="registerSentence" style="margin-left: 1vw;"></el-button>
+          <v-sentence-register
+              :registerFormVisible="registerSentenceDlg"
+              @closeRegisterSentenceDialog="closeRegisterSentenceDialog"></v-sentence-register>
+        </div>
+        <el-table
+            :data="sentences.slice(sentenceStartPage, sentenceEndPage)"
+        >
+          <el-table-column type="index" label="序号" width="60" align="center">
+          </el-table-column>
+          <el-table-column prop="name" label="句型名" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="description" label="句型描述" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="sceneName" label="句型所在的场景区" min-width="30" align="center">
+          </el-table-column>
+        </el-table>
+        <el-pagination
+            :current-page.sync="sentenceCurrentPage"
+            :page-size="sentencePageSize"
+            layout="prev, pager, next,total"
+            :total="sentences.length"
+            class="a-pagination"
+            hide-on-single-page
+        >
+        </el-pagination>
+      </el-card>
+
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span style="float: left;font-size: 1.5rem">剧本</span>
           <el-button style="float: right; padding: 3px 0" type="text">全部</el-button>
         </div>
         <div v-for="o in 5" :key="o" class="text item">
@@ -81,6 +148,8 @@
 import defaultAvatar from '../../assets/images/default-avatar.png';
 import imageLibrary from '../../assets/images/image-library.png';
 import Header from "@/components/common/Header";
+import WordRegister from "@/components/word/WordRegister";
+import SentenceRegister from "@/components/sentence/SentenceRegister";
 export default {
   data() {
     return {
@@ -88,7 +157,19 @@ export default {
       activeIndex2: '1',
 
       default_avatar: defaultAvatar,
-      hot_scenes:[]
+      hot_scenes:[],
+      //注册新词汇的对话框
+      registerWordDlg: false,
+
+      words: [],
+      wordCurrentPage: 1,
+      wordPageSize: 10,
+
+      //注册新句型的对话框
+      registerSentenceDlg: false,
+      sentences: [],
+      sentenceCurrentPage: 1,
+      sentencePageSize: 10,
     };
   },
   methods: {
@@ -107,32 +188,114 @@ export default {
         this.$router.push({ path: `/sceneDetail/${sceneId}` })
       }
     },
-
+    registerWord() {
+      this.registerWordDlg = true
+    },
+    closeRegisterWordDialog(flag){
+      this.registerWordDlg = flag
+    },
+    reloadWords(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/word/all/`
+      }).then(res => {
+        let words = res.data.data
+        words.forEach( (element) => {
+          // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
+          if(element.type === 1){
+            element["typeString"] = "名词"
+          }else if(element.type === 2){
+            element["typeString"] = "动词"
+          }else if(element.type === 3){
+            element["typeString"] = "形容词"
+          }else if(element.type === 4){
+            element["typeString"] = "副词"
+          }else if(element.type === 5){
+            element["typeString"] = "数词"
+          }else if(element.type === 6){
+            element["typeString"] = "量词"
+          }else if(element.type === 7){
+            element["typeString"] = "代词"
+          }else if(element.type === 8){
+            element["typeString"] = "叹词"
+          }else if(element.type === 9){
+            element["typeString"] = "拟声词"
+          }else if(element.type === 10){
+            element["typeString"] = "介词"
+          }else if(element.type === 11){
+            element["typeString"] = "连词"
+          }else if(element.type === 12){
+            element["typeString"] = "助词"
+          }
+        })
+        _this.words = words
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    reloadSentences(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/sentence/all/`
+      }).then(res => {
+        _this.sentences = res.data.data
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    reloadScenes(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/scene/scenes/`
+      }).then(res => {
+        let scenes = res.data.data
+        if(scenes){
+          scenes.forEach((element) =>{
+            element.avatar = imageLibrary
+          })
+        }
+        _this.hot_scenes = scenes
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    registerSentence() {
+      this.registerSentenceDlg = true
+    },
+    closeRegisterSentenceDialog(flag){
+      this.registerSentenceDlg = flag
+    },
   },
   mounted() {
 
   },
   created() {
     // sceneId = this.$route.params.id
-
-    const _this = this
-    this.$axios({
-      method: 'get',
-      url: `${this.global.serverUrl}/scene/scenes/`
-    }).then(res => {
-      const scenes = res.data
-      if(scenes){
-        scenes.forEach((element) =>{
-          element.avatar = imageLibrary
-        })
-      }
-      _this.hot_scenes = scenes
-    }).catch( error => {
-      console.log(error)
-    })
+    this.reloadScenes()
+    this.reloadWords()
+    this.reloadSentences()
+  },
+  computed: {
+    wordStartPage: function () {
+      return (this.wordCurrentPage - 1) * this.wordPageSize;
+    },
+    wordEndPage: function () {
+      return this.wordCurrentPage * this.wordPageSize;
+    },
+    sentenceStartPage: function () {
+      return (this.sentenceCurrentPage - 1) * this.sentencePageSize;
+    },
+    sentenceEndPage: function () {
+      return this.sentenceCurrentPage * this.sentencePageSize;
+    },
   },
   components:{
-    "v-header":Header
+    "v-header":Header,
+    "v-word-register": WordRegister,
+    "v-sentence-register": SentenceRegister,
   }
 }
 </script>

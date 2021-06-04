@@ -2,14 +2,14 @@
   <div>
     <el-form :model="nodeObj" label-position="top">
       <el-form-item label="节点类名 *" :label-width="formLabelWidth">
-        <el-input placeholder="" v-model="nodeObj.rule" maxlength="50" show-word-limit></el-input>
+        <el-input placeholder="" v-model="nodeObj.name" maxlength="50" show-word-limit></el-input>
       </el-form-item>
       <el-form-item label="节点类包名 *" :label-width="formLabelWidth">
-        <el-input placeholder="" v-model="nodeObj.chineseName" maxlength="250" show-word-limit></el-input>
+        <el-input placeholder="" v-model="nodeObj.packageName" maxlength="250" show-word-limit></el-input>
       </el-form-item>
       <el-form-item label="节点类代码 *" :label-width="formLabelWidth">
         <el-input
-            v-model="nodeObj.express"
+            v-model="nodeObj.content"
             type="textarea"
             :autosize="{ minRows: 10 }"
             maxlength="100000"
@@ -19,7 +19,7 @@
     </el-form>
     <div slot="footer" style="text-align: center;">
       <el-button @click="cancelRegisterNode">取消</el-button>
-      <el-button type="primary" @click="confirmRegister">新增</el-button>
+      <el-button type="primary" @click="confirmRegisterNode">新增</el-button>
     </div>
   </div>
 </template>
@@ -28,11 +28,14 @@
 
 export default {
   name: "NodeAdd",
+  props:{
+    sceneId: Number,
+  },
   data(){
     return {
       nodeObj: {
         name: "",
-        package: "",
+        packageName: "",
         content: "",
       },
       formLabelWidth: "120px",
@@ -41,18 +44,18 @@ export default {
   methods:{
     cancelRegisterNode() {
       this.nodeObj.name = ""
-      this.nodeObj.package = ""
+      this.nodeObj.packageName = ""
       this.nodeObj.content = ""
       this.$emit('closeRegisterNodeDialog',false)
     },
-    confirmRegister() {
+    confirmRegisterNode() {
       const _this = this
       let registerNodeObj = {}
       registerNodeObj["name"] = _this.nodeObj.name
-      registerNodeObj["package"] = _this.nodeObj.package
+      registerNodeObj["packageName"] = _this.nodeObj.packageName
       registerNodeObj["content"] = _this.nodeObj.content
       registerNodeObj["userId"] = _this.$store.getters.getUser.userId
-      registerNodeObj["sceneId"] = _this.$route.params.id
+      registerNodeObj["sceneId"] = _this.sceneId
       this.$axios({
         method: 'post',
         url: `${this.global.serverUrl}/node/insert`,
@@ -64,6 +67,7 @@ export default {
             message: "新增节点成功",
             type: 'success'
           });
+          _this.$emit("updateNodeOptionsEvent")
           this.cancelRegisterNode()
         }
         else {

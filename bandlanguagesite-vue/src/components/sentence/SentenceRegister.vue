@@ -1,10 +1,10 @@
 <template>
   <el-dialog title="注册新句型" :visible="registerFormVisible" :show-close="false">
     <el-form :model="newSentence" label-position="top">
-      <el-form-item label="句型名称" :label-width="formLabelWidth">
+      <el-form-item label="句型名称 *" :label-width="formLabelWidth">
         <el-input v-model="newSentence.name" maxlength="20" show-word-limit></el-input>
       </el-form-item>
-      <el-form-item label="句型描述" :label-width="formLabelWidth">
+      <el-form-item label="句型描述 *" :label-width="formLabelWidth">
         <el-input
             v-model="newSentence.description"
             type="textarea"
@@ -22,6 +22,24 @@
             show-word-limit
         ></el-input>
       </el-form-item>
+      <el-form-item label="句型所在的场景区 *" :label-width="formLabelWidth">
+        <el-select v-model="sceneValue" placeholder="请选择场景区">
+          <el-option
+              v-for="item in sceneOptions"
+              :key="item.deptId"
+              :label="item.name"
+              :value="item.deptId">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="录入规则与节点" :label-width="formLabelWidth">
+        <v-type-in :sceneId="Number(sceneValue)"
+                   :clearRuleOptionFlag="clearRuleOptionFlag"
+                   :clearNodeOptionFlag="clearNodeOptionFlag"
+                   @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
+                   @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
+                   @typeInEvent="typeInEvent"></v-type-in>
+      </el-form-item>
     </el-form>
     <div slot="footer">
       <el-button @click="cancelRegister">取消</el-button>
@@ -31,6 +49,7 @@
 </template>
 
 <script>
+import TypeIn from "@/components/developer/TypeIn";
 export default {
   data() {
     return {
@@ -39,7 +58,14 @@ export default {
         description: "",
         paradigm: "",
       },
-      userId: 3,
+
+      sceneValue: '',
+      sceneOptions: [],
+      clearRuleOptionFlag: false,
+      clearNodeOptionFlag: false,
+
+      // 是否录入的标识
+      isSentenceTypeInFlag: false,
       formLabelWidth: "120px",
     };
   },
@@ -51,6 +77,10 @@ export default {
       this.newSentence.name = ""
       this.newSentence.description = ""
       this.newSentence.paradigm = ""
+      this.sceneValue = ''
+      this.clearRuleOptionFlag = true
+      this.clearNodeOptionFlag = true
+      this.isSentenceTypeInFlag = false
     },
     cancelRegister() {
       this.clearInput()
@@ -59,8 +89,9 @@ export default {
     confirmRegister() {
       const _this = this
       let registerSentence = _this.newSentence
+      registerSentence["isTypeIn"] = _this.isSentenceTypeInFlag?1:0
       registerSentence["userId"] = _this.$store.getters.getUser.userId
-      registerSentence["sceneId"] = _this.$route.params.id
+      registerSentence["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',
         url: `${this.global.serverUrl}/sentence/insert/`,
@@ -90,11 +121,36 @@ export default {
       })
       this.$emit('closeRegisterSentenceDialog',false)
     },
+    returnClearRuleOptionFlag(){
+      this.clearRuleOptionFlag = false
+    },
+    returnClearNodeOptionFlag(){
+      this.clearNodeOptionFlag = false
+    },
+    reloadSceneOptions(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/scene/scenes/`,
+      }).then(res => {
+        _this.sceneOptions = res.data.data
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    typeInEvent(){
+      this.isSentenceTypeInFlag = true
+    }
   },
-  created() {},
+  created() {
+    this.reloadSceneOptions()
+  },
   computed: {
 
   },
+  components:{
+    "v-type-in": TypeIn,
+  }
 };
 </script>
 

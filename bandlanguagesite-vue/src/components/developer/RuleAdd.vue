@@ -12,7 +12,7 @@
             v-model="ruleObj.express"
             type="textarea"
             :autosize="{ minRows: 2 }"
-            maxlength="500"
+            maxlength="1000"
             show-word-limit
         ></el-input>
       </el-form-item>
@@ -21,7 +21,7 @@
             v-model="ruleObj.description"
             type="textarea"
             :autosize="{ minRows: 2 }"
-            maxlength="500"
+            maxlength="250"
             show-word-limit
         ></el-input>
       </el-form-item>
@@ -46,6 +46,9 @@
 
 export default {
   name: "RuleAdd",
+  props:{
+    sceneId: Number,
+  },
   data(){
     return {
       ruleObj: {
@@ -76,7 +79,7 @@ export default {
       registerRuleObj["description"] = _this.ruleObj.description
       registerRuleObj["code"] = _this.ruleObj.code
       registerRuleObj["userId"] = _this.$store.getters.getUser.userId
-      registerRuleObj["sceneId"] = _this.$route.params.id
+      registerRuleObj["sceneId"] = _this.sceneId
       this.$axios({
         method: 'post',
         url: `${this.global.serverUrl}/rule/insert`,
@@ -88,6 +91,7 @@ export default {
             message: "新增规则成功",
             type: 'success'
           });
+          _this.$emit("updateRuleOptionsEvent")
           this.cancelRegisterRule()
         }
         else {

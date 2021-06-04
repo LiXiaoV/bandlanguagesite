@@ -3,7 +3,7 @@
 <mapper namespace="com.bandlanguage.bandlanguagesite.mapper.SceneMapper">
 
     <select id="getScenes" resultType="scene">
-        SELECT * from bls_dept;
+        SELECT * from bls_dept where status > 0;
     </select>
 
     <select id="getSceneById" resultType="scene" parameterType="long">

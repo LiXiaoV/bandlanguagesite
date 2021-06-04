@@ -6,17 +6,19 @@
         :tab-position="tabPosition"
         style="height: 200px; background-color: white"
         type="card"
-        v-model="activeTab"
-        @tab-click="tooglePanel"
+        :value="activeTab"
+        :before-leave="tooglePanel"
+        @tab-click="tabClick"
       >
-        <el-tab-pane name="visibility">
+        <el-tab-pane name="visibility" style="margin-bottom: 5px">
           <template slot="label">
             <i
               :class="isPanelHidden ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right'"
-              style="text-align: middle"
+              style="text-align: middle; width: 100%; height: 100%"
               @click="clickPanel"
             ></i>
           </template>
+          <p style="font-style:italic;margin:auto;width:100%">请选择查看的窗格</p>
         </el-tab-pane>
 
         <el-tab-pane label="语境" name="context">
@@ -94,12 +96,18 @@
         <el-tab-pane label="词汇句型手册" name="menu">
           <div style="margin-top: 10px">
             <el-input placeholder="请输入词汇/句型关键字" v-model="searchText">
-              <el-button slot="append" icon="el-icon-search" size="mini"></el-button>
+              <el-button
+                slot="append"
+                icon="el-icon-search"
+                size="mini"
+                @click.native="searchContent"
+              ></el-button>
             </el-input>
-            <el-table>
-              <el-table-column label="名称"></el-table-column>
-              <el-table-column></el-table-column>
+            <el-table :data="searchWordsList" height="62vh">
+              <el-table-column label="名称" prop="name"></el-table-column>
+              <el-table-column label="场景区" prop="sceneName"></el-table-column>
             </el-table>
+            <el-pagination small hide-on-single-page></el-pagination>
           </div>
         </el-tab-pane>
         <el-tab-pane label="选中信息" v-if="isScriptedSelect"
@@ -115,16 +123,20 @@
 </template>
 
 <script>
+import { trimSpaceLR } from "../../store/common";
+
 export default {
   data() {
     return {
       //搜索
       searchText: "",
-      searchList:[],
+      searchList: [],
+      searchWordsList: [],
+      searchSentencesList: [],
 
       tabPosition: "right",
       isPanelHidden: false,
-      activeTab:"context",
+      activeTab: "context",
 
       //剧本库分页控制
       // currentPage: 1,
@@ -163,27 +175,52 @@ export default {
   methods: {
     //搜索内容
     searchContent() {
-      console.log("enter +1");
-    },
-
-    //
-    tooglePanel(activeName) {
-      if(activeName=="visibility"){
-        this.isPanelHidden = !this.isPanelHidden;
-        this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", this.isPanelHidden);
-        if(!this.isPanelHidden){
-          this.activeTab="context";
-        }
+      if (trimSpaceLR(this.searchText) != "") {
+        this.$axios({
+          methods: "get",
+          url: `${this.global.serverUrl}/script/getWordsAndSentencesByKeyword`,
+          params: {
+            keyword: this.searchText,
+          },
+        }).then((res) => {
+          this.searchWordsList = res.data.data.words;
+          this.searchSentencesList = res.data.data.sentences;
+        });
       }
     },
 
-    clickPanel(){
+    pressToConfirm(e) {
+      if (e.keycode == 13) {
+        this.searchContent();
+      }
+    },
+
+    //
+    tooglePanel() {
+      if (this.isPanelHidden) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    tabClick(e){
+      if(e.paneName=="0"){
+        this.isPanelHidden = !this.isPanelHidden;
+        if(!this.isPanelHidden){
+          this.activeTab="context";
+        }
+        this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", this.isPanelHidden);
+      }
+    },
+
+    clickPanel() {
       this.isPanelHidden = !this.isPanelHidden;
       this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", this.isPanelHidden);
     },
-
   },
   created() {
+    this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
     if (this.contextList.organizationContext.length > 0) {
       this.activePanel.push("organization");
     }
@@ -238,7 +275,7 @@ export default {
 <style lang="scss">
 .tabBox {
   border-style: outset;
-  margin-top: 20px;
+  margin-top: 10px;
   .el-tabs--right {
     height: 75vh !important;
     .el-tabs__item {
@@ -248,7 +285,15 @@ export default {
       word-wrap: break-word;
       white-space: pre-line;
       margin-bottom: 20px;
+
+      :first-child{
+        margin-bottom: 0px;
+      }
     }
   }
 }
+
+// .el-tabs--right.el-tabs--card .el-tabs__item.is-right.is-active:first-child{
+//   margin-bottom: 0px;
+// }
 </style>
