@@ -65,4 +65,12 @@ public interface SentenceService {
      * @return 删除是否成功
      */
     Boolean deleteSentenceById(Long sentenceId);
+
+    /**
+     * 根据ID修改句型录入状态
+     *
+     * @param sentenceId 句型ID
+     * @return 修改录入状态是否成功
+     */
+    Boolean updateTypeInStatusBySentenceId(Long sentenceId);
 }

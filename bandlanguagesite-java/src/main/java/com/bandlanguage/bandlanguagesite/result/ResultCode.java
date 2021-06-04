@@ -96,7 +96,14 @@ public enum ResultCode {
     REGISTER_EMAIL_EXIST(500214,"注册邮箱已存在"),
 
     // 词汇模块 5003XX
-    DELETE_WORD_NOT_EXIST(500301,"要删除的词汇不存在"),
+    SAVE_WORD_FAIL(500301,"保存词汇失败"),
+    SELECT_WORD_NOT_EXIST(500302,"要查询的词汇不存在"),
+    EDIT_WORD_FAIL(500303,"修改词汇失败"),
+    DELETE_WORD_NOT_EXIST(500304,"要删除的词汇不存在"),
+    UPDATE_SCENE_WORD_FAIL(500305,"更新场景区-词汇关联表失败"),
+    UPDATE_WORD_USER_FAIL(500306,"更新词汇-用户关联表失败"),
+    SAVE_SCENE_WORD_FAIL(500307,"保存场景区-词汇关联表的记录失败"),
+    SAVE_WORD_USER_FAIL(500308,"保存词汇-用户关联表的记录失败"),
 
     // 句型模块 5004XX
     SAVE_SENTENCE_FAIL(500401,"保存句型失败"),
@@ -107,7 +114,16 @@ public enum ResultCode {
     UPDATE_SENTENCE_USER_FAIL(500406,"更新句型-用户关联表失败"),
     SAVE_SCENE_SENTENCE_FAIL(500407,"保存场景区-句型关联表的记录失败"),
     SAVE_SENTENCE_USER_FAIL(500408,"保存句型-用户关联表的记录失败"),
+
     // 剧本模块 5005XX
+    SAVE_SCRIPT_FAIL(500501,"保存剧本失败"),
+    SELECT_SCRIPT_NOT_EXIST(500502,"要查询的剧本不存在"),
+    EDIT_SCRIPT_FAIL(500503,"修改剧本失败"),
+    DELETE_SCRIPT_NOT_EXIST(500504,"要删除的剧本不存在"),
+    UPDATE_SCENE_SCRIPT_FAIL(500505,"更新场景区-剧本关联表失败"),
+    UPDATE_SCRIPT_USER_FAIL(500506,"更新剧本-用户关联表失败"),
+    SAVE_SCENE_SCRIPT_FAIL(500507,"保存场景区-剧本关联表的记录失败"),
+    SAVE_SCRIPT_USER_FAIL(500508,"保存剧本-用户关联表的记录失败"),
 
     // 规则模块 5006XX
     SELECT_RULE_NOT_EXIST(500601,"要查询的规则不存在"),

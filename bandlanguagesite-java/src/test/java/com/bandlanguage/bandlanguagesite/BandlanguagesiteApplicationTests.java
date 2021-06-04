@@ -35,6 +35,12 @@ class BandlanguagesiteApplicationTests {
     @Autowired
     private SentenceUserMapper sentenceUserMapper;
 
+    @Autowired
+    private ScriptMapper scriptMapper;
+
+    @Autowired
+    private ScriptUserMapper scriptUserMapper;
+
     @Test
     public void testGetScenes() {
         List<Scene> scenes = sceneMapper.getScenes();
@@ -105,6 +111,23 @@ class BandlanguagesiteApplicationTests {
             System.out.println("res = " + res);
             System.out.println("句型id = " + sentenceUser.getSentenceId());
             System.out.println("用户id = " + sentenceUser.getUserId());
+            System.out.println();
+        }
+
+    }
+
+    @Test
+    public void testInsertScriptUser(){
+        List<Script> scripts = scriptMapper.selectList(null);
+        for (Script script : scripts) {
+            ScriptUser scriptUser = new ScriptUser();
+            scriptUser.setScriptId(script.getScriptId());
+            scriptUser.setUserId(script.getCreatorId());
+            scriptUser.setUpdateTime(script.getUpdateTime());
+            int res = scriptUserMapper.insert(scriptUser);
+            System.out.println("res = " + res);
+            System.out.println("剧本id = " + scriptUser.getScriptId());
+            System.out.println("用户id = " + scriptUser.getUserId());
             System.out.println();
         }
 

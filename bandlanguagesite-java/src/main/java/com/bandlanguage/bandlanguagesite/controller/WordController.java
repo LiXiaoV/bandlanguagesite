@@ -61,4 +61,13 @@ public class WordController {
     public Result deleteWordById(@PathVariable("id") Long id){
         return Result.success(wordService.deleteWordById(id));
     }
+
+    @RequestMapping(value = "/updateTypeInStatus/{id}",method = RequestMethod.PUT)
+    public Result updateTypeInStatusByWordId(@PathVariable("id") Long id){
+//        System.out.println("id = " + id);
+        Boolean res = wordService.updateTypeInStatusByWordId(id);
+        if(res)
+            return Result.success("修改词汇录入状态成功");
+        else return Result.fail(500,"修改词汇录入状态失败");
+    }
 }

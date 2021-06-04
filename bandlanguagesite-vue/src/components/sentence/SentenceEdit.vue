@@ -57,6 +57,24 @@ export default {
       this.$emit('closeEditSentenceDialog',false)
     },
     confirmEdit() {
+      // 检查输入
+      if(this.existSentence.name === '' || this.existSentence.name === undefined || this.existSentence.name === null){
+        this.$message({
+          showClose: true,
+          message: "句型名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.existSentence.description === '' || this.existSentence.description === undefined || this.existSentence.description === null){
+        this.$message({
+          showClose: true,
+          message: "句型描述不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
       let updateSentence = _this.existSentence
       updateSentence["userId"] = _this.$store.getters.getUser.userId

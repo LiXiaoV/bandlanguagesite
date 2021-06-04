@@ -54,6 +54,7 @@
 <script>
 import UserWordDetails from "./UserWordDetails";
 import WordEdit from "@/components/word/WordEdit";
+
 export default {
   components: {
     "v-user-word-details": UserWordDetails,
@@ -79,7 +80,7 @@ export default {
       //   } else {
       //     return "success-row";
       //   }
-      if (row.status === 0) {
+      if (row.isTypeInString === "未录入") {
         return "warning-row";
       } else {
         return "success-row";
@@ -102,10 +103,9 @@ export default {
     },
     deleteWord(id){
       const _this = this
-      let wordId = id
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/word/${wordId}`,
+        url: `${this.global.serverUrl}/word/${id}`,
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({

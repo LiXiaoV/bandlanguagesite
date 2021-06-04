@@ -31,21 +31,17 @@
       <el-table-column prop="description" label="描述" align="center"> </el-table-column>
       <el-table-column label="操作" align="center" min-width="20">
         <template v-slot:default="scope">
-          <el-button size="mini" v-if="scope.row.istypeIn === 1" type="warning" plain> 修改 </el-button>
-          <el-button size="mini" v-else @click="typeInWord(scope.row.wordId)" type="info" plain> 录入 </el-button>
+          <el-button size="mini" v-if="scope.row.isTypeIn === 1" @click="updateTypeInWord(scope.row)" type="warning" plain> 修改 </el-button>
+          <el-button size="mini" v-else @click="typeInWord(scope.row)" type="info" plain> 录入 </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-        title="录入词汇"
-        :visible.sync="wordTypeInDialogVisible"
-        width="60%"
-        center>
-      <v-type-in @closeWordTypeInDialog="closeWordTypeInDialog"></v-type-in>
-      <div slot="footer" style="text-align: right;margin-top: 3vh;">
-        <el-button @click="confirm">确认并返回</el-button>
-      </div>
-    </el-dialog>
+    <v-word-type-in :wordTypeInDialogVisible="wordTypeInDialogVisible"
+                    :isWordTypeInFlag="isWordTypeInFlag"
+                    :typeInWordId="Number(typeInWordId)"
+                    :typeInWordName="typeInWordName"
+                    @closeWordTypeInDialog="closeWordTypeInDialog"
+                    @commitReloadWords="commitReloadWords"></v-word-type-in>
     <el-pagination
         :current-page.sync="currentPage"
         :page-size="pageSize"
@@ -59,7 +55,7 @@
 </template>
 
 <script>
-import TypeIn from "@/components/developer/TypeIn";
+import WordTypeIn from "@/components/developer/WordTypeIn";
 export default {
   data() {
     return {
@@ -68,21 +64,29 @@ export default {
       //分页：页面控制
       currentPage: 1,
       pageSize: 10,
+
+      isWordTypeInFlag: false,
       wordTypeInDialogVisible: false,
+
+      typeInWordId: 0,
+      typeInWordName: "录入词汇",
+
     };
   },
   methods: {
-    deleteWord(index) {
-      console.log(index);
-    },
-    acceptTask(index) {
-      this.WordTasksList[index].status=1;
-      this.WordTasksList[index].isTypeInString="待开发";
-      console.log(index);
-    },
-    typeInWord(id){
-      console.log(id)
+
+    typeInWord(word){
+      // console.log(word)
       this.wordTypeInDialogVisible = true
+      this.typeInWordId = word.wordId
+      this.typeInWordName = "录入词汇 -- "+word.name
+      this.isWordTypeInFlag = false
+    },
+    updateTypeInWord(word){
+      this.wordTypeInDialogVisible = true
+      this.typeInWordId = word.wordId
+      this.typeInWordName = "修改录入的词汇 -- "+word.name
+      this.isWordTypeInFlag = true
     },
     closeWordTypeInDialog(){
       this.wordTypeInDialogVisible = false
@@ -111,9 +115,65 @@ export default {
       //   }
       // });
     },
+    reloadWords(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/word/allWords/`,
+        params: {
+          "sceneId": _this.$route.params.id
+        }
+      }).then(res => {
+        let words = res.data.data
+        words.forEach( (element) => {
+          // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
+          if(element.type === 1){
+            element["typeString"] = "名词"
+          }else if(element.type === 2){
+            element["typeString"] = "动词"
+          }else if(element.type === 3){
+            element["typeString"] = "形容词"
+          }else if(element.type === 4){
+            element["typeString"] = "副词"
+          }else if(element.type === 5){
+            element["typeString"] = "数词"
+          }else if(element.type === 6){
+            element["typeString"] = "量词"
+          }else if(element.type === 7){
+            element["typeString"] = "代词"
+          }else if(element.type === 8){
+            element["typeString"] = "叹词"
+          }else if(element.type === 9){
+            element["typeString"] = "拟声词"
+          }else if(element.type === 10){
+            element["typeString"] = "介词"
+          }else if(element.type === 11){
+            element["typeString"] = "连词"
+          }else if(element.type === 12){
+            element["typeString"] = "助词"
+          }
+
+          // 词汇状态
+          if(element.isTypeIn === 0){
+            element["isTypeInString"] = "未录入"
+          }else if(element.isTypeIn === 1){
+            element["isTypeInString"] = "已录入"
+          }else {
+            element["isTypeInString"] = "其它"
+          }
+        })
+        _this.WordTasksList = words
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    commitReloadWords(){
+      this.reloadWords()
+    }
+
   },
   components:{
-    "v-type-in": TypeIn,
+    "v-word-type-in": WordTypeIn,
   },
   computed: {
     startPage: function () {
@@ -127,56 +187,7 @@ export default {
     this.initiateStatus();
   },
   created() {
-    const _this = this
-    this.$axios({
-      method: 'get',
-      url: `${this.global.serverUrl}/word/allWords/`,
-      params: {
-        "sceneId": _this.$route.params.id
-      }
-    }).then(res => {
-      let words = res.data.data
-      words.forEach( (element) => {
-        // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词
-        if(element.type === 1){
-          element["typeString"] = "名词"
-        }else if(element.type === 2){
-          element["typeString"] = "动词"
-        }else if(element.type === 3){
-          element["typeString"] = "形容词"
-        }else if(element.type === 4){
-          element["typeString"] = "副词"
-        }else if(element.type === 5){
-          element["typeString"] = "数词"
-        }else if(element.type === 6){
-          element["typeString"] = "量词"
-        }else if(element.type === 7){
-          element["typeString"] = "代词"
-        }else if(element.type === 8){
-          element["typeString"] = "叹词"
-        }else if(element.type === 9){
-          element["typeString"] = "拟声词"
-        }else if(element.type === 10){
-          element["typeString"] = "介词"
-        }else if(element.type === 11){
-          element["typeString"] = "连词"
-        }else if(element.type === 12){
-          element["typeString"] = "助词"
-        }
-
-        // 词汇状态
-        if(element.isTypeIn === 0){
-          element["isTypeInString"] = "未录入"
-        }else if(element.isTypeIn === 1){
-          element["isTypeInString"] = "已录入"
-        }else {
-          element["isTypeInString"] = "其它"
-        }
-      })
-      _this.WordTasksList = words
-    }).catch( error => {
-      console.log(error)
-    })
+    this.reloadWords()
   }
 };
 </script>

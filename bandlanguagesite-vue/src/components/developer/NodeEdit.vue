@@ -47,6 +47,32 @@ export default {
       this.updateNodeObj()
     },
     confirmEdit() {
+      // 检查输入
+      if(this.nodeObj.name === '' || this.nodeObj.name === undefined || this.nodeObj.name === null){
+        this.$message({
+          showClose: true,
+          message: "节点名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.nodeObj.packageName === '' || this.nodeObj.packageName === undefined || this.nodeObj.packageName === null){
+        this.$message({
+          showClose: true,
+          message: "节点包名不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.nodeObj.content === '' || this.nodeObj.content === undefined || this.nodeObj.content === null){
+        this.$message({
+          showClose: true,
+          message: "节点代码不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
       let EditNodeObj = {}
       EditNodeObj["nodeId"] = _this.nodeObj.nodeId

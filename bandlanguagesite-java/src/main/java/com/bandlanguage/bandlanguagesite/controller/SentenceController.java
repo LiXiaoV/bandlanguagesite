@@ -63,4 +63,13 @@ public class SentenceController {
     public Result deleteSentenceById(@PathVariable("id") Long id) {
         return Result.success(sentenceService.deleteSentenceById(id));
     }
+
+    @RequestMapping(value = "/updateTypeInStatus/{id}",method = RequestMethod.PUT)
+    public Result updateTypeInStatusBySentenceId(@PathVariable("id") Long id){
+//        System.out.println("id = " + id);
+        Boolean res = sentenceService.updateTypeInStatusBySentenceId(id);
+        if(res)
+            return Result.success("修改句型录入状态成功");
+        else return Result.fail(500,"修改句型录入状态失败");
+    }
 }

@@ -47,7 +47,7 @@ public interface WordService {
      * 修改词汇
      *
      * @param wordVo 词的视图类
-     * @return 影响的行数
+     * @return 修改是否成功
      */
     Boolean editWord(WordVo wordVo);
 
@@ -65,4 +65,12 @@ public interface WordService {
      * @return 词的视图类数组
      */
     List<WordVo> getAllWords();
+
+    /**
+     * 根据ID跟新词汇录入状态
+     *
+     * @param wordId 词汇ID
+     * @return 更新是否成功
+     */
+    Boolean updateTypeInStatusByWordId(Long wordId);
 }

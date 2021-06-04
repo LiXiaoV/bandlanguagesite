@@ -71,6 +71,40 @@ export default {
       this.$emit('closeRegisterRuleDialog',false)
     },
     confirmRegister() {
+      // 检查输入
+      if(this.ruleObj.rule === '' || this.ruleObj.rule === undefined || this.ruleObj.rule === null){
+        this.$message({
+          showClose: true,
+          message: "规则名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.chineseName === '' || this.ruleObj.chineseName === undefined || this.ruleObj.chineseName === null){
+        this.$message({
+          showClose: true,
+          message: "规则中文名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.express === '' || this.ruleObj.express === undefined || this.ruleObj.express === null){
+        this.$message({
+          showClose: true,
+          message: "规则表达式不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.code === '' || this.ruleObj.code === undefined || this.ruleObj.code === null){
+        this.$message({
+          showClose: true,
+          message: "规则代码不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
       let registerRuleObj = {}
       registerRuleObj["rule"] = _this.ruleObj.rule

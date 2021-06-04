@@ -137,6 +137,7 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteWordById(Long wordId) {
         Word word = wordMapper.selectById(wordId);
         if(word == null)
@@ -161,5 +162,16 @@ public class WordServiceImpl implements WordService {
     @Override
     public List<WordVo> getAllWords() {
         return wordMapper.getAllWords();
+    }
+
+    @Override
+    public Boolean updateTypeInStatusByWordId(Long wordId) {
+        Word word = Word.builder().wordId(wordId)
+                .isTypeIn(1).build();
+        int res = wordMapper.updateById(word);
+
+        if(res <= 0)
+            throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
+        return true;
     }
 }

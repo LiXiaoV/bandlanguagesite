@@ -178,7 +178,7 @@ export default {
       if(this.newWord.name === '' || this.newWord.name === undefined || this.newWord.name === null){
         this.$message({
           showClose: true,
-          message: "请输入词汇名",
+          message: "词汇名称不能为空",
           type: 'error'
         });
         return;
@@ -186,7 +186,7 @@ export default {
       if(this.newWord.description === '' || this.newWord.description === undefined || this.newWord.description === null){
         this.$message({
           showClose: true,
-          message: "请输入词汇描述",
+          message: "词汇描述不能为空",
           type: 'error'
         });
         return;

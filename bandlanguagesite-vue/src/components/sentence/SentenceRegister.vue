@@ -87,6 +87,32 @@ export default {
       this.$emit('closeRegisterSentenceDialog',false)
     },
     confirmRegister() {
+      // 检查输入
+      if(this.newSentence.name === '' || this.newSentence.name === undefined || this.newSentence.name === null){
+        this.$message({
+          showClose: true,
+          message: "句型名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.newSentence.description === '' || this.newSentence.description === undefined || this.newSentence.description === null){
+        this.$message({
+          showClose: true,
+          message: "句型描述不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.sceneValue === '' || this.sceneValue === undefined || this.sceneValue === null){
+        this.$message({
+          showClose: true,
+          message: "请选择句型所在的场景区",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
       let registerSentence = _this.newSentence
       registerSentence["isTypeIn"] = _this.isSentenceTypeInFlag?1:0

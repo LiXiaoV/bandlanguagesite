@@ -172,4 +172,13 @@ public class SentenceServiceImpl implements SentenceService {
 
         return true;
     }
+
+    @Override
+    public Boolean updateTypeInStatusBySentenceId(Long sentenceId) {
+        Sentence sentence = Sentence.builder().sentenceId(sentenceId).isTypeIn(1).build();
+        int res = sentenceMapper.updateById(sentence);
+        if(res <= 0)
+            throw new GlobalException(ResultCode.EDIT_SENTENCE_FAIL);
+        return true;
+    }
 }
