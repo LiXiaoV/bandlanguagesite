@@ -5,8 +5,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://192.168.88.116:33306/bandlanguagesite?serverTimezone=Asia/Shanghai&characterEncoding=utf8&tinyInt1isBit=false&useUnicode=true
-#      url: jdbc:mysql://127.0.0.1:3306/bandlanguagesite?serverTimezone=Asia/Shanghai&characterEncoding=utf8&tinyInt1isBit=false&useUnicode=true
+#      url: jdbc:mysql://192.168.88.116:33306/bandlanguagesite?serverTimezone=Asia/Shanghai&characterEncoding=utf8&tinyInt1isBit=false&useUnicode=true
+      url: jdbc:mysql://127.0.0.1:3306/bandlanguagesite?serverTimezone=Asia/Shanghai&characterEncoding=utf8&tinyInt1isBit=false&useUnicode=true
       username: root
       password: liwei666
       initial-size: 10
@@ -37,12 +37,12 @@ spring:
             multi-statement-allow: true
   redis:
     database: 0
-    host: 192.168.88.116
-#    host: 127.0.0.1
+#    host: 192.168.88.116
+    host: 127.0.0.1
     port: 6379
     # 如果未单独配置默认为空即可
-    password: liwei666
-#    password:
+#    password: liwei666
+    password:
     timeout: 1000
     jedis:
       pool:
