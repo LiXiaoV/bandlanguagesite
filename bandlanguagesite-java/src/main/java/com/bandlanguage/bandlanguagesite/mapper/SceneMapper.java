@@ -1,6 +1,7 @@
 package com.bandlanguage.bandlanguagesite.mapper;
 
 import com.bandlanguage.bandlanguagesite.model.entity.Scene;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @since 2021-05-21 15:24
  */
 @Mapper
-public interface SceneMapper {
+public interface SceneMapper extends BaseMapper<Scene> {
 
     /**
      * 获取所有场景区
@@ -28,4 +29,12 @@ public interface SceneMapper {
      * @return 查询的场景区对象
      */
     Scene getSceneById(Long id);
+
+    /**
+     * 获取火热的场景区（暂时按获取ID前几个，后面可以修改为在某一段时间进去的人数的数量来排序）
+     *
+     * @param limitCount 获取的数量
+     * @return 场景区对象数组
+     */
+    List<Scene> getHotScenes(Long limitCount);
 }

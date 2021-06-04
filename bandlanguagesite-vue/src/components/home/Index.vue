@@ -93,7 +93,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="float: left;font-size: 1.5rem">常用剧本</span>
-          <el-button style="float: right; padding: 3px 0" type="text">全部</el-button>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="enterAllScripts">全部</el-button>
         </div>
         <el-table
             :data="hotScripts"
@@ -263,7 +263,10 @@ export default {
       const _this = this
       this.$axios({
         method: 'get',
-        url: `${this.global.serverUrl}/scene/scenes/`
+        url: `${this.global.serverUrl}/scene/hotScenes/`,
+        params:{
+          limitCount: 5,
+        }
       }).then(res => {
         let scenes = res.data.data
         if(scenes){
@@ -296,6 +299,9 @@ export default {
     closeRegisterSentenceDialog(flag){
       this.registerSentenceDlg = flag
     },
+    enterAllScripts(){
+      this.$router.push("/allScripts")
+    }
   },
   mounted() {
 

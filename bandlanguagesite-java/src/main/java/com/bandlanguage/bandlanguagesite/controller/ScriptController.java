@@ -73,4 +73,9 @@ public class ScriptController {
             return Result.success("增加剧本运行次数成功");
         else return Result.fail(500,"增加剧本运行次数失败");
     }
+
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public Result getAllScripts(){
+        return Result.success(scriptService.getAllScripts());
+    }
 }

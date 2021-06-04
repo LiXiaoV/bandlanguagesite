@@ -40,4 +40,11 @@ public interface ScriptMapper extends BaseMapper<Script> {
      * @return 剧本视图类数组
      */
     List<ScriptVo> getHotScripts(Long limitCount);
+
+    /**
+     * 获得所有剧本
+     *
+     * @return 剧本的视图类数组
+     */
+    List<ScriptVo> getAllScripts();
 }

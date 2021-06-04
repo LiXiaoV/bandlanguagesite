@@ -53,137 +53,7 @@ export default {
   name: "ScriptAll",
   data() {
     return {
-      scriptTableData: [{
-        id: '1',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '2',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '3',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '4',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '5',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '6',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '7',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '8',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '9',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '10',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '11',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '12',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },{
-        id: '13',
-        name: "如果",
-        content: "如果 陈聪颖的年龄大于20",
-        desc: '表示‘假如’的意思，一般用于 如果句型',
-        environment: '剧本环境',
-        editor: 'xiaov',
-        updateTime: '2021-1-5',
-        status: '待审核',
-        bandId: "123",
-      },],
+      scriptTableData: [],
       //分页：页面控制
       currentPage: 1,
       pageSize: 10,
@@ -198,32 +68,13 @@ export default {
         "sceneId": _this.$route.params.id
       }
     }).then(res => {
-      let scripts = res.data.data
-      scripts.forEach( (element) => {
-
-        // 句型状态
-        if(element.status === 1){
-          element["statusString"] = "待开发"
-        }else if(element.status === 2){
-          element["statusString"] = "开发中"
-        }else if(element.status === 3){
-          element["statusString"] = "待审核"
-        }else if(element.status === 4){
-          element["statusString"] = "待发布"
-        }else if(element.status === 5){
-          element["statusString"] = "已发布"
-        }
-      })
-      _this.scriptTableData = scripts
+      _this.scriptTableData = res.data.data
     }).catch( error => {
       console.log(error)
     })
-    this.initScriptscriptTableData();
+
   },
   methods: {
-    initScriptscriptTableData(){
-
-    },
     handleEdit(index, row) {
       console.log(index, row);
     },

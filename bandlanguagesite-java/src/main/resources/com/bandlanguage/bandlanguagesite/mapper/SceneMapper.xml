@@ -9,4 +9,8 @@
     <select id="getSceneById" resultType="scene" parameterType="long">
         SELECT * from bls_dept where dept_id = #{id};
     </select>
+
+    <select id="getHotScenes" resultType="com.bandlanguage.bandlanguagesite.model.entity.Scene">
+        SELECT * from bls_dept where status > 0 order by dept_id limit #{limitCount}
+    </select>
 </mapper>

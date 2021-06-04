@@ -74,4 +74,11 @@ public interface ScriptService {
      * @return 增加运行次数是否成功
      */
     Boolean increaseRunTimesByScriptId(Long ScriptId);
+
+    /**
+     * 获得所有剧本
+     *
+     * @return 剧本的视图类数组
+     */
+    List<ScriptVo> getAllScripts();
 }

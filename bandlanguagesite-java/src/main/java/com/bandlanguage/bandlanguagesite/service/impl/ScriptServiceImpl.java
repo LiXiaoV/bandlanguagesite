@@ -183,4 +183,9 @@ public class ScriptServiceImpl implements ScriptService {
             throw new GlobalException(ResultCode.INCREASE_SCRIPT_RUNTIMES_FAIL);
         return true;
     }
+
+    @Override
+    public List<ScriptVo> getAllScripts() {
+        return scriptMapper.getAllScripts();
+    }
 }

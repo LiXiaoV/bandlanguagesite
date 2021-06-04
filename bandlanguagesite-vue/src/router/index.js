@@ -4,6 +4,7 @@ import Index from '../components/home/Index.vue'
 import Scenes from "@/components/home/Scenes";
 import SceneDetail from "@/components/home/SceneDetail";
 import Discuss from "@/components/discuss/DiscussIndex";
+import AllScripts from "@/components/home/AllScripts";
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,6 +27,11 @@ const routes = [
         path: '/sceneDetail/:id',
         name: 'SceneDetail',
         component: SceneDetail
+    },
+    {
+        path: '/allScripts',
+        name: 'AllScripts',
+        component: AllScripts
     },
 
 ]

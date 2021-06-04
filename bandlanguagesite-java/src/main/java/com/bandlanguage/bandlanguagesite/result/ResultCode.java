@@ -133,6 +133,9 @@ public enum ResultCode {
     // 节点模块 5007XX
     SELECT_NODE_NOT_EXIST(500701,"要查询的节点不存在"),
     EDIT_NODE_FAIL(500702,"修改节点失败"),
+
+    // 场景区模块 5007XX
+    SAVE_SCENE_FAIL(500801,"保存场景区失败"),
     /**
      * 成功状态码
      */

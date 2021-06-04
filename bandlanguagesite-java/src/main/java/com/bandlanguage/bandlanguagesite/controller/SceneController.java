@@ -1,14 +1,12 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
 import com.bandlanguage.bandlanguagesite.model.entity.Scene;
+import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,8 +27,22 @@ public class SceneController {
         return Result.success(sceneService.getScenes());
     }
 
+    @RequestMapping(value = "/hotScenes",method = RequestMethod.GET)
+    public Result getHotScenes(@RequestParam Long limitCount){
+        return Result.success(sceneService.getHotScenes(limitCount));
+    }
+
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Scene getSceneById(@PathVariable("id") Long id){
         return sceneService.getSceneById(id);
+    }
+
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public Result registerScene(@RequestBody Scene scene) {
+        System.out.println("scene = " + scene);
+        Boolean res = sceneService.SaveScene(scene);
+        if (res)
+            return Result.success("新增场景区成功");
+        else return Result.fail(500, "新增场景区失败");
     }
 }
