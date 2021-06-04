@@ -5,6 +5,7 @@ import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.ScriptService;
 import com.bandlanguage.bandlanguagesite.service.SentenceService;
+import com.bandlanguage.bandlanguagesite.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,12 @@ public class ScriptController {
     @Autowired
     private ScriptService scriptService;
 
+    @Autowired
+    private WordService wordService;
+
+    @Autowired
+    private SentenceService sentenceService;
+
     @RequestMapping(value = "/insert",method = RequestMethod.POST)
     public Result registerScript(@RequestBody ScriptVo scriptVo){
         System.out.println("scriptVo = " + scriptVo);
@@ -34,4 +41,12 @@ public class ScriptController {
     public Result getAllScriptsBySceneId(@RequestParam Long sceneId){
         return Result.success(scriptService.getAllScriptsBySceneId(sceneId));
     }
+
+    public Result searchWordsOrSentenceByKeyword(@RequestParam String keyword){
+
+
+        return null;
+    }
+
+
 }

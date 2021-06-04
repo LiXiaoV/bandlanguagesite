@@ -103,6 +103,11 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
+    public List<WordVo> getWordsByKeyword(String keyword) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public Boolean editWord(WordVo wordVo) {
         Word word = Word.builder().wordId(wordVo.getWordId())

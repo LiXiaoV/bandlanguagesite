@@ -29,4 +29,12 @@
             where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
     </select>
 
+    <select id="getWordsByKeyword" resultMap="WordVo">
+        select td.word_id,td.name,td.type,td.is_type_in,ta.user_id,tc.dept_id from bls_word_user as ta
+            left join bls_user as tb on ta.user_id = tb.user_id
+            left join bls_dept_word as tc on ta.word_id = tc.word_id
+            left join bls_word as td on ta.word_id = td.word_id
+            where
+    </select>
+
 </mapper>

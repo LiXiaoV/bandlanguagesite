@@ -42,6 +42,11 @@ public interface WordService{
     WordVo getWordDetailById(Long wordId);
 
     /**
+     *通过关键字查询相关词汇
+     **/
+    List<WordVo> getWordsByKeyword(String keyword);
+
+    /**
      * 修改词汇
      * @param wordVo 词的视图类
      * @return 影响的行数
