@@ -53,20 +53,24 @@ public class WordServiceImpl implements WordService {
                 .editorId(wordVo.getUserId())
                 .updateTime(new Date()).build();
         int res = wordMapper.insert(word);
-        if (res > 0) {
-            // 插入词汇与场景区的关联
-            SceneWord sceneWord = SceneWord.builder().sceneId(wordVo.getSceneId())
-                    .wordId(word.getWordId()).build();
-            int res1 = sceneWordMapper.insert(sceneWord);
+        if(res <= 0)
+            throw new GlobalException(ResultCode.SAVE_WORD_FAIL);
 
-            // 插入词汇用户的关联
-            WordUser wordUser = WordUser.builder().wordId(word.getWordId())
-                    .userId(wordVo.getUserId())
-                    .updateTime(new Date()).build();
-            int res2 = wordUserMapper.insert(wordUser);
-            return res1 > 0 && res2 >0;
-        }
-        return false;
+        // 插入词汇与场景区的关联
+        SceneWord sceneWord = SceneWord.builder().sceneId(wordVo.getSceneId())
+                .wordId(word.getWordId()).build();
+        int res1 = sceneWordMapper.insert(sceneWord);
+        if(res1 <= 0)
+            throw new GlobalException(ResultCode.SAVE_SCENE_WORD_FAIL);
+
+        // 插入词汇用户的关联
+        WordUser wordUser = WordUser.builder().wordId(word.getWordId())
+                .userId(wordVo.getUserId())
+                .updateTime(new Date()).build();
+        int res2 = wordUserMapper.insert(wordUser);
+        if(res2 <= 0)
+            throw new GlobalException(ResultCode.SAVE_WORD_USER_FAIL);
+        return true;
     }
 
     @Override
@@ -82,25 +86,25 @@ public class WordServiceImpl implements WordService {
     @Override
     public WordVo getWordDetailById(Long wordId) {
         Word word = wordMapper.selectById(wordId);
-        if(word != null){
-            User creator = userMapper.selectById(word.getCreatorId());
-            User editor = userMapper.selectById(word.getEditorId());
-            return WordVo.builder().wordId(word.getWordId())
-                    .name(word.getName())
-                    .description(word.getDescription())
-                    .example(word.getExample())
-                    .type(word.getType())
-                    .synonym(word.getSynonym())
-                    .creatorId(word.getCreatorId())
-                    .creatorUsername(creator.getUsername())
-                    .creatorNickname(creator.getNickname())
-                    .editorId(word.getEditorId())
-                    .editorUsername(editor.getUsername())
-                    .editorNickname(editor.getNickname())
-                    .updateTime(word.getUpdateTime())
-                    .isTypeIn(word.getIsTypeIn()).build();
-        }
-        return null;
+        if(word == null)
+            throw new GlobalException(ResultCode.SELECT_WORD_NOT_EXIST);
+
+        User creator = userMapper.selectById(word.getCreatorId());
+        User editor = userMapper.selectById(word.getEditorId());
+        return WordVo.builder().wordId(word.getWordId())
+                .name(word.getName())
+                .description(word.getDescription())
+                .example(word.getExample())
+                .type(word.getType())
+                .synonym(word.getSynonym())
+                .creatorId(word.getCreatorId())
+                .creatorUsername(creator.getUsername())
+                .creatorNickname(creator.getNickname())
+                .editorId(word.getEditorId())
+                .editorUsername(editor.getUsername())
+                .editorNickname(editor.getNickname())
+                .updateTime(word.getUpdateTime())
+                .isTypeIn(word.getIsTypeIn()).build();
     }
 
     @Override
@@ -115,25 +119,28 @@ public class WordServiceImpl implements WordService {
                 .editorId(wordVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = wordMapper.updateById(word);
-        if(cnt > 0){
-            // 查询此用户是否修改或创建过这个词汇，如果是，则跟新时间，如果不是，则插入记录
-            QueryWrapper<WordUser> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("user_id",wordVo.getUserId());
-            queryWrapper.eq("word_id",wordVo.getWordId());
-            WordUser wordUser = wordUserMapper.selectOne(queryWrapper);
-            int cnt1;
-            if(wordUser != null){
-                wordUser.setUpdateTime(new Date());
-                cnt1 = wordUserMapper.updateById(wordUser);
-            }else {
-                WordUser insertWordUser = WordUser.builder().wordId(wordVo.getWordId())
-                        .userId(wordVo.getUserId())
-                        .updateTime(new Date()).build();
-                cnt1 = wordUserMapper.insert(insertWordUser);
-            }
-            return cnt1 > 0;
+        if(cnt <= 0)
+            throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
+
+        // 查询此用户是否修改或创建过这个词汇，如果是，则跟新时间，如果不是，则插入记录
+        QueryWrapper<WordUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",wordVo.getUserId());
+        queryWrapper.eq("word_id",wordVo.getWordId());
+        WordUser wordUser = wordUserMapper.selectOne(queryWrapper);
+        if(wordUser != null){
+            wordUser.setUpdateTime(new Date());
+            int cnt1 = wordUserMapper.updateById(wordUser);
+            if(cnt1 <= 0)
+                throw new GlobalException(ResultCode.UPDATE_WORD_USER_FAIL);
+        }else {
+            WordUser insertWordUser = WordUser.builder().wordId(wordVo.getWordId())
+                    .userId(wordVo.getUserId())
+                    .updateTime(new Date()).build();
+            int cnt2 = wordUserMapper.insert(insertWordUser);
+            if(cnt2 <= 0)
+                throw new GlobalException(ResultCode.SAVE_WORD_USER_FAIL);
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -146,17 +153,23 @@ public class WordServiceImpl implements WordService {
 
         // 更新词汇状态，肯定有记录要修改
         int cnt1 = wordMapper.updateById(word);
+        if(cnt1 <= 0)
+            throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
 
         // 更新词汇-场景区关联表，肯定有记录要修改
         UpdateWrapper<SceneWord> sceneWordUpdateWrapper = new UpdateWrapper<>();
         sceneWordUpdateWrapper.eq("word_id",word.getWordId()).set("status",0);
         int cnt2 = sceneWordMapper.update(null, sceneWordUpdateWrapper);
+        if(cnt2 <= 0)
+            throw new GlobalException(ResultCode.UPDATE_SCENE_WORD_FAIL);
 
         // 更新词汇-用户关联表，肯定有记录要修改
         UpdateWrapper<WordUser> wordUserUpdateWrapper = new UpdateWrapper<>();
         wordUserUpdateWrapper.eq("word_id",word.getWordId()).set("status",0);
         int cnt3 = wordUserMapper.update(null, wordUserUpdateWrapper);
-        return cnt1 >0 && cnt2 > 0 && cnt3 > 0;
+        if(cnt3 <= 0)
+            throw new GlobalException(ResultCode.UPDATE_WORD_USER_FAIL);
+        return true;
     }
 
     @Override

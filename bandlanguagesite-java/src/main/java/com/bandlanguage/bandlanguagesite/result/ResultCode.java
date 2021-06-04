@@ -130,7 +130,7 @@ public enum ResultCode {
     EDIT_RULE_FAIL(500602,"修改规则失败"),
     // 节点模块 5007XX
     SELECT_NODE_NOT_EXIST(500701,"要查询的节点不存在"),
-    EDIT_NODE_FAIL(500702,"修改规则失败"),
+    EDIT_NODE_FAIL(500702,"修改节点失败"),
     /**
      * 成功状态码
      */
