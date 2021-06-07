@@ -6,7 +6,7 @@
         :tab-position="tabPosition"
         style="height: 200px; background-color: white"
         type="card"
-        :value="activeTab"
+        v-model="activeTab"
         :before-leave="tooglePanel"
         @tab-click="tabClick"
       >
@@ -18,7 +18,7 @@
               @click="clickPanel"
             ></i>
           </template>
-          <p style="font-style:italic;margin:auto;width:100%">请选择查看的窗格</p>
+          <p style="font-style: italic; margin: auto; width: 100%">请选择查看的窗格</p>
         </el-tab-pane>
 
         <el-tab-pane label="语境" name="context">
@@ -86,39 +86,118 @@
           ><div>
             <div class="titleFont">剧本库</div>
             <div style="height: 75vh; overflow-y: auto">
-              <el-table :data="scriptLibrary" empty-text="暂无剧本" height="60vh">
+              <el-table :data="scriptLibrary" empty-text="暂无剧本" height="68vh">
                 <el-table-column type="expand">
-                  <template slot-scope="props" style="padding:5px">
-                    <el-form>
-                      <el-form-item label="剧本内容:">
-                        <el-input :value="props.row.content" type="textarea" :readonly="true" style="border:none"></el-input>
+                  <template slot-scope="props" style="padding: 5px">
+                    <el-form label-position="left">
+                      <el-form-item label="剧本描述:" label-width="80px">
+                        <el-input
+                          :value="props.row.description"
+                          type="textarea"
+                          :readonly="true"
+                          :rows="2"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item label="剧本内容:" label-width="80px">
+                        <el-input
+                          :value="props.row.content"
+                          type="textarea"
+                          :readonly="true"
+                          :rows="4"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item label="更新时间:" label-width="80px">
+                        <el-input
+                          v-model="props.row.updateTime"
+                          :readonly="true"
+                        ></el-input>
                       </el-form-item>
                     </el-form>
                   </template>
                 </el-table-column>
-                <el-table-column label="剧本名" prop="name"></el-table-column>
-                <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+                <el-table-column
+                  label="剧本名"
+                  prop="name"
+                  align="center"
+                ></el-table-column>
+                <el-table-column
+                  label="剧本描述"
+                  prop="description"
+                  show-overflow-tooltip
+                  align="center"
+                ></el-table-column>
               </el-table>
-              <el-pagination :total="scriptLibraryTotal" style="bottom:5px;margin:auto;text-align:center" small layout="prev, pager, next"></el-pagination>
-            </div>
-          </div></el-tab-pane
-        >
+              <el-pagination
+                :total="scriptLibraryTotal"
+                :current-page="scriptPageNum"
+                :page-size="scriptPageSize"
+                @current-change="handleScriptCurrentChange"
+                style="bottom: 5px; margin: auto; text-align: center"
+                small
+                layout="prev, pager, next"
+              ></el-pagination>
+            </div></div
+        ></el-tab-pane>
 
         <el-tab-pane label="词汇句型手册" name="menu">
-          <div style="margin-top: 10px">
-            <el-input placeholder="请输入词汇/句型关键字" v-model="searchText">
+          <div style="margin-top: 10px;padding-left:4px">
+            <el-input
+              placeholder="请输入词汇/句型关键字"
+              v-model="searchText"
+              @keyup.native="pressToConfirm($event)"
+            >
               <el-button
                 slot="append"
                 icon="el-icon-search"
                 size="mini"
-                @click.native="searchContent"
+                @click.native="searchContent(1)"
               ></el-button>
             </el-input>
-            <el-table :data="searchWordsList" height="62vh">
-              <el-table-column label="名称" prop="name"></el-table-column>
-              <el-table-column label="场景区" prop="sceneName"></el-table-column>
+            <el-radio-group v-model="searchType" @change="searchTypeChange" style="padding-left:4px;padding-right:4px;text-align:center">
+              <el-radio :label="1">词汇</el-radio>
+              <el-radio :label="2">句型</el-radio>
+              <el-radio :label="3">词句</el-radio>
+            </el-radio-group>
+            <el-table :data="searchList" height="62vh" stripe>
+              <el-table-column type="expand" width="25px">
+                <template slot-scope="props">
+                  <el-form label-position="left" label-width="45px">
+                    <el-form-item label="描述:">
+                      <el-input
+                        :value="props.row.description"
+                        type="textarea"
+                        :readonly="true"
+                        :rows="4"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="示例:">
+                      <el-input
+                        :value="props.row.example"
+                        type="textarea"
+                        :readonly="true"
+                        :rows="2"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
+                </template>
+              </el-table-column>
+              <el-table-column label="名称" prop="name" align="center"></el-table-column>
+              <el-table-column
+                label="场景区"
+                prop="sceneName"
+                align="center"
+              ></el-table-column>
             </el-table>
-            <el-pagination small hide-on-single-page></el-pagination>
+            <el-pagination
+              small
+              hide-on-single-page
+              :current-page.sync="searchPageNum"
+              :page-size="searchPageSize"
+              :total="searchTotal"
+              layout="prev, pager, next"
+              @current-change="searchContent(searchPageNum)"
+              style="text-align:center;width:100%"
+            ></el-pagination>
           </div>
         </el-tab-pane>
         <el-tab-pane label="选中信息" v-if="isScriptedSelect"
@@ -128,13 +207,12 @@
       </el-tabs>
     </div>
 
-    <!-- <el-divider style="border-top: 2px dashed #e8eaec;font-size:13px;font-weight:normal"></el-divider> -->
     <!-- </el-card> -->
   </div>
 </template>
 
 <script>
-import { trimSpaceLR } from "../../store/common";
+import { trimSpaceLR, getYMD } from "../../store/common";
 
 export default {
   data() {
@@ -142,10 +220,12 @@ export default {
       //搜索
       searchText: "",
       searchList: [],
+      searchTotal: 0,
       searchWordsList: [],
       searchSentencesList: [],
-      searchPageNum:1,
-      searchPageSize:6,
+      searchPageNum: 1,
+      searchPageSize: 10,
+      searchType: 1,
 
       tabPosition: "right",
       isPanelHidden: false,
@@ -181,34 +261,96 @@ export default {
       },
 
       scriptLibrary: [],
-      scriptLibraryTotal:0,
+      scriptLibraryTotal: 0,
+      scriptPageNum: 1,
+      scriptPageSize: 10,
 
       status: 1,
     };
   },
   methods: {
     //搜索内容
-    searchContent() {
+    searchContent(pageNum) {
+      console.log(pageNum);
+      switch (this.searchType) {
+        case 1: {
+          //词汇
+          let url = `${this.global.serverUrl}/word/getWordsByKeywordInPage`;
+          this.search(url, pageNum);
+          break;
+        }
+        case 2: {
+          //句型
+          let url = `${this.global.serverUrl}/sentence/getSentencesByKeywordInPage`;
+          this.search(url, pageNum);
+          break;
+        }
+        case 3: {
+          //两者
+          let url = `${this.global.serverUrl}/script/getWordsAndSentencesByKeyword`;
+          this.search(url, pageNum);
+          break;
+        }
+      }
+    },
+
+    search(url, pageNum) {
       if (trimSpaceLR(this.searchText) != "") {
         this.$axios({
           methods: "get",
-          url: `${this.global.serverUrl}/script/getWordsAndSentencesByKeyword`,
+          url: url,
           params: {
-            keyword: this.searchText,
-            pageNum:this.searchPageNum,
-            pageSize:this.searchPageSize
+            keyword: trimSpaceLR(this.searchText),
+            pageNum: pageNum,
+            pageSize: this.searchPageSize,
           },
         }).then((res) => {
-          this.searchWordsList = res.data.data.words;
-          this.searchSentencesList = res.data.data.sentences;
+          this.searchList = res.data.data.result;
+          this.searchTotal = res.data.data.total;
+          let typeName="";
+          if(this.searchTotal==0){
+            switch(this.searchType){
+              case 1:{
+                typeName="词汇";
+                break;
+              }
+              case 2:{
+                typeName="句型";
+                break;
+              }
+              case 3:{
+                typeName="词汇和句型";
+                break;
+              }
+            }
+            this.$message.info({message:"没有相关词汇"+typeName});
+            console.log("没有相关词汇"+typeName);
+          }
+          console.log(res.data.data);
+          if (res.data.data.type == 1) {
+            this.searchList.forEach((item) => {
+              item.isWord = true;
+            });
+          } else if (res.data.data.type == 2) {
+            this.searchList.forEach((item) => {
+              item.isWord = false;
+            });
+          }
         });
       }
     },
 
     pressToConfirm(e) {
-      if (e.keycode == 13) {
-        this.searchContent();
+      if (e.keyCode == 13) {
+        this.searchContent(1);
+      }else if(trimSpaceLR(this.searchText)==""){
+        this.searchList=[];
+        this.searchTotal=0;
       }
+    },
+
+    searchTypeChange() {
+      this.searchContent(1);
     },
 
     //
@@ -220,11 +362,11 @@ export default {
       }
     },
 
-    tabClick(e){
-      if(e.paneName=="0"){
+    tabClick(e) {
+      if (e.paneName == "0") {
         this.isPanelHidden = !this.isPanelHidden;
-        if(!this.isPanelHidden){
-          this.activeTab="context";
+        if (!this.isPanelHidden) {
+          this.activeTab = "context";
         }
         this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", this.isPanelHidden);
       }
@@ -236,19 +378,26 @@ export default {
     },
 
     //
-    getScripts(pageNum,pageSize){
+    getScripts(pageNum, pageSize) {
       this.$axios({
-        methods:'get',
-        url:`${this.global.serverUrl}/script/getScriptsInPage`,
-        params:{
-          pageNum:pageNum,
-          pageSize:pageSize
-        }
-      }).then((res)=>{
-        this.scriptLibrary=res.data.data.scripts;
-        this.scriptLibraryTotal=res.data.data.scriptsTotal;
-      })
-    }
+        methods: "get",
+        url: `${this.global.serverUrl}/script/getScriptsInPage`,
+        params: {
+          pageNum: pageNum,
+          pageSize: pageSize,
+        },
+      }).then((res) => {
+        this.scriptLibrary = res.data.data.scripts;
+        this.scriptLibrary.forEach((item) => {
+          item.updateTime = getYMD(item.updateTime);
+        });
+        this.scriptLibraryTotal = res.data.data.scriptsTotal;
+      });
+    },
+
+    handleScriptCurrentChange(val) {
+      this.getScripts(val, this.scriptPageSize);
+    },
   },
   created() {
     this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
@@ -263,7 +412,7 @@ export default {
     }
   },
   mounted() {
-    this.getScripts(1,5);
+    this.getScripts(this.scriptPageNum, this.scriptPageSize);
   },
   computed: {
     isScriptedSelect: function () {
@@ -305,11 +454,10 @@ export default {
   font-weight: normal;
 }
 
-.formItemStyle{
-  margin:5px;
-  padding:5px;
+.formItemStyle {
+  margin: 5px;
+  padding: 5px;
 }
-
 </style>
 
 <style lang="scss">
@@ -325,19 +473,19 @@ export default {
       word-wrap: break-word;
       white-space: pre-line;
       margin-bottom: 20px;
-
-      :first-child{
-        margin-bottom: 0px;
-      }
     }
   }
 }
 
-.el-table__expanded-cell[class*="cell"] {
-  padding-left: 10px;
-  padding-right: 10px;
+#tab-visibility {
+  padding-bottom: 0 !important;
 }
 
+.el-table__expanded-cell[class*="cell"] {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-bottom: 10px !important;
+}
 
 // .el-tabs--right.el-tabs--card .el-tabs__item.is-right.is-active:first-child{
 //   margin-bottom: 0px;

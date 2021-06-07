@@ -120,6 +120,11 @@ public class SentenceServiceImpl implements SentenceService {
     }
 
     @Override
+    public List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword, Long offset, Long size) {
+        return sentenceMapper.getSentencesByKeywordInPage(keyword,offset,size);
+    }
+
+    @Override
     public Long getSentencesTotalByKeyword(String keyword) {
         return sentenceMapper.getSentencesTotalByKeyword(keyword);
     }

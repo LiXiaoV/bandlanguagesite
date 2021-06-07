@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.model.entity.Script;
 import com.bandlanguage.bandlanguagesite.model.vo.ScriptVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xiaov
@@ -50,17 +49,58 @@ public class ScriptController {
 
     @RequestMapping(value = "/getWordsAndSentencesByKeyword",method = RequestMethod.GET)
     public Result searchWordsOrSentenceByKeyword(@RequestParam String keyword,Long pageNum,Long pageSize){
-        List<WordVo> words = wordService.getWordsByKeywordInPage(keyword,pageNum,pageSize);
-        List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPage(keyword,pageNum,pageSize);
+        Long start=(pageNum-1)*pageSize;
+
         Long wordsTotal = wordService.getWordsTotalByKeyword(keyword);
         Long sentencesTotal = sentenceService.getSentencesTotalByKeyword(keyword);
         Map<String,Object> map=new HashMap<String, Object>();
-        map.put("words",words);
-        map.put("sentences",sentences);
-        map.put("wordsTotal",wordsTotal);
-        map.put("sentencesTotal",sentencesTotal);
-        System.out.println(words);
-        System.out.println(sentences);
+        map.put("total",wordsTotal+sentencesTotal);
+
+        if(wordsTotal==0&&sentencesTotal==0){
+            map.put("result",new HashMap<String,Object>());
+        }else if(sentencesTotal==0){
+            List<WordVo> words = wordService.getWordsByKeywordInPage(keyword, pageNum, pageSize);
+            map.put("result",words);
+            map.put("type",1);
+        }else if(wordsTotal==0){
+            List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPageWithOffset(keyword, start - wordsTotal, pageSize);
+            map.put("result",sentences);
+            map.put("type",2);
+        }else {
+
+            if (start > wordsTotal) {
+                //只搜索句型
+                List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPageWithOffset(keyword, start - wordsTotal, pageSize);
+                map.put("result", sentences);
+                map.put("type",2);
+            } else {
+                if (pageNum * pageSize < wordsTotal) {
+                    //只搜索词汇
+                    List<WordVo> words = wordService.getWordsByKeywordInPage(keyword, pageNum, pageSize);
+                    map.put("result", words);
+                    map.put("type",1);
+                } else {
+                    List list = new ArrayList();
+                    List<WordVo> words = wordService.getWordsByKeywordInPage(keyword, pageNum, pageSize);
+                    List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPageWithOffset(keyword, 0L, pageSize - words.size());
+                    Iterator<WordVo> itW=words.iterator();
+                    Iterator<SentenceVo> itS=sentences.iterator();
+                    while (itW.hasNext()){
+                        JSONObject wordVo = (JSONObject) JSONObject.toJSON(itW.next());
+                        wordVo.put("isWord",true);
+                        list.add(wordVo);
+                    }
+
+                    while (itS.hasNext()){
+                        JSONObject sentenceVo = (JSONObject) JSONObject.toJSON(itS.next());
+                        sentenceVo.put("isWord",false);
+                        list.add(sentenceVo);
+                    }
+                    map.put("result",list);
+                    map.put("type",3);
+                }
+            }
+        }
 
         return Result.success(map);
     }

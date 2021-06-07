@@ -60,6 +60,8 @@ public interface SentenceService {
      **/
     List<SentenceVo> getSentencesByKeywordInPage(String keyword,Long pageNum,Long pageSize);
 
+    List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword,Long offset,Long size);
+
     Long getSentencesTotalByKeyword(String keyword);
 
     /**
