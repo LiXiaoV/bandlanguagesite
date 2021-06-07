@@ -17,6 +17,7 @@ window.JSHINT = jshint.JSHINT;
 
 // 引入vuex
 import store from '@/store/index'
+import './assets/style/font.scss'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;

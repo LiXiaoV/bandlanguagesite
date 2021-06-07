@@ -4,6 +4,7 @@ import com.bandlanguage.bandlanguagesite.model.entity.Sentence;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -38,4 +39,17 @@ public interface SentenceMapper extends BaseMapper<Sentence> {
      * @return 句型的视图类数组
      */
     List<SentenceVo> getMySentencesBySceneIdAndUserId(Long sceneId, Long userId);
+
+    /**
+     *通过关键字查找句型
+     **/
+    List<SentenceVo> getSentencesByKeyword(String keyword);
+
+    List<SentenceVo> getSentencesByKeywordInPage(@Param("keyword") String keyword, @Param("offset") Long offset, @Param("size") Long size);
+
+    /**
+     * @param keyword
+     * @return
+     */
+    Long getSentencesTotalByKeyword(String keyword);
 }

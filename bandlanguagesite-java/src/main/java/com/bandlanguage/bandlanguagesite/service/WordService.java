@@ -13,7 +13,7 @@ public interface WordService {
     /**
      * 保存词汇
      *
-     * @param word 词的实体类
+     * @param wordVo 词的实体类
      * @return 影响的行数
      */
     Boolean SaveWord(WordVo wordVo);
@@ -42,6 +42,18 @@ public interface WordService {
      * @return 词汇的视图实体类
      */
     WordVo getWordDetailById(Long wordId);
+
+    /**
+     *通过关键字查询相关词汇
+     **/
+    List<WordVo> getWordsByKeyword(String keyword);
+
+    /**
+     *通过关键字分页查询相关词汇
+     **/
+    List<WordVo> getWordsByKeywordInPage(String keyword, Long pageNum, Long pageSize);
+
+    Long getWordsTotalByKeyword(String keyword);
 
     /**
      * 修改词汇

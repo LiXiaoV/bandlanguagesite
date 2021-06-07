@@ -108,6 +108,28 @@ public class SentenceServiceImpl implements SentenceService {
     }
 
     @Override
+    public List<SentenceVo> getSentencesByKeyword(String keyword) {
+
+        return sentenceMapper.getSentencesByKeyword(keyword);
+    }
+
+    @Override
+    public List<SentenceVo> getSentencesByKeywordInPage(String keyword, Long pageNum, Long pageSize) {
+
+        return sentenceMapper.getSentencesByKeywordInPage(keyword,(pageNum-1)*pageSize,pageSize);
+    }
+
+    @Override
+    public List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword, Long offset, Long size) {
+        return sentenceMapper.getSentencesByKeywordInPage(keyword,offset,size);
+    }
+
+    @Override
+    public Long getSentencesTotalByKeyword(String keyword) {
+        return sentenceMapper.getSentencesTotalByKeyword(keyword);
+    }
+
+    @Override
     @Transactional
     public Boolean editSentence(SentenceVo sentenceVo) {
         Sentence sentence = Sentence.builder().sentenceId(sentenceVo.getSentenceId())

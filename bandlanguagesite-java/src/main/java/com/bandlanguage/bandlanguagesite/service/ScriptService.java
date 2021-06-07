@@ -1,6 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service;
 
 
+import com.bandlanguage.bandlanguagesite.model.entity.Script;
 import com.bandlanguage.bandlanguagesite.model.vo.ScriptVo;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public interface ScriptService {
      * @param sceneId 场景区ID
      * @return 剧本对象数组
      */
+
     List<ScriptVo> getAllScriptsBySceneId(Long sceneId);
 
     /**
@@ -81,4 +83,10 @@ public interface ScriptService {
      * @return 剧本的视图类数组
      */
     List<ScriptVo> getAllScripts();
+
+//    List<Script> getAllScriptsBySceneId(Long sceneId);
+
+    List<Script> getScriptsInPage(Long pageNum, Long pageSize);
+
+    Long getScriptsTotal();
 }

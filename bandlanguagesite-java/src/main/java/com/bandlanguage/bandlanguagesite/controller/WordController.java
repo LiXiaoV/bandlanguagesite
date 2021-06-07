@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author xiaov
  * @since 2021-05-22 15:04
@@ -46,6 +50,17 @@ public class WordController {
     @RequestMapping(value = "/wordDetail/{id}",method = RequestMethod.GET)
     public Result getMyWordDetailById(@PathVariable("id") Long id){
         return Result.success(wordService.getWordDetailById(id));
+    }
+
+    @RequestMapping(value = "/getWordsByKeywordInPage",method = RequestMethod.GET)
+    public Result getWordsByKeywordInPage(@RequestParam String keyword,Long pageNum,Long pageSize){
+        List<WordVo> words = wordService.getWordsByKeywordInPage(keyword, pageNum, pageSize);
+        Long wordsTotal = wordService.getWordsTotalByKeyword(keyword);
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("result",words);
+        map.put("type",1);
+        map.put("total",wordsTotal);
+        return Result.success(map);
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.PUT)

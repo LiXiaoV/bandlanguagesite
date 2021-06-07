@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 句型的控制类
  *
@@ -48,6 +52,17 @@ public class SentenceController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Result getMySentenceDetailById(@PathVariable("id") Long id) {
         return Result.success(sentenceService.getMySentenceDetailById(id));
+    }
+
+    @RequestMapping(value = "/getSentencesByKeywordInPage",method = RequestMethod.GET)
+    public Result getSentencesByKeywordInPage(@RequestParam String keyword,Long pageNum,Long pageSize){
+        List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPage(keyword, pageNum, pageSize);
+        Long sentencesTotal = sentenceService.getSentencesTotalByKeyword(keyword);
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("result",sentences);
+        map.put("type",2);
+        map.put("total",sentencesTotal);
+        return Result.success(map);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)

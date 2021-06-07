@@ -73,9 +73,12 @@
             </keep-alive>
           </el-card>
         </el-col>
-
       </el-row>
 
+    </div>
+
+    <div v-if="navIndex === '4'" :class="!isContextPanelHide?'vcontextShow':'vcontextHide'">
+          <v-context></v-context>
     </div>
   </div>
 </template>
@@ -89,6 +92,7 @@ import ScriptIndex from "@/components/script/ScriptIndex";
 import DeveloperIndex from "@/components/developer/DeveloperIndex";
 import ManagerIndex from "@/components/manager/ManagerIndex";
 import DebuggerIndex from "@/components/debugger/DebuggerIndex";
+import Context from "@/components/debugger/Context";
 // import imageLibrary from "@/assets/images/image-library.png";
 
 export default {
@@ -133,6 +137,11 @@ export default {
       console.log(error)
     })
   },
+  computed: {
+    isContextPanelHide:function(){
+      return this.$store.getters.getContextPanelVisible;
+    }
+  },
   components: {
     "v-header": Header,
     "word-index": WordIndex,
@@ -141,6 +150,7 @@ export default {
     "developer-index": DeveloperIndex,
     "manager-index": ManagerIndex,
     "debug-index": DebuggerIndex,
+    "v-context":Context
   }
 }
 </script>
@@ -162,6 +172,7 @@ export default {
 .box-card {
   width: 64vw;
   margin-left: 1vw;
+  border-bottom: none;
 }
 
 .scene-area {
@@ -174,5 +185,22 @@ export default {
   background-color: #E9EEF3;
 }
 
+.vcontextShow{
+  position:absolute;
+  right:20px;
+  top:14vh;
+  height: 82vh;
+  width:23vw;
+  border-radius: 4px;
+}
+
+.vcontextHide{
+  position:absolute;
+  right:20px;
+  top:14vh;
+  height: 82vh;
+  width:45px;
+  border-radius: 4px;
+}
 
 </style>

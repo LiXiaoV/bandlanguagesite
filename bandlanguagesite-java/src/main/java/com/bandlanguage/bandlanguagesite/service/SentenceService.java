@@ -51,6 +51,20 @@ public interface SentenceService {
     SentenceVo getMySentenceDetailById(Long sentenceId);
 
     /**
+     *通过关键字查找句型
+     **/
+    List<SentenceVo> getSentencesByKeyword(String keyword);
+
+    /**
+     *通过关键字分页查找句型
+     **/
+    List<SentenceVo> getSentencesByKeywordInPage(String keyword,Long pageNum,Long pageSize);
+
+    List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword,Long offset,Long size);
+
+    Long getSentencesTotalByKeyword(String keyword);
+
+    /**
      * 修改句型
      *
      * @param sentenceVo 句型的视图类
