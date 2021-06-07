@@ -4,6 +4,7 @@ import com.bandlanguage.bandlanguagesite.model.entity.Word;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -44,4 +45,8 @@ public interface WordMapper extends BaseMapper<Word> {
      *通过关键字获取词汇
      **/
     List<WordVo> getWordsByKeyword(String keyword);
+
+    List<WordVo> getWordsByKeywordInPage(@Param("keyword") String keyword, @Param("offset") Long offset, @Param("size") Long size);
+
+    Long getWordsTotalByKeyword(String keyword);
 }

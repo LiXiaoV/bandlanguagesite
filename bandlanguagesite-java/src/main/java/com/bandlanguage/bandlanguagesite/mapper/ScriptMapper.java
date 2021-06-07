@@ -3,6 +3,7 @@ package com.bandlanguage.bandlanguagesite.mapper;
 import com.bandlanguage.bandlanguagesite.model.entity.Script;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface ScriptMapper extends BaseMapper<Script> {
      * @return 剧本对象数组
      */
     List<Script> getAllScriptsBySceneId(Long sceneId);
+
+    List<Script> getAllScriptsInPage(@Param("offset") Long offset, @Param("size") Long size);
+
+    Long getScriptsTotal();
 }

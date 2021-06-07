@@ -49,6 +49,13 @@ public interface WordService {
     List<WordVo> getWordsByKeyword(String keyword);
 
     /**
+     *通过关键字分页查询相关词汇
+     **/
+    List<WordVo> getWordsByKeywordInPage(String keyword, Long pageNum, Long pageSize);
+
+    Long getWordsTotalByKeyword(String keyword);
+
+    /**
      * 修改词汇
      *
      * @param wordVo 词的视图类

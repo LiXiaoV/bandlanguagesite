@@ -3,6 +3,7 @@ package com.bandlanguage.bandlanguagesite;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
+import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,9 @@ class BandlanguagesiteApplicationTests {
 
     @Autowired
     private WordUserMapper wordUserMapper;
+
+    @Autowired
+    private ScriptMapper scriptMapper;
 
     @Autowired
     private SentenceUserMapper sentenceUserMapper;
@@ -107,6 +111,40 @@ class BandlanguagesiteApplicationTests {
             System.out.println("用户id = " + sentenceUser.getUserId());
             System.out.println();
         }
+
+    }
+
+    @Test
+    public void testGetCount(){
+        Long scriptTotal = scriptMapper.getScriptsTotal();
+        System.out.println(scriptTotal);
+    }
+
+    @Test
+    public void getSentencesTotalByKeyword(){
+        List<SentenceVo> sentences = sentenceMapper.getSentencesByKeywordInPage("部门", 1L, 5L);
+        Long total = sentenceMapper.getSentencesTotalByKeyword("部门");
+        System.out.println(sentences);
+        System.out.println(total);
+    }
+
+    @Test
+    public void testGetWordsByKeyword(){
+        List<WordVo> words = wordMapper.getWordsByKeywordInPage("帮区", 1L, 3L);
+        Long total = wordMapper.getWordsTotalByKeyword("帮区");
+        System.out.println(words);
+        System.out.println(words.size());
+        System.out.println(total);
+
+    }
+
+    @Test
+    public void testGetScripts(){
+        List<Script> scripts = scriptMapper.getAllScriptsInPage(2L, 5L);
+        Long scriptTotal = scriptMapper.getScriptsTotal();
+        System.out.println(scripts);
+        System.out.println(scripts.size());
+        System.out.println(scriptTotal);
 
     }
 

@@ -24,4 +24,8 @@ public interface ScriptService {
      * @return 剧本对象数组
      */
     List<Script> getAllScriptsBySceneId(Long sceneId);
+
+    List<Script> getScriptsInPage(Long pageNum,Long pageSize);
+
+    Long getScriptsTotal();
 }

@@ -109,6 +109,16 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
+    public List<WordVo> getWordsByKeywordInPage(String keyword, Long pageNum, Long pageSize) {
+        return wordMapper.getWordsByKeywordInPage(keyword,(pageNum-1)*pageSize,pageSize);
+    }
+
+    @Override
+    public Long getWordsTotalByKeyword(String keyword) {
+        return wordMapper.getWordsTotalByKeyword(keyword);
+    }
+
+    @Override
     @Transactional
     public Boolean editWord(WordVo wordVo) {
         Word word = Word.builder().wordId(wordVo.getWordId())

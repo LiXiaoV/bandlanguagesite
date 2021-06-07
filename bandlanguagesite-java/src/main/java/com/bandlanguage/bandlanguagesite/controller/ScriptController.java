@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
+import com.bandlanguage.bandlanguagesite.model.entity.Script;
 import com.bandlanguage.bandlanguagesite.model.vo.ScriptVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
@@ -48,16 +49,29 @@ public class ScriptController {
     }
 
     @RequestMapping(value = "/getWordsAndSentencesByKeyword",method = RequestMethod.GET)
-    public Result searchWordsOrSentenceByKeyword(@RequestParam String keyword){
-        System.out.println(keyword);
-        List<WordVo> words = wordService.getWordsByKeyword(keyword);
-        List<SentenceVo> sentences = sentenceService.getSentencesByKeyword(keyword);
+    public Result searchWordsOrSentenceByKeyword(@RequestParam String keyword,Long pageNum,Long pageSize){
+        List<WordVo> words = wordService.getWordsByKeywordInPage(keyword,pageNum,pageSize);
+        List<SentenceVo> sentences = sentenceService.getSentencesByKeywordInPage(keyword,pageNum,pageSize);
+        Long wordsTotal = wordService.getWordsTotalByKeyword(keyword);
+        Long sentencesTotal = sentenceService.getSentencesTotalByKeyword(keyword);
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("words",words);
         map.put("sentences",sentences);
+        map.put("wordsTotal",wordsTotal);
+        map.put("sentencesTotal",sentencesTotal);
         System.out.println(words);
         System.out.println(sentences);
 
+        return Result.success(map);
+    }
+
+    @RequestMapping(value = "/getScriptsInPage",method = RequestMethod.GET)
+    public Result getScriptsInPage(@RequestParam Long pageNum,Long pageSize){
+        List<Script> scripts = scriptService.getScriptsInPage(pageNum, pageSize);
+        Long scriptTotal = scriptService.getScriptsTotal();
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("scripts",scripts);
+        map.put("scriptsTotal",scriptTotal);
         return Result.success(map);
     }
 

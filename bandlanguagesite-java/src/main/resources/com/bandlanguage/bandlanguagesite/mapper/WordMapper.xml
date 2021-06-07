@@ -43,5 +43,14 @@
             left join bls_dept as tc on ta.dept_id = tc.dept_id
             where tb.status > 0 and tb.name like "%"#{keyword,jdbcType=VARCHAR}"%"
     </select>
+    <select id="getWordsByKeywordInPage" resultMap="WordVo">
+        select tb.*,tc.dept_id,tc.name as scene_name from bls_dept_word as ta
+            left join bls_word as tb on ta.word_id = tb.word_id
+            left join bls_dept as tc on ta.dept_id = tc.dept_id
+            where tb.status > 0 and tb.name like "%"#{keyword,jdbcType=VARCHAR}"%" limit #{offset},#{size}
+    </select>
+    <select id="getWordsTotalByKeyword" resultType="java.lang.Long">
+        select count(*) from bls_word as tb where tb.status>0 and tb.name like "%"#{keyword,jdbcType=VARCHAR}"%"
+    </select>
 
 </mapper>

@@ -85,10 +85,21 @@
         <el-tab-pane label="剧本库" name="scripts"
           ><div>
             <div class="titleFont">剧本库</div>
-            <div style="height: 30vh; overflow-y: auto">
-              <ul>
-                <li v-for="(item, index) in scriptLibrary" :key="index">{{ item }}</li>
-              </ul>
+            <div style="height: 75vh; overflow-y: auto">
+              <el-table :data="scriptLibrary" empty-text="暂无剧本" height="60vh">
+                <el-table-column type="expand">
+                  <template slot-scope="props" style="padding:5px">
+                    <el-form>
+                      <el-form-item label="剧本内容:">
+                        <el-input :value="props.row.content" type="textarea" :readonly="true" style="border:none"></el-input>
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                </el-table-column>
+                <el-table-column label="剧本名" prop="name"></el-table-column>
+                <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+              </el-table>
+              <el-pagination :total="scriptLibraryTotal" style="bottom:5px;margin:auto;text-align:center" small layout="prev, pager, next"></el-pagination>
             </div>
           </div></el-tab-pane
         >
@@ -133,6 +144,8 @@ export default {
       searchList: [],
       searchWordsList: [],
       searchSentencesList: [],
+      searchPageNum:1,
+      searchPageSize:6,
 
       tabPosition: "right",
       isPanelHidden: false,
@@ -167,7 +180,8 @@ export default {
         scriptContext: [],
       },
 
-      scriptLibrary: ["剧本1"],
+      scriptLibrary: [],
+      scriptLibraryTotal:0,
 
       status: 1,
     };
@@ -181,6 +195,8 @@ export default {
           url: `${this.global.serverUrl}/script/getWordsAndSentencesByKeyword`,
           params: {
             keyword: this.searchText,
+            pageNum:this.searchPageNum,
+            pageSize:this.searchPageSize
           },
         }).then((res) => {
           this.searchWordsList = res.data.data.words;
@@ -218,6 +234,21 @@ export default {
       this.isPanelHidden = !this.isPanelHidden;
       this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", this.isPanelHidden);
     },
+
+    //
+    getScripts(pageNum,pageSize){
+      this.$axios({
+        methods:'get',
+        url:`${this.global.serverUrl}/script/getScriptsInPage`,
+        params:{
+          pageNum:pageNum,
+          pageSize:pageSize
+        }
+      }).then((res)=>{
+        this.scriptLibrary=res.data.data.scripts;
+        this.scriptLibraryTotal=res.data.data.scriptsTotal;
+      })
+    }
   },
   created() {
     this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
@@ -230,6 +261,9 @@ export default {
     if (this.contextList.scriptContext.length > 0) {
       this.activePanel.push("script");
     }
+  },
+  mounted() {
+    this.getScripts(1,5);
   },
   computed: {
     isScriptedSelect: function () {
@@ -270,6 +304,12 @@ export default {
   font-size: 16px;
   font-weight: normal;
 }
+
+.formItemStyle{
+  margin:5px;
+  padding:5px;
+}
+
 </style>
 
 <style lang="scss">
@@ -292,6 +332,12 @@ export default {
     }
   }
 }
+
+.el-table__expanded-cell[class*="cell"] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 
 // .el-tabs--right.el-tabs--card .el-tabs__item.is-right.is-active:first-child{
 //   margin-bottom: 0px;

@@ -49,4 +49,15 @@ public class ScriptServiceImpl implements ScriptService {
     public List<Script> getAllScriptsBySceneId(Long sceneId) {
         return scriptMapper.getAllScriptsBySceneId(sceneId);
     }
+
+    @Override
+    public List<Script> getScriptsInPage(Long pageNum, Long pageSize) {
+
+        return scriptMapper.getAllScriptsInPage((pageNum-1)*pageSize,pageSize);
+    }
+
+    @Override
+    public Long getScriptsTotal() {
+        return scriptMapper.getScriptsTotal();
+    }
 }
