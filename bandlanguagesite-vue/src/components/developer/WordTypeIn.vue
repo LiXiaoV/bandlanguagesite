@@ -6,14 +6,17 @@
       center
       :before-close="handleClose">
     <v-type-in :developerEnter="Boolean(1)"
+               :editStyle="editStyle"
                :sceneId="Number(sceneId)"
                :clearRuleOptionFlag="clearRuleOptionFlag"
                :clearNodeOptionFlag="clearNodeOptionFlag"
+               :closeRegisterCardFlag="closeRegisterCardFlag"
                @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
+               @returnCloseRegisterCardFlag="returnCloseRegisterCardFlag"
                @typeInEvent="typeInEvent"></v-type-in>
     <div slot="footer" style="text-align: right;margin-top: 3vh;">
-      <el-button @click="confirm">确认并返回</el-button>
+      <el-button @click="confirm">关闭</el-button>
     </div>
   </el-dialog>
 </template>
@@ -27,6 +30,7 @@ export default {
     isWordTypeInFlag: Boolean,
     typeInWordId: Number,
     typeInWordName: String,
+    editStyle: Number,  // 0: add 1: edit
   },
   data(){
     return {
@@ -34,6 +38,8 @@ export default {
 
       clearRuleOptionFlag: false,
       clearNodeOptionFlag: false,
+      closeRegisterCardFlag: false,
+
     }
   },
   components:{
@@ -41,8 +47,13 @@ export default {
   },
   methods:{
     confirm(){
+      // 关闭之前，先把RuleOption和NodeOption清空，把所有的注册页关了，
+      //免得下一次进来这个dialog上一次的操作痕迹还在，就很影响体验
       this.clearRuleOptionFlag = true
       this.clearNodeOptionFlag = true
+      this.closeRegisterCardFlag = true
+      // this.$emit('closeRegisterRuleCard')
+      // this.$emit('closeRegisterNodeCard')
       this.$emit('closeWordTypeInDialog')
     },
     handleClose(){
@@ -53,6 +64,9 @@ export default {
     },
     returnClearNodeOptionFlag(){
       this.clearNodeOptionFlag = false
+    },
+    returnCloseRegisterCardFlag(){
+      this.closeRegisterCardFlag = false
     },
     typeInEvent(){
       if(this.isWordTypeInFlag === false){

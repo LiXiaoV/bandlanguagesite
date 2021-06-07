@@ -83,9 +83,9 @@ export default {
 
         // 是否录入状态
         if(element.isTypeIn === 0){
-          element["isTypeInString"] = "未录入"
+          element["isTypeInString"] = "未实现"
         }else if(element.isTypeIn === 1){
-          element["isTypeInString"] = "已录入"
+          element["isTypeInString"] = "已实现"
         }else {
           element["isTypeInString"] = "其它"
         }

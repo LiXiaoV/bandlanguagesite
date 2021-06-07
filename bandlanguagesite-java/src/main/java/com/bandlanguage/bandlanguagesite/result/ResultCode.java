@@ -128,9 +128,20 @@ public enum ResultCode {
     INCREASE_SCRIPT_RUNTIMES_FAIL(500510,"增加剧本运行次数失败"),
 
     // 规则模块 5006XX
+    SAVE_RULE_FAIL(500601,"保存规则失败"),
+    SAVE_SCENE_RULE_FAIL(500602,"保存场景区-规则关联表的记录失败"),
+    SAVE_RULE_USER_FAIL(500603,"保存规则-用户关联表的记录失败"),
+    SAVE_WORD_RULE_FAIL(500604,"保存规则-词汇关联表的记录失败"),
+    SAVE_SENTENCE_RULE_FAIL(500605,"保存规则-句型关联表的记录失败"),
     SELECT_RULE_NOT_EXIST(500601,"要查询的规则不存在"),
     EDIT_RULE_FAIL(500602,"修改规则失败"),
+
     // 节点模块 5007XX
+    SAVE_NODE_FAIL(500701,"保存节点失败"),
+    SAVE_SCENE_NODE_FAIL(500702,"保存场景区-节点关联表的记录失败"),
+    SAVE_NODE_USER_FAIL(500703,"保存节点-用户关联表的记录失败"),
+    SAVE_WORD_NODE_FAIL(500704,"保存节点-词汇关联表的记录失败"),
+    SAVE_SENTENCE_NODE_FAIL(500705,"保存节点-句型关联表的记录失败"),
     SELECT_NODE_NOT_EXIST(500701,"要查询的节点不存在"),
     EDIT_NODE_FAIL(500702,"修改节点失败"),
 

@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">新增节点</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="cancelRegisterNode"></i>
+      </el-col>
+    </el-row>
+
     <el-form :model="nodeObj" label-position="top">
       <el-form-item label="节点类名 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="nodeObj.name" maxlength="50" show-word-limit></el-input>
@@ -17,11 +26,11 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
+    <div style="text-align: center;">
       <el-button @click="cancelRegisterNode">取消</el-button>
       <el-button type="primary" @click="confirmRegisterNode">新增</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -46,7 +55,7 @@ export default {
       this.nodeObj.name = ""
       this.nodeObj.packageName = ""
       this.nodeObj.content = ""
-      this.$emit('closeRegisterNodeDialog',false)
+      this.$emit('closeRegisterNodeCard',false)
     },
     confirmRegisterNode() {
       // 检查输入
@@ -117,6 +126,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.custom-close-icon{
+  color: #909399;
+  cursor:pointer;
+}
+.custom-close-icon:hover{
+  color: #409eff;
+}
 </style>

@@ -37,6 +37,7 @@
       </el-table-column>
     </el-table>
     <v-word-type-in :wordTypeInDialogVisible="wordTypeInDialogVisible"
+                    :editStyle="Number(editStyle)"
                     :isWordTypeInFlag="isWordTypeInFlag"
                     :typeInWordId="Number(typeInWordId)"
                     :typeInWordName="typeInWordName"
@@ -70,6 +71,7 @@ export default {
 
       typeInWordId: 0,
       typeInWordName: "录入词汇",
+      editStyle: 0,
 
     };
   },
@@ -81,12 +83,14 @@ export default {
       this.typeInWordId = word.wordId
       this.typeInWordName = "录入词汇 -- "+word.name
       this.isWordTypeInFlag = false
+      this.editStyle = 0
     },
     updateTypeInWord(word){
       this.wordTypeInDialogVisible = true
       this.typeInWordId = word.wordId
       this.typeInWordName = "修改录入的词汇 -- "+word.name
       this.isWordTypeInFlag = true
+      this.editStyle = 1
     },
     closeWordTypeInDialog(){
       this.wordTypeInDialogVisible = false

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item title="录入规则" name="1">
+      <el-collapse-item :title="editStyleName+'规则'" name="1">
         <div style="margin-left: 2vw;">
           <el-row>
             <el-col :span="3">
@@ -19,23 +19,33 @@
               <el-button icon="iconfont iconadd" circle size="mini" @click="registerRule" style="margin-top: 0.5vh;"></el-button>
             </el-col>
           </el-row>
-          <div v-if="ruleValue !== ''">
-            <v-rule-edit :sceneId="sceneId" :ruleObjId="ruleValue" @updateRuleOptionsEvent="updateRuleOptionsEvent"></v-rule-edit>
+          <!-- 增加规则卡片-->
+          <div v-if="registerRuleFlag" style="margin-top: 1vh;">
+            <v-rule-add :sceneId="sceneId"
+                        @closeRegisterRuleCard="closeRegisterRuleCard"
+                        @updateRuleOptionsEvent="updateRuleOptionsEvent"></v-rule-add>
+          </div>
+          <!-- 编辑规则卡片-->
+          <div v-if="ruleValue !== ''" style="margin-top: 1vh;">
+            <v-rule-edit :sceneId="sceneId"
+                         :ruleObjId="ruleValue"
+                         @updateRuleOptionsEvent="updateRuleOptionsEvent"
+                         @closeEditRuleCard="closeEditRuleCard"></v-rule-edit>
           </div>
         </div>
 
-        <el-dialog
-            title="新增规则"
-            :visible.sync="registerRuleDialogVisible"
-            width="70%"
-            center
-            :append-to-body="appendToBodyFlag">
-          <v-rule-add :sceneId="sceneId"
-                      @closeRegisterRuleDialog="closeRegisterRuleDialog"
-                      @updateRuleOptionsEvent="updateRuleOptionsEvent"></v-rule-add>
-        </el-dialog>
+<!--        <el-dialog-->
+<!--            title="新增规则"-->
+<!--            :visible.sync="registerRuleDialogVisible"-->
+<!--            width="70%"-->
+<!--            center-->
+<!--            :append-to-body="appendToBodyFlag">-->
+<!--          <v-rule-add :sceneId="sceneId"-->
+<!--                      @closeRegisterRuleDialog="closeRegisterRuleDialog"-->
+<!--                      @updateRuleOptionsEvent="updateRuleOptionsEvent"></v-rule-add>-->
+<!--        </el-dialog>-->
       </el-collapse-item>
-      <el-collapse-item title="录入节点" name="2">
+      <el-collapse-item :title="editStyleName+'节点'" name="2">
         <div style="margin-left: 2vw;">
           <el-row>
             <el-col :span="3">
@@ -53,20 +63,31 @@
               <el-button icon="iconfont iconadd" circle size="mini" @click="registerNode" style="margin-top: 0.5vh;"></el-button>
             </el-col>
           </el-row>
-          <div v-if="nodeValue !== ''">
-            <v-node-edit :sceneId="sceneId" :nodeObjId="nodeValue" @updateNodeOptionsEvent="updateNodeOptionsEvent"></v-node-edit>
+          <!-- 增加节点卡片-->
+          <div v-if="registerNodeFlag === true" style="margin-top: 1vh;">
+            <v-node-add :sceneId="sceneId"
+                        @closeRegisterNodeCard="closeRegisterNodeCard"
+                        @updateNodeOptionsEvent="updateNodeOptionsEvent"></v-node-add>
+          </div>
+          <!-- 编辑节点卡片-->
+          <div v-if="nodeValue !== ''" style="margin-top: 1vh;">
+            <v-node-edit :sceneId="sceneId"
+                         :nodeObjId="nodeValue"
+                         @updateNodeOptionsEvent="updateNodeOptionsEvent"
+                          @closeEditNodeCard="closeEditNodeCard"></v-node-edit>
           </div>
         </div>
-        <el-dialog
-            title="新增节点"
-            :visible.sync="registerNodeDialogVisible"
-            width="70%"
-            center
-            :append-to-body="appendToBodyFlag">
-          <v-node-add :sceneId="sceneId"
-                      @closeRegisterNodeDialog="closeRegisterNodeDialog"
-                      @updateNodeOptionsEvent="updateNodeOptionsEvent"></v-node-add>
-        </el-dialog>
+
+<!--        <el-dialog-->
+<!--            title="新增节点"-->
+<!--            :visible.sync="registerNodeDialogVisible"-->
+<!--            width="70%"-->
+<!--            center-->
+<!--            :append-to-body="appendToBodyFlag">-->
+<!--          <v-node-add :sceneId="sceneId"-->
+<!--                      @closeRegisterNodeCard="closeRegisterNodeCard"-->
+<!--                      @updateNodeOptionsEvent="updateNodeOptionsEvent"></v-node-add>-->
+<!--        </el-dialog>-->
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -84,17 +105,22 @@ export default {
     developerEnter: Boolean,
     clearRuleOptionFlag: Boolean,
     clearNodeOptionFlag: Boolean,
+    closeRegisterCardFlag: Boolean,
+    editStyle: Number,
   },
   data() {
     return {
       activeNames: [],
-      appendToBodyFlag: true,
+      // appendToBodyFlag: true,
       ruleValue: '',
       ruleOptions: [],
       nodeValue: '',
       nodeOptions: [],
-      registerRuleDialogVisible: false,
-      registerNodeDialogVisible: false,
+      // registerRuleDialogVisible: false,
+      // registerNodeDialogVisible: false,
+      registerRuleFlag: false,
+      registerNodeFlag: false,
+      editStyleName: this.$props.editStyle === 1?"修改":"录入",
     };
   },
   methods: {
@@ -110,10 +136,12 @@ export default {
         });
         return;
       }
-      this.registerRuleDialogVisible = true
+      // this.registerRuleDialogVisible = true
+      this.registerRuleFlag = true
     },
-    closeRegisterRuleDialog(flag){
-      this.registerRuleDialogVisible = flag
+    closeRegisterRuleCard(flag){
+      // this.registerRuleDialogVisible = flag
+      this.registerRuleFlag = flag
     },
     registerNode(){
       if(this.sceneId === 0 || this.sceneId === undefined || this.sceneId === null){
@@ -124,10 +152,18 @@ export default {
         });
         return;
       }
-      this.registerNodeDialogVisible = true
+      // this.registerNodeDialogVisible = true
+      this.registerNodeFlag = true
     },
-    closeRegisterNodeDialog(flag){
-      this.registerNodeDialogVisible = flag
+    closeRegisterNodeCard(flag){
+      // this.registerNodeDialogVisible = flag
+      this.registerNodeFlag = flag
+    },
+    closeEditNodeCard(){
+      this.nodeValue = ''
+    },
+    closeEditRuleCard(){
+      this.ruleValue = ''
     },
     confirm(){
       this.$emit('closeWordTypeInDialog',false)
@@ -227,6 +263,21 @@ export default {
         this.$emit("returnClearNodeOptionFlag")
       }
 
+    },
+    closeRegisterCardFlag(){
+      if(this.closeRegisterCardFlag === true){
+        this.registerRuleFlag = false
+        this.registerNodeFlag = false
+        this.$emit("returnCloseRegisterCardFlag")
+      }
+
+    },
+    editStyle(){
+      if(this.editStyle === 1){
+        this.editStyleName = "修改"
+      }else {
+        this.editStyleName = "录入"
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +31,10 @@ public class SentenceVo implements Serializable {
     private Long editorId;
     private String editorUsername;
     private String editorNickname;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
     private Integer isTypeIn;
     private Integer status;
     private Long userId;

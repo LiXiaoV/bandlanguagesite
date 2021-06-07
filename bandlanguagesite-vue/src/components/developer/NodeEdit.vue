@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">修改节点</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="cancelEditNodeCard"></i>
+      </el-col>
+    </el-row>
+
     <el-form :model="nodeObj" label-position="top">
       <el-form-item label="节点类名 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="nodeObj.name" maxlength="50" show-word-limit></el-input>
@@ -17,11 +26,11 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
-      <el-button @click="cancelEdit">取消</el-button>
+    <div style="text-align: center;">
+      <el-button @click="cancelEdit">重置修改</el-button>
       <el-button type="primary" @click="confirmEdit">确认修改</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -120,6 +129,9 @@ export default {
       }).catch( error => {
         console.log(error)
       })
+    },
+    cancelEditNodeCard(){
+      console.log("关闭编辑节点卡片")
     }
   },
   created() {

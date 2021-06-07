@@ -31,6 +31,7 @@
     </el-table>
     <v-sentence-type-in :sentenceTypeInDialogVisible="sentenceTypeInDialogVisible"
                     :isSentenceTypeInFlag="isSentenceTypeInFlag"
+                    :editStyle="Number(editStyle)"
                     :typeInSentenceId="Number(typeInSentenceId)"
                     :typeInSentenceName="typeInSentenceName"
                     @closeSentenceTypeInDialog="closeSentenceTypeInDialog"
@@ -62,6 +63,7 @@ export default {
 
       typeInSentenceId: 0,
       typeInSentenceName: "录入句型",
+      editStyle: 0,
 
     };
   },
@@ -72,12 +74,14 @@ export default {
       this.typeInSentenceId = sentence.sentenceId
       this.typeInSentenceName = "录入句型 -- "+sentence.name
       this.isSentenceTypeInFlag = false
+      this.editStyle = 0
     },
     updateTypeInSentence(sentence){
       this.sentenceTypeInDialogVisible = true
       this.typeInSentenceId = sentence.sentenceId
       this.typeInSentenceName = "修改录入的句型 -- "+sentence.name
       this.isSentenceTypeInFlag = true
+      this.editStyle = 1
     },
     closeSentenceTypeInDialog(){
       this.sentenceTypeInDialogVisible = false

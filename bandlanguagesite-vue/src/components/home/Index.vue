@@ -74,6 +74,8 @@
           </el-table-column>
           <el-table-column prop="name" label="句型名" min-width="30" align="center">
           </el-table-column>
+          <el-table-column prop="paradigm" label="巴克斯泛式" min-width="30" align="center">
+          </el-table-column>
           <el-table-column prop="description" label="句型描述" min-width="30" align="center">
           </el-table-column>
           <el-table-column prop="sceneName" label="句型所在的场景区" min-width="30" align="center">

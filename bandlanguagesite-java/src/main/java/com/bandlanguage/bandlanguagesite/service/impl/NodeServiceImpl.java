@@ -1,10 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service.impl;
 
 import com.bandlanguage.bandlanguagesite.exception.GlobalException;
-import com.bandlanguage.bandlanguagesite.mapper.NodeMapper;
-import com.bandlanguage.bandlanguagesite.mapper.NodeUserMapper;
-import com.bandlanguage.bandlanguagesite.mapper.SceneNodeMapper;
-import com.bandlanguage.bandlanguagesite.mapper.UserMapper;
+import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.NodeVo;
 import com.bandlanguage.bandlanguagesite.result.ResultCode;
@@ -36,6 +33,12 @@ public class NodeServiceImpl implements NodeService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private WordNodeMapper wordNodeMapper;
+
+    @Autowired
+    private SentenceNodeMapper sentenceNodeMapper;
+
     @Override
     @Transactional
     public Boolean saveNode(NodeVo nodeVo) {
@@ -46,20 +49,44 @@ public class NodeServiceImpl implements NodeService {
                 .editorId(nodeVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = nodeMapper.insert(node);
-        if(cnt > 0){
-            // 插入场景区与节点的关联
-            SceneNode sceneNode = SceneNode.builder().sceneId(nodeVo.getSceneId())
-                    .nodeId(node.getNodeId()).build();
-            int cnt1 = sceneNodeMapper.insert(sceneNode);
+        if (cnt <= 0)
+            throw new GlobalException(ResultCode.SAVE_NODE_FAIL);
 
-            // 插入用户与节点的关联
-            NodeUser nodeUser = NodeUser.builder().nodeId(node.getNodeId())
-                    .userId(nodeVo.getUserId())
-                    .updateTime(new Date()).build();
-            int cnt2 = nodeUserMapper.insert(nodeUser);
-            return cnt1 > 0 && cnt2 > 0;
+        // 插入场景区与节点的关联
+        SceneNode sceneNode = SceneNode.builder().sceneId(nodeVo.getSceneId())
+                .nodeId(node.getNodeId()).build();
+        int cnt1 = sceneNodeMapper.insert(sceneNode);
+        if (cnt1 <= 0)
+            throw new GlobalException(ResultCode.SAVE_SCENE_NODE_FAIL);
+
+        // 插入用户与节点的关联
+        NodeUser nodeUser = NodeUser.builder().nodeId(node.getNodeId())
+                .userId(nodeVo.getUserId())
+                .updateTime(new Date()).build();
+        int cnt2 = nodeUserMapper.insert(nodeUser);
+        if (cnt2 <= 0)
+            throw new GlobalException(ResultCode.SAVE_NODE_USER_FAIL);
+
+        // 插入节点与词汇句型的关联
+        if (nodeVo.getType() == 0) {
+            // 插入节点与词汇的关联
+            WordNode wordNode = WordNode.builder().wordId(nodeVo.getItemId())
+                    .nodeId(node.getNodeId()).build();
+
+            int cnt3 = wordNodeMapper.insert(wordNode);
+            if (cnt3 <= 0)
+                throw new GlobalException(ResultCode.SAVE_WORD_NODE_FAIL);
+        } else if (nodeVo.getType() == 1) {
+            // 插入节点与句型的关联
+            SentenceNode sentenceNode = SentenceNode.builder().sentenceId(nodeVo.getItemId())
+                    .nodeId(node.getNodeId()).build();
+
+            int cnt4 = sentenceNodeMapper.insert(sentenceNode);
+            if (cnt4 <= 0)
+                throw new GlobalException(ResultCode.SAVE_SENTENCE_NODE_FAIL);
         }
-        return false;
+
+        return true;
     }
 
     @Override
@@ -103,19 +130,19 @@ public class NodeServiceImpl implements NodeService {
                 .editorId(nodeVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = nodeMapper.updateById(node);
-        if(cnt <= 0)
+        if (cnt <= 0)
             throw new GlobalException(ResultCode.EDIT_NODE_FAIL);
 
         // 查询此用户是否修改或创建过这个节点，如果是，则跟新时间，如果不是，则插入记录
         QueryWrapper<NodeUser> nodeUserQueryWrapper = new QueryWrapper<>();
-        nodeUserQueryWrapper.eq("user_id",nodeVo.getUserId());
-        nodeUserQueryWrapper.eq("node_id",nodeVo.getNodeId());
+        nodeUserQueryWrapper.eq("user_id", nodeVo.getUserId());
+        nodeUserQueryWrapper.eq("node_id", nodeVo.getNodeId());
         NodeUser nodeUser = nodeUserMapper.selectOne(nodeUserQueryWrapper);
         int cnt1;
-        if(nodeUser != null){
+        if (nodeUser != null) {
             nodeUser.setUpdateTime(new Date());
             cnt1 = nodeUserMapper.updateById(nodeUser);
-        }else {
+        } else {
             NodeUser insertNodeUser = NodeUser.builder().nodeId(nodeVo.getNodeId())
                     .userId(nodeVo.getUserId())
                     .updateTime(new Date()).build();

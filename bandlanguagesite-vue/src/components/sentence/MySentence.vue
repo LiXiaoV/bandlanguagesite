@@ -66,7 +66,7 @@ export default {
   },
   methods:{
     tableRowClassName({ row }) {
-      if (row.isTypeInString === "未录入") {
+      if (row.isTypeInString === "未实现") {
         return "warning-row";
       } else {
         return "success-row";
@@ -130,9 +130,9 @@ export default {
         sentences.forEach( (element) => {
           // 句型状态
           if(element.isTypeIn === 0){
-            element["isTypeInString"] = "未录入"
+            element["isTypeInString"] = "未实现"
           }else if(element.isTypeIn === 1){
-            element["isTypeInString"] = "已录入"
+            element["isTypeInString"] = "已实现"
           }else {
             element["isTypeInString"] = "其它"
           }

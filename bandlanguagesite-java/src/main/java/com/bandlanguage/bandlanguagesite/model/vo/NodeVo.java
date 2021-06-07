@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,9 +32,18 @@ public class NodeVo implements Serializable {
     private Long editorId;
     private String editorUsername;
     private String editorNickname;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
     private Integer status;
     // 前端传进来的操作者的ID
     private Long userId;
     private Long sceneId;
+
+    // 用于节点-句型 或节点-词汇关联
+    // 词汇或句型的ID
+    private Long itemId;
+    // 0:词汇 1：句型
+    private int type;
 }

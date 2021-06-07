@@ -61,7 +61,7 @@
 <!--          <el-radio :label="12">助词</el-radio>-->
 <!--        </el-radio-group>-->
       </el-form-item>
-      <el-form-item label="录入规则与节点" :label-width="formLabelWidth">
+      <el-form-item label="录入规则与节点" :label-width="formLabelWidth" style="margin-top: 5vh;" id="type-in-word">
 <!--        <el-input-->
 <!--            v-model="newWord.synonym"-->
 <!--            type="textarea"-->
@@ -278,4 +278,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+#type-in-word{
+  .el-form-item__label{
+    font-size: 1rem;
+  }
+}
+
+</style>

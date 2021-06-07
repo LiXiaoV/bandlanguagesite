@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">新增规则</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="closeRegisterRuleCard"></i>
+      </el-col>
+    </el-row>
+    
     <el-form :model="ruleObj" label-position="top">
       <el-form-item label="规则符号 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="ruleObj.rule" maxlength="50" show-word-limit></el-input>
@@ -35,11 +44,11 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
+    <div style="text-align: center;">
       <el-button @click="cancelRegisterRule">取消</el-button>
       <el-button type="primary" @click="confirmRegister">新增</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -68,7 +77,7 @@ export default {
       this.ruleObj.express = ""
       this.ruleObj.description = ""
       this.ruleObj.code = ""
-      this.$emit('closeRegisterRuleDialog',false)
+      this.$emit('closeRegisterRuleCard',false)
     },
     confirmRegister() {
       // 检查输入
@@ -143,6 +152,9 @@ export default {
         });
       })
     },
+    closeRegisterRuleCard(){
+      this.cancelRegisterRule()
+    }
   },
   created() {
   }

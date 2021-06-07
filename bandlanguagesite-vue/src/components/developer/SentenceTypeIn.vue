@@ -7,13 +7,14 @@
       :before-close="handleClose">
     <v-type-in :developerEnter="Boolean(1)"
                :sceneId="Number(sceneId)"
+               :editStyle="editStyle"
                :clearRuleOptionFlag="clearRuleOptionFlag"
                :clearNodeOptionFlag="clearNodeOptionFlag"
                @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
                @typeInEvent="typeInEvent"></v-type-in>
     <div slot="footer" style="text-align: right;margin-top: 3vh;">
-      <el-button @click="confirm">确认并返回</el-button>
+      <el-button @click="confirm">关闭</el-button>
     </div>
   </el-dialog>
 </template>
@@ -28,6 +29,7 @@ export default {
     isSentenceTypeInFlag: Boolean,
     typeInSentenceId: Number,
     typeInSentenceName: String,
+    editStyle: Number,
   },
   data(){
     return {

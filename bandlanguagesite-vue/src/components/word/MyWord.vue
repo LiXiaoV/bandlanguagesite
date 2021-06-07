@@ -80,7 +80,7 @@ export default {
       //   } else {
       //     return "success-row";
       //   }
-      if (row.isTypeInString === "未录入") {
+      if (row.isTypeInString === "未实现") {
         return "warning-row";
       } else {
         return "success-row";
@@ -171,9 +171,9 @@ export default {
 
           // 词汇状态
           if(element.isTypeIn === 0){
-            element["isTypeInString"] = "未录入"
+            element["isTypeInString"] = "未实现"
           }else if(element.isTypeIn === 1){
-            element["isTypeInString"] = "已录入"
+            element["isTypeInString"] = "已实现"
           }else {
             element["isTypeInString"] = "其它"
           }

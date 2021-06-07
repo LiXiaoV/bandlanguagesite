@@ -32,7 +32,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="录入规则与节点" :label-width="formLabelWidth">
+      <el-form-item label="录入规则与节点" :label-width="formLabelWidth" style="margin-top: 5vh;" id="type-in-sentence">
         <v-type-in :sceneId="Number(sceneValue)"
                    :clearRuleOptionFlag="clearRuleOptionFlag"
                    :clearNodeOptionFlag="clearNodeOptionFlag"
@@ -180,4 +180,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+#type-in-sentence{
+.el-form-item__label{
+  font-size: 1rem;
+}
+}
+</style>

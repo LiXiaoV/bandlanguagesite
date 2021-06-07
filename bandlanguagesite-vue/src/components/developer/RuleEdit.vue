@@ -1,5 +1,13 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">修改规则</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="closeEditRuleCard"></i>
+      </el-col>
+    </el-row>
     <el-form :model="ruleObj" label-position="top">
       <el-form-item label="规则符号 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="ruleObj.rule" maxlength="50" show-word-limit></el-input>
@@ -35,11 +43,11 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center; margin-top: 1vh;">
-      <el-button @click="cancel">取消</el-button>
+    <div style="text-align: center; margin-top: 1vh;">
+      <el-button @click="cancel">重置修改</el-button>
       <el-button type="primary" @click="confirmRuleEdit">确认修改</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -151,6 +159,15 @@ export default {
         console.log(error)
       })
     },
+    closeEditRuleCard(){
+      console.log("关闭编辑规则卡片")
+      this.ruleObj.rule = ''
+      this.ruleObj.chineseName = ''
+      this.ruleObj.express = ''
+      this.ruleObj.description = ''
+      this.ruleObj.code = ''
+      this.$emit("closeEditRuleCard")
+    }
   },
   created() {
     this.updateRuleObj()

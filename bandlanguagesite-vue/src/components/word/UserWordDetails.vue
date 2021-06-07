@@ -8,31 +8,31 @@
       :show-close="false"
     >
       <el-form :form="detailWord">
-        <el-form-item label="词汇名">
+        <el-form-item label="词汇名：">
           <span>{{ detailWord.name }}</span>
         </el-form-item>
-        <el-form-item label="类型">
+        <el-form-item label="类型：">
           <span>{{ detailWord.typeString }}</span>
         </el-form-item>
-        <el-form-item label="描述">
+        <el-form-item label="描述：">
           <span>{{ detailWord.description }}</span>
         </el-form-item>
-        <el-form-item label="例子">
+        <el-form-item label="例子：">
           <span>{{ detailWord.example }}</span>
         </el-form-item>
-        <el-form-item label="同义词">
+        <el-form-item label="同义词：">
           <span>{{ detailWord.synonym }}</span>
         </el-form-item>
-        <el-form-item label="创建者">
+        <el-form-item label="创建者：">
           <span>{{ detailWord.creatorNickname }}</span>
         </el-form-item>
-        <el-form-item label="最近的修改者">
+        <el-form-item label="最近的修改者：">
           <span>{{ detailWord.editorNickname }}</span>
         </el-form-item>
-        <el-form-item label="最近的修改时间">
+        <el-form-item label="最近的修改时间：">
           <span>{{ detailWord.updateTime }}</span>
         </el-form-item>
-        <el-form-item label="录入状态">
+        <el-form-item label="状态：">
           <span>{{ detailWord.isTypeInString }}</span>
         </el-form-item>
       </el-form>
@@ -101,9 +101,9 @@ export default {
 
           // 词汇状态
           if(detailWord.isTypeIn === 0){
-            detailWord["isTypeInString"] = "未录入"
+            detailWord["isTypeInString"] = "未实现"
           }else if(detailWord.isTypeIn === 1){
-            detailWord["isTypeInString"] = "已录入"
+            detailWord["isTypeInString"] = "已实现"
           }else {
             detailWord["isTypeInString"] = "其它"
           }

@@ -1,10 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service.impl;
 
 import com.bandlanguage.bandlanguagesite.exception.GlobalException;
-import com.bandlanguage.bandlanguagesite.mapper.RuleMapper;
-import com.bandlanguage.bandlanguagesite.mapper.RuleUserMapper;
-import com.bandlanguage.bandlanguagesite.mapper.SceneRuleMapper;
-import com.bandlanguage.bandlanguagesite.mapper.UserMapper;
+import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.RuleVo;
 import com.bandlanguage.bandlanguagesite.result.ResultCode;
@@ -36,6 +33,12 @@ public class RuleServiceImpl implements RuleService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private WordRuleMapper wordRuleMapper;
+
+    @Autowired
+    private SentenceRuleMapper sentenceRuleMapper;
+
     @Override
     @Transactional
     public Boolean saveRule(RuleVo ruleVo) {
@@ -48,20 +51,41 @@ public class RuleServiceImpl implements RuleService {
                 .editorId(ruleVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = ruleMapper.insert(rule);
-        if(cnt > 0){
-            // 插入场景区与规则的关联
-            SceneRule sceneRule = SceneRule.builder().sceneId(ruleVo.getSceneId())
-                    .ruleId(rule.getRuleId()).build();
-            int cnt1 = sceneRuleMapper.insert(sceneRule);
+        if(cnt <= 0)
+            throw new GlobalException(ResultCode.SAVE_RULE_FAIL);
 
-            // 插入用户与规则的关联
-            RuleUser ruleUser = RuleUser.builder().ruleId(rule.getRuleId())
-                    .userId(ruleVo.getUserId())
-                    .updateTime(new Date()).build();
-            int cnt2 = ruleUserMapper.insert(ruleUser);
-            return cnt1 > 0 && cnt2 > 0;
+        // 插入场景区与规则的关联
+        SceneRule sceneRule = SceneRule.builder().sceneId(ruleVo.getSceneId())
+                .ruleId(rule.getRuleId()).build();
+        int cnt1 = sceneRuleMapper.insert(sceneRule);
+        if(cnt1 <= 0)
+            throw new GlobalException(ResultCode.SAVE_SCENE_RULE_FAIL);
+
+        // 插入用户与规则的关联
+        RuleUser ruleUser = RuleUser.builder().ruleId(rule.getRuleId())
+                .userId(ruleVo.getUserId())
+                .updateTime(new Date()).build();
+        int cnt2 = ruleUserMapper.insert(ruleUser);
+        if(cnt2 <= 0)
+            throw new GlobalException(ResultCode.SAVE_RULE_USER_FAIL);
+
+        // 插入规则与词汇句型的关联
+        if(ruleVo.getType() == 0){
+            // 插入规则与词汇的关联
+            WordRule wordRule = WordRule.builder().wordId(ruleVo.getItemId())
+                    .ruleId(rule.getRuleId()).build();
+            int cnt3 = wordRuleMapper.insert(wordRule);
+            if(cnt3 <= 0)
+                throw new GlobalException(ResultCode.SAVE_WORD_RULE_FAIL);
+        }else if(ruleVo.getType() == 1){
+            // 插入规则与句型的关联
+            SentenceRule sentenceRule = SentenceRule.builder().sentenceId(ruleVo.getItemId())
+                    .ruleId(rule.getRuleId()).build();
+            int cnt4 = sentenceRuleMapper.insert(sentenceRule);
+            if(cnt4 <= 0)
+                throw new GlobalException(ResultCode.SAVE_SENTENCE_RULE_FAIL);
         }
-        return false;
+        return true;
     }
 
     @Override
