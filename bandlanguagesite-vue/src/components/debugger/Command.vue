@@ -100,17 +100,39 @@ export default {
       })
       
       this.CodeMirrorEditor.on('cursorActivity', (cm) => {
-        this.CodeMirrorEditor.showHint()
-        this.selection.to = cm.getCursor()
+        // this.CodeMirrorEditor.showHint()
+         this.selection.to = cm.getCursor()
         if (this.CodeMirrorEditor.getSelection().length === 0) {
           this.selection.from = cm.getCursor()
         }
+        //获取所选的词汇
+        var A1 = this.CodeMirrorEditor.getCursor().line;
+        var A2 = this.CodeMirrorEditor.getCursor().ch;
+        var B1 = this.CodeMirrorEditor.findWordAt({line: A1, ch: A2}).anchor.ch;
+        var B2 = this.CodeMirrorEditor.findWordAt({line: A1, ch: A2}).head.ch;
+        let selectWord=this.CodeMirrorEditor.getRange({line: A1,ch: B1}, {line: A1,ch: B2})
+        //console.log(selectWord)
+        // SET_SCRIPT_SELECTED:(state,selectionInfo)=>{
+        //     state.scriptSelected.isSelected=selectionInfo.isSelected;
+        //     state.scriptSelected.text=selectionInfo.text;
+        // },
+        let selectionInfo={
+          isSelected:true,
+          text:selectWord
+        }
+        this.$store.commit("SET_SCRIPT_SELECTED", selectionInfo);
+        console.log(this.$store.getters.getScriptSelected.text)
+
       })
     //当鼠标点击
     this.CodeMirrorEditor.on('mousedown', (cm) => {
         this.selection.from = cm.getCursor()
       })
+      // //当鼠标松开
+      // this.CodeMirrorEditor.on('mouseup',(cm)=>{
 
+      // })
+    
     },
 
     //name为data中的属性名
