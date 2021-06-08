@@ -8,6 +8,7 @@
     <v-type-in :developerEnter="Boolean(1)"
                :editStyle="editStyle"
                :sceneId="Number(sceneId)"
+               :itemId="typeInWordId"
                :clearRuleOptionFlag="clearRuleOptionFlag"
                :clearNodeOptionFlag="clearNodeOptionFlag"
                :closeRegisterCardFlag="closeRegisterCardFlag"

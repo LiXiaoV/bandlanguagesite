@@ -19,6 +19,7 @@
               <el-button icon="iconfont iconadd" circle size="mini" @click="registerRule" style="margin-top: 0.5vh;"></el-button>
             </el-col>
           </el-row>
+          <span></span>
           <!-- 增加规则卡片-->
           <div v-if="registerRuleFlag" style="margin-top: 1vh;">
             <v-rule-add :sceneId="sceneId"
@@ -107,6 +108,7 @@ export default {
     clearNodeOptionFlag: Boolean,
     closeRegisterCardFlag: Boolean,
     editStyle: Number,
+    itemId: Number,
   },
   data() {
     return {
@@ -121,6 +123,8 @@ export default {
       registerRuleFlag: false,
       registerNodeFlag: false,
       editStyleName: this.$props.editStyle === 1?"修改":"录入",
+      associatedRules: [],
+      associatedNodes: [],
     };
   },
   methods: {
@@ -278,7 +282,18 @@ export default {
       }else {
         this.editStyleName = "录入"
       }
+    },
+    itemId(newValue,oldValue){
+      if(newValue !== oldValue){
+        if(this.itemId !== null && this.itemId !== 0 && this.itemId !== undefined){
+          // 请求后端数据
+        }else {
+          this.associatedRules = []
+          this.associatedNodes = []
+        }
+      }
     }
+
   }
 }
 </script>
