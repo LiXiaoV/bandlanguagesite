@@ -10,6 +10,7 @@
 2. `git checkout -b dev origin/dev` 拉取dev分支到本地，并切换到dev分支
 3. `git switch -c 自己的分支名称` ，创建自己的分支，并切换到自己的分支
 4. `git push origin 自己分支的名字` ，将自己的分支提交到远程仓库
-5. 自己分支上正常开发、git add、git commit
-6. 提交自己的代码到自己的分支，`git push origin 自己分支的名字`
-7. 管理员定期合并各个分支到dev分支，冲突都在这里解决
+5.  `git branch --set-upstream-to=origin/自己分支的名字 自己分支的名字` ，将自己的分支与远程分支关联
+6. 自己分支上正常开发、git add、git commit
+7. 提交自己的代码到自己的分支，`git push origin 自己分支的名字`
+8. 管理员定期合并各个分支到dev分支，冲突都在这里解决
