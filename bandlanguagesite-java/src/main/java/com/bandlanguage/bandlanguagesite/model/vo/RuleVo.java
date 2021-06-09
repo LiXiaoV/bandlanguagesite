@@ -47,6 +47,6 @@ public class RuleVo implements Serializable {
     // 用于规则-句型 或规则-词汇关联
     // 词汇或句型的ID
     private Long itemId;
-    // 0:词汇 1：句型
+    // 1:词汇 2：句型
     private int type;
 }

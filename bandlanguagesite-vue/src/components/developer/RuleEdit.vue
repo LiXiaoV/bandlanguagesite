@@ -57,6 +57,8 @@ export default {
   props:{
     sceneId: Number,
     ruleObjId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -110,19 +112,23 @@ export default {
       }
 
       const _this = this
-      let registerRuleObj = {}
-      registerRuleObj["ruleId"] = _this.ruleObj.ruleId
-      registerRuleObj["rule"] = _this.ruleObj.rule
-      registerRuleObj["chineseName"] = _this.ruleObj.chineseName
-      registerRuleObj["express"] = _this.ruleObj.express
-      registerRuleObj["description"] = _this.ruleObj.description
-      registerRuleObj["code"] = _this.ruleObj.code
-      registerRuleObj["userId"] = _this.$store.getters.getUser.userId
-      registerRuleObj["sceneId"] = _this.sceneId
+      let editRuleObj = {}
+      editRuleObj["ruleId"] = _this.ruleObj.ruleId
+      editRuleObj["rule"] = _this.ruleObj.rule
+      editRuleObj["chineseName"] = _this.ruleObj.chineseName
+      editRuleObj["express"] = _this.ruleObj.express
+      editRuleObj["description"] = _this.ruleObj.description
+      editRuleObj["code"] = _this.ruleObj.code
+      editRuleObj["userId"] = _this.$store.getters.getUser.userId
+      editRuleObj["sceneId"] = _this.sceneId
+      if(_this.itemId > 0 && _this.itemType > 0){
+        editRuleObj["type"] = _this.itemType
+        editRuleObj["itemId"] = _this.itemId
+      }
       this.$axios({
         method: 'put',
         url: `${this.global.serverUrl}/rule/update`,
-        data: registerRuleObj
+        data: editRuleObj
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
@@ -131,6 +137,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
         }
         else {
           _this.$message({
@@ -160,7 +167,7 @@ export default {
       })
     },
     closeEditRuleCard(){
-      console.log("关闭编辑规则卡片")
+      // console.log("关闭编辑规则卡片")
       this.ruleObj.rule = ''
       this.ruleObj.chineseName = ''
       this.ruleObj.express = ''

@@ -133,8 +133,13 @@ public enum ResultCode {
     SAVE_RULE_USER_FAIL(500603,"保存规则-用户关联表的记录失败"),
     SAVE_WORD_RULE_FAIL(500604,"保存规则-词汇关联表的记录失败"),
     SAVE_SENTENCE_RULE_FAIL(500605,"保存规则-句型关联表的记录失败"),
-    SELECT_RULE_NOT_EXIST(500601,"要查询的规则不存在"),
-    EDIT_RULE_FAIL(500602,"修改规则失败"),
+    UPDATE_RULE_USER_FAIL(500606,"更新规则-用户关联表的记录失败"),
+    UPDATE_RULE_FAIL(500607,"更新规则失败"),
+    UPDATE_WORD_RULE_FAIL(500608,"更新规则-词汇关联表的记录失败"),
+    UPDATE_SENTENCE_RULE_FAIL(500609,"更新规则-句型关联表的记录失败"),
+    DELETE_WORD_RULE_FAIL(500610,"删除规则-词汇关联表的记录失败"),
+    DELETE_SENTENCE_RULE_FAIL(500611,"删除规则-句型关联表的记录失败"),
+    SELECT_RULE_NOT_EXIST(500612,"要查询的规则不存在"),
 
     // 节点模块 5007XX
     SAVE_NODE_FAIL(500701,"保存节点失败"),
@@ -142,8 +147,13 @@ public enum ResultCode {
     SAVE_NODE_USER_FAIL(500703,"保存节点-用户关联表的记录失败"),
     SAVE_WORD_NODE_FAIL(500704,"保存节点-词汇关联表的记录失败"),
     SAVE_SENTENCE_NODE_FAIL(500705,"保存节点-句型关联表的记录失败"),
-    SELECT_NODE_NOT_EXIST(500701,"要查询的节点不存在"),
-    EDIT_NODE_FAIL(500702,"修改节点失败"),
+    UPDATE_NODE_USER_FAIL(500706,"更新节点-用户关联表的记录失败"),
+    UPDATE_NODE_FAIL(500707,"更新节点失败"),
+    UPDATE_WORD_NODE_FAIL(500708,"更新节点-词汇关联表的记录失败"),
+    UPDATE_SENTENCE_NODE_FAIL(500709,"更新节点-句型关联表的记录失败"),
+    DELETE_WORD_NODE_FAIL(500710,"删除节点-词汇关联表的记录失败"),
+    DELETE_SENTENCE_NODE_FAIL(500711,"删除节点-句型关联表的记录失败"),
+    SELECT_NODE_NOT_EXIST(500712,"要查询的节点不存在"),
 
     // 场景区模块 5007XX
     SAVE_SCENE_FAIL(500801,"保存场景区失败"),

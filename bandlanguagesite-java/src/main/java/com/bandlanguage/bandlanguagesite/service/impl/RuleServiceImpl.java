@@ -7,6 +7,7 @@ import com.bandlanguage.bandlanguagesite.model.vo.RuleVo;
 import com.bandlanguage.bandlanguagesite.result.ResultCode;
 import com.bandlanguage.bandlanguagesite.service.RuleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.List;
  * @since 2021-05-31 11:47
  */
 @Service
+
 public class RuleServiceImpl implements RuleService {
 
     @Autowired
@@ -70,14 +72,14 @@ public class RuleServiceImpl implements RuleService {
             throw new GlobalException(ResultCode.SAVE_RULE_USER_FAIL);
 
         // 插入规则与词汇句型的关联
-        if(ruleVo.getType() == 0){
+        if(ruleVo.getType() == 1){
             // 插入规则与词汇的关联
             WordRule wordRule = WordRule.builder().wordId(ruleVo.getItemId())
                     .ruleId(rule.getRuleId()).build();
             int cnt3 = wordRuleMapper.insert(wordRule);
             if(cnt3 <= 0)
                 throw new GlobalException(ResultCode.SAVE_WORD_RULE_FAIL);
-        }else if(ruleVo.getType() == 1){
+        }else if(ruleVo.getType() == 2){
             // 插入规则与句型的关联
             SentenceRule sentenceRule = SentenceRule.builder().sentenceId(ruleVo.getItemId())
                     .ruleId(rule.getRuleId()).build();
@@ -124,6 +126,7 @@ public class RuleServiceImpl implements RuleService {
     @Override
     @Transactional
     public Boolean editRule(RuleVo ruleVo) {
+        // 更新规则信息
         Rule rule = Rule.builder().ruleId(ruleVo.getRuleId())
                 .rule(ruleVo.getRule())
                 .chineseName(ruleVo.getChineseName())
@@ -134,7 +137,7 @@ public class RuleServiceImpl implements RuleService {
                 .updateTime(new Date()).build();
         int cnt = ruleMapper.updateById(rule);
         if(cnt <= 0)
-            throw new GlobalException(ResultCode.EDIT_RULE_FAIL);
+            throw new GlobalException(ResultCode.UPDATE_RULE_FAIL);
 
         // 查询此用户是否修改或创建过这个规则，如果是，则跟新时间，如果不是，则插入记录
         QueryWrapper<RuleUser> ruleUserQueryWrapper = new QueryWrapper<>();
@@ -145,12 +148,97 @@ public class RuleServiceImpl implements RuleService {
         if(ruleUser != null){
             ruleUser.setUpdateTime(new Date());
             cnt1 = ruleUserMapper.updateById(ruleUser);
+            if(cnt1 <= 0)
+                throw new GlobalException(ResultCode.UPDATE_RULE_USER_FAIL);
         }else {
             RuleUser insertRuleUser = RuleUser.builder().ruleId(ruleVo.getRuleId())
                     .userId(ruleVo.getUserId())
                     .updateTime(new Date()).build();
             cnt1 = ruleUserMapper.insert(insertRuleUser);
+            if(cnt1 <= 0)
+                throw new GlobalException(ResultCode.SAVE_RULE_USER_FAIL);
         }
-        return cnt1 > 0;
+
+        // 查询该词汇或句型是否与这个规则关联，如果没有关联，则关联，如果已经关联，则不用做处理
+        if(ruleVo.getType() == 1){
+            // 查看规则与词汇是否有关联，没有就插入
+            QueryWrapper<WordRule> wordRuleQueryWrapper = new QueryWrapper<>();
+            wordRuleQueryWrapper.eq("word_id",ruleVo.getItemId());
+            wordRuleQueryWrapper.eq("rule_id",ruleVo.getRuleId());
+            WordRule wordRule = wordRuleMapper.selectOne(wordRuleQueryWrapper);
+            if(wordRule == null){
+                WordRule insertWordRule = WordRule.builder().wordId(ruleVo.getItemId())
+                        .ruleId(rule.getRuleId()).build();
+                int cnt2 = wordRuleMapper.insert(insertWordRule);
+                if(cnt2 <= 0)
+                    throw new GlobalException(ResultCode.SAVE_WORD_RULE_FAIL);
+            }else if(wordRule.getStatus() == 0){    // 已删除就恢复
+                wordRule.setStatus(1);
+                int updateCnt = wordRuleMapper.updateById(wordRule);
+                if(updateCnt <= 0)
+                    throw new GlobalException(ResultCode.UPDATE_WORD_RULE_FAIL);
+            }
+        }else if(ruleVo.getType() == 2){
+            // 查看规则与句型是否有关联，没有就插入
+            QueryWrapper<SentenceRule> sentenceRuleQueryWrapper = new QueryWrapper<>();
+            sentenceRuleQueryWrapper.eq("sentence_id",ruleVo.getItemId());
+            sentenceRuleQueryWrapper.eq("rule_id",ruleVo.getRuleId());
+            SentenceRule sentenceRule = sentenceRuleMapper.selectOne(sentenceRuleQueryWrapper);
+            if(sentenceRule == null){
+                SentenceRule insertSentenceRule = SentenceRule.builder().sentenceId(ruleVo.getItemId())
+                        .ruleId(rule.getRuleId()).build();
+                int cnt3 = sentenceRuleMapper.insert(insertSentenceRule);
+                if(cnt3 <= 0)
+                    throw new GlobalException(ResultCode.SAVE_SENTENCE_RULE_FAIL);
+            }else if(sentenceRule.getStatus() == 0){    // 已删除就恢复
+                sentenceRule.setStatus(1);
+                int updateCnt = sentenceRuleMapper.updateById(sentenceRule);
+                if(updateCnt <= 0)
+                    throw new GlobalException(ResultCode.UPDATE_SENTENCE_RULE_FAIL);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public List<RuleVo> getWordAssociatedRulesByWordId(Long wordId) {
+        return ruleMapper.getWordAssociatedRulesByWordId(wordId);
+    }
+
+    @Override
+    public List<RuleVo> getSentenceAssociatedRulesBySentenceId(Long sentenceId) {
+        return ruleMapper.getSentenceAssociatedRulesBySentenceId(sentenceId);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteRuleOfAssociate(RuleVo ruleVo) {
+        // 先在rule里面把修改者改了
+        Rule rule = Rule.builder().ruleId(ruleVo.getRuleId())
+                .editorId(ruleVo.getEditorId())
+                .updateTime(new Date()).build();
+        int updateCnt = ruleMapper.updateById(rule);
+        if(updateCnt <= 0)
+            throw new GlobalException(ResultCode.UPDATE_RULE_FAIL);
+
+        // 修改规则-词汇或句型表的status
+        if(ruleVo.getType() == 1){
+            // 规则与词汇
+            UpdateWrapper<WordRule> wordRuleUpdateWrapper = new UpdateWrapper<>();
+            wordRuleUpdateWrapper.eq("word_id",ruleVo.getItemId())
+                    .eq("rule_id",ruleVo.getRuleId()).set("status",0);
+            int deleteCnt = wordRuleMapper.update(null, wordRuleUpdateWrapper);
+            if(deleteCnt <= 0)
+                throw new GlobalException(ResultCode.DELETE_WORD_RULE_FAIL);
+        }else if(ruleVo.getType() == 2){
+            // 规则与句型
+            UpdateWrapper<SentenceRule> sentenceRuleUpdateWrapper = new UpdateWrapper<>();
+            sentenceRuleUpdateWrapper.eq("sentence_id",ruleVo.getItemId())
+                    .eq("rule_id",ruleVo.getRuleId()).set("status",0);
+            int deleteCnt = sentenceRuleMapper.update(null, sentenceRuleUpdateWrapper);
+            if(deleteCnt <= 0)
+                throw new GlobalException(ResultCode.DELETE_SENTENCE_RULE_FAIL);
+        }
+        return true;
     }
 }

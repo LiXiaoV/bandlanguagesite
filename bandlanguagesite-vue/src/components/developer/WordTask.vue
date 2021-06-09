@@ -70,25 +70,25 @@ export default {
       wordTypeInDialogVisible: false,
 
       typeInWordId: 0,
-      typeInWordName: "录入词汇",
-      editStyle: 0,
+      typeInWordName: "",
+      editStyle: 0, // 0表示录入，1表示修改
 
     };
   },
   methods: {
 
     typeInWord(word){
-      // console.log(word)
+      // console.log(word.name)
       this.wordTypeInDialogVisible = true
       this.typeInWordId = word.wordId
-      this.typeInWordName = "录入词汇 -- "+word.name
+      this.typeInWordName = ""+word.name
       this.isWordTypeInFlag = false
       this.editStyle = 0
     },
     updateTypeInWord(word){
       this.wordTypeInDialogVisible = true
       this.typeInWordId = word.wordId
-      this.typeInWordName = "修改录入的词汇 -- "+word.name
+      this.typeInWordName = word.name
       this.isWordTypeInFlag = true
       this.editStyle = 1
     },

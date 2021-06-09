@@ -1,6 +1,7 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
 import com.bandlanguage.bandlanguagesite.model.vo.NodeVo;
+import com.bandlanguage.bandlanguagesite.model.vo.RuleVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,20 @@ public class NodeController {
         if(res)
             return Result.success("修改节点成功");
         else return Result.fail(500,"修改节点失败");
+    }
+
+    @RequestMapping(value = "/wordAssociatedNodes", method = RequestMethod.GET)
+    public Result getWordAssociatedNodesByWordId(@RequestParam Long wordId) {
+        return Result.success(nodeService.getWordAssociatedNodesByWordId(wordId));
+    }
+
+    @RequestMapping(value = "/sentenceAssociatedNodes", method = RequestMethod.GET)
+    public Result getSentenceAssociatedNodesBySentenceId(@RequestParam Long sentenceId) {
+        return Result.success(nodeService.getSentenceAssociatedNodesBySentenceId(sentenceId));
+    }
+
+    @RequestMapping(value = "/deleteNodeOfAssociate",method = RequestMethod.DELETE)
+    public Result deleteNodeOfAssociate(@RequestBody NodeVo nodeVo){
+        return Result.success(nodeService.deleteNodeOfAssociate(nodeVo));
     }
 }

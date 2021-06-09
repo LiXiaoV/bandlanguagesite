@@ -12,6 +12,7 @@
         <result property="status" column="status"></result>
         <result property="userId" column="user_id"></result>
         <result property="sceneId" column="dept_id"></result>
+        <result property="itemId" column="item_id"></result>
     </resultMap>
 
     <select id="getAllSimpleNodesBySceneId" resultMap="NodeVo">
@@ -24,5 +25,17 @@
         select tb.*,ta.dept_id from bls_dept_node as ta
             left join bls_node as tb on ta.node_id = tb.node_id
             where ta.dept_id = #{sceneId} and tb.status > 0
+    </select>
+
+    <select id="getWordAssociatedNodesByWordId" resultMap="NodeVo">
+        select tb.*,ta.word_id as item_id from bls_word_node as ta
+            left join bls_node as tb on ta.node_id = tb.node_id
+            where ta.word_id = #{wordId} and tb.status > 0 and ta.status > 0
+    </select>
+
+    <select id="getSentenceAssociatedNodesBySentenceId" resultMap="NodeVo">
+        select tb.*,ta.sentence_id as item_id from bls_sentence_node as ta
+            left join bls_node as tb on ta.node_id = tb.node_id
+            where ta.sentence_id = #{sentenceId} and tb.status > 0 and ta.status > 0
     </select>
 </mapper>

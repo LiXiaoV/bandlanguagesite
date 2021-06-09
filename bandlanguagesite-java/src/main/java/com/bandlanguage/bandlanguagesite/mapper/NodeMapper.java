@@ -30,4 +30,20 @@ public interface NodeMapper extends BaseMapper<Node> {
      * @return NodeVo对象数组
      */
     List<NodeVo> getAllWholeNodesBySceneId(Long sceneId);
+
+    /**
+     * 获得与某个词汇关联的所有节点
+     *
+     * @param wordId 词汇ID
+     * @return 节点的视图类数组
+     */
+    List<NodeVo> getWordAssociatedNodesByWordId(Long wordId);
+
+    /**
+     * 获得与某个句型关联的所有节点
+     *
+     * @param sentenceId 句型ID
+     * @return 节点的视图类数组
+     */
+    List<NodeVo> getSentenceAssociatedNodesBySentenceId(Long sentenceId);
 }
