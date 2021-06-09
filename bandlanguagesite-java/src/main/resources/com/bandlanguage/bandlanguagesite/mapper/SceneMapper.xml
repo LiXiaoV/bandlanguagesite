@@ -2,11 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bandlanguage.bandlanguagesite.mapper.SceneMapper">
 
-    <select id="getScenes" resultType="scene">
+    <select id="getScenes" resultType="com.bandlanguage.bandlanguagesite.model.entity.Scene">
         SELECT * from bls_dept where status > 0;
     </select>
 
-    <select id="getSceneById" resultType="scene" parameterType="long">
+    <select id="getSceneById" resultType="com.bandlanguage.bandlanguagesite.model.entity.Scene" parameterType="long">
         SELECT * from bls_dept where dept_id = #{id};
+    </select>
+    <select id="getScenesByKeyword" resultType="com.bandlanguage.bandlanguagesite.model.entity.Scene">
+        select * from bls_dept where dept_id in (select distinct dept_id from bls_dept_word where word_id in(
+        select word_id from bls_word where name like "%"#{keyword,jdbcType=VARCHAR}"%"))
     </select>
 </mapper>

@@ -148,4 +148,10 @@ class BandlanguagesiteApplicationTests {
 
     }
 
+    @Test
+    public void testGetSceneByKeyword(){
+        List<Scene> scenes=sceneMapper.getScenesByKeyword("部门");
+        System.out.println(scenes);
+    }
+
 }

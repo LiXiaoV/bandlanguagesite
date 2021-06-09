@@ -28,4 +28,6 @@ public interface SceneMapper {
      * @return 查询的场景区对象
      */
     Scene getSceneById(Long id);
+
+    List<Scene> getScenesByKeyword(String keyword);
 }

@@ -27,4 +27,9 @@ public class SceneServiceImpl implements SceneService {
     public Scene getSceneById(Long id) {
         return sceneMapper.getSceneById(id);
     }
+
+    @Override
+    public List<Scene> getScenesByKeyword(String keyword) {
+        return sceneMapper.getScenesByKeyword(keyword);
+    }
 }

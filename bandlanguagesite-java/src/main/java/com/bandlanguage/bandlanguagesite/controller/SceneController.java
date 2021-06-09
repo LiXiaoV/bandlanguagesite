@@ -5,10 +5,7 @@ import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,10 @@ public class SceneController {
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Scene getSceneById(@PathVariable("id") Long id){
         return sceneService.getSceneById(id);
+    }
+
+    @RequestMapping(value = "/getScenesByKeyword",method = RequestMethod.GET)
+    public Result getScenesByKeyword(@RequestParam String keyword){
+        return Result.success(sceneService.getScenesByKeyword(keyword));
     }
 }

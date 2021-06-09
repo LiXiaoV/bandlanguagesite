@@ -201,8 +201,15 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="选中信息" v-if="isScriptedSelect"
-          >{{ selectedText }}
+          ><h2>{{ selectedText }}</h2>
           <p class="titleFont">场景区信息</p>
+
+          <p>存在{{ selectedText }}所有场景区</p>
+          <ul>
+            <li v-for="item in possibleSceneList" :key="item">
+              <el-link :underline="false">{{item.name}}</el-link>
+            </li>
+          </ul>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -265,7 +272,9 @@ export default {
       scriptPageNum: 1,
       scriptPageSize: 10,
 
-      status: 1,
+      //
+      possibleSceneList:[],
+      selectedSceneInfo:{},
     };
   },
   methods: {
@@ -398,6 +407,31 @@ export default {
     handleScriptCurrentChange(val) {
       this.getScripts(val, this.scriptPageSize);
     },
+
+    /**
+     * 
+     */
+    getSceneInfo(sceneId){
+      this.$axios({
+        methods:'get',
+        url:`${this.global.serverUrl}/scene/${sceneId}`
+      }).then((res)=>{
+        this.selectedSceneInfo=res.data.data;
+      })
+    },
+
+    getScenesByKeyword(keyword){
+      this.$axios({
+        methods:'get',
+        url:`${this.global.serverUrl}/scene/getScenesByKeyword`,
+        params:{
+          keyword:keyword
+        }
+      }).then((res)=>{
+        this.possibleSceneList=res.data.data;
+      })
+    },
+
   },
   created() {
     this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
@@ -421,6 +455,22 @@ export default {
     selectedText: function () {
       return this.$store.getters.getScriptSelected.text;
     },
+  },
+  watch: {
+    isScriptedSelect(newVal,oldVal){
+      if(oldVal==false&&newVal==true){
+        if(trimSpaceLR(this.selectedText)!=""){
+          this.getScenesByKeyword(trimSpaceLR(this.selectedText));
+        }else{
+          this.possibleSceneList=[];
+        }
+        if(this.$store.getters.getScriptSelected.isSceneSelected){
+          this.getSceneInfo(this.$store.getters.getScriptSelected.sceneId);
+        }else{
+          this.selectedSceneInfo={};
+        }
+      }
+    }
   },
 };
 </script>
