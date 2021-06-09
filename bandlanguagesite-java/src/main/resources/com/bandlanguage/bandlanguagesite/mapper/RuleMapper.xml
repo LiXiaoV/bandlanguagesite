@@ -14,6 +14,7 @@
         <result property="status" column="status"></result>
         <result property="userId" column="user_id"></result>
         <result property="sceneId" column="dept_id"></result>
+        <result property="itemId" column="item_id"></result>
     </resultMap>
 
     <select id="getAllSimpleRulesBySceneId" resultMap="RuleVo">
@@ -26,6 +27,18 @@
         select tb.*,ta.dept_id from bls_dept_rule as ta
             left join bls_rule as tb on ta.rule_id = tb.rule_id
             where ta.dept_id = #{sceneId} and tb.status > 0
+    </select>
+
+    <select id="getWordAssociatedRulesByWordId" resultMap="RuleVo">
+        select tb.*,ta.word_id as item_id from bls_word_rule as ta
+            left join bls_rule as tb on ta.rule_id = tb.rule_id
+            where ta.word_id = #{wordId} and tb.status > 0 and ta.status > 0
+    </select>
+
+    <select id="getSentenceAssociatedRulesBySentenceId" resultMap="RuleVo">
+        select tb.*,ta.sentence_id as item_id from bls_sentence_rule as ta
+            left join bls_rule as tb on ta.rule_id = tb.rule_id
+            where ta.sentence_id = #{sentenceId} and tb.status > 0 and ta.status > 0
     </select>
 
 </mapper>

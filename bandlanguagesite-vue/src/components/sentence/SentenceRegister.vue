@@ -23,7 +23,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="句型所在的场景区 *" :label-width="formLabelWidth">
-        <el-select v-model="sceneValue" placeholder="请选择场景区">
+        <el-select v-model="sceneValue" placeholder="请选择场景区" style="margin-left: 1vw;">
           <el-option
               v-for="item in sceneOptions"
               :key="item.deptId"
@@ -32,13 +32,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="录入规则与节点" :label-width="formLabelWidth" style="margin-top: 5vh;" id="type-in-sentence">
+      <el-form-item label="录入规则与节点" :label-width="formLabelWidth">
         <v-type-in :sceneId="Number(sceneValue)"
                    :clearRuleOptionFlag="clearRuleOptionFlag"
                    :clearNodeOptionFlag="clearNodeOptionFlag"
                    @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                    @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
-                   @typeInEvent="typeInEvent"></v-type-in>
+                   @typeInEvent="typeInEvent"
+                   style="margin-left: 1vw;"></v-type-in>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -181,9 +182,9 @@ export default {
 </script>
 
 <style lang="scss">
-#type-in-sentence{
-.el-form-item__label{
-  font-size: 1rem;
-}
-}
+//#type-in-sentence{
+//.el-form-item__label{
+//  font-size: 1rem;
+//}
+//}
 </style>

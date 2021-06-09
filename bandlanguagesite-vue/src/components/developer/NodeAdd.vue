@@ -39,6 +39,8 @@ export default {
   name: "NodeAdd",
   props:{
     sceneId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -91,6 +93,11 @@ export default {
       registerNodeObj["content"] = _this.nodeObj.content
       registerNodeObj["userId"] = _this.$store.getters.getUser.userId
       registerNodeObj["sceneId"] = _this.sceneId
+
+      if(_this.itemId > 0 && _this.itemType > 0){
+        registerNodeObj["type"] = _this.itemType
+        registerNodeObj["itemId"] = _this.itemId
+      }
       this.$axios({
         method: 'post',
         url: `${this.global.serverUrl}/node/insert`,
@@ -103,6 +110,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateNodeOptionsEvent")
+          _this.$emit("updateAssociatedNodesEvent")
           this.cancelRegisterNode()
         }
         else {

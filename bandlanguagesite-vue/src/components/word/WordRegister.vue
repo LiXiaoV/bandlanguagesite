@@ -22,8 +22,8 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-row>
+      <el-form-item label="词汇类型与场景区 *">
+        <el-row style="margin-left: 1vw;">
           <el-col :span="6">
             <el-select v-model="wordTypeValue" placeholder="请选择词汇类型">
               <el-option
@@ -61,7 +61,7 @@
 <!--          <el-radio :label="12">助词</el-radio>-->
 <!--        </el-radio-group>-->
       </el-form-item>
-      <el-form-item label="录入规则与节点" :label-width="formLabelWidth" style="margin-top: 5vh;" id="type-in-word">
+      <el-form-item label="录入规则与节点" :label-width="formLabelWidth">
 <!--        <el-input-->
 <!--            v-model="newWord.synonym"-->
 <!--            type="textarea"-->
@@ -74,7 +74,8 @@
                    :clearNodeOptionFlag="clearNodeOptionFlag"
                     @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                     @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
-                    @typeInEvent="typeInEvent"></v-type-in>
+                    @typeInEvent="typeInEvent"
+                    style="margin-left: 1vw;"></v-type-in>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -278,11 +279,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#type-in-word{
-  .el-form-item__label{
-    font-size: 1rem;
-  }
-}
-
+<style lang="scss" scoped>
+//.type-in-word{
+//  .el-form-item__label{
+//    font-size: 1rem;
+//  }
+//}
 </style>

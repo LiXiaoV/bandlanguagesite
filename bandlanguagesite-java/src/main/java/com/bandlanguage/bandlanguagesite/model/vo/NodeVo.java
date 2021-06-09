@@ -44,6 +44,6 @@ public class NodeVo implements Serializable {
     // 用于节点-句型 或节点-词汇关联
     // 词汇或句型的ID
     private Long itemId;
-    // 0:词汇 1：句型
+    // 1:词汇 2：句型
     private int type;
 }

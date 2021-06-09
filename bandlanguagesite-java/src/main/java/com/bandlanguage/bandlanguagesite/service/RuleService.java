@@ -38,6 +38,7 @@ public interface RuleService {
 
     /**
      * 根据ID查询rule
+     *
      * @param ruleId 规则Id
      * @return 规则的视图类
      */
@@ -45,8 +46,33 @@ public interface RuleService {
 
     /**
      * 修改规则
+     *
      * @param ruleVo 规则的视图类
      * @return 是否修改成功
      */
     Boolean editRule(RuleVo ruleVo);
+
+    /**
+     * 获得与某个词汇关联的所有规则
+     *
+     * @param wordId 词汇ID
+     * @return 规则的视图类数组
+     */
+    List<RuleVo> getWordAssociatedRulesByWordId(Long wordId);
+
+    /**
+     * 获得与某个句型关联的所有规则
+     *
+     * @param sentenceId 句型ID
+     * @return 规则的视图类数组
+     */
+    List<RuleVo> getSentenceAssociatedRulesBySentenceId(Long sentenceId);
+
+    /**
+     * 删除规则与词汇或句型的联系
+     *
+     * @param ruleVo 规则的视图类
+     * @return 删除是否成功
+     */
+    Boolean deleteRuleOfAssociate(RuleVo ruleVo);
 }
