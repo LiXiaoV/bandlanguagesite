@@ -155,8 +155,12 @@ public enum ResultCode {
     DELETE_SENTENCE_NODE_FAIL(500711,"删除节点-句型关联表的记录失败"),
     SELECT_NODE_NOT_EXIST(500712,"要查询的节点不存在"),
 
-    // 场景区模块 5007XX
+    // 场景区模块 5008XX
     SAVE_SCENE_FAIL(500801,"保存场景区失败"),
+
+    // 帮语核心模块 5009XX
+    BL_SERVICE_NOT_EXIST(500901,"该场景区的帮语服务不存在"),
+
     /**
      * 成功状态码
      */

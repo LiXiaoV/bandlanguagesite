@@ -175,12 +175,12 @@ public class ScriptServiceImpl implements ScriptService {
     @Override
     public Boolean increaseRunTimesByScriptId(Long ScriptId) {
         Script script = scriptMapper.selectById(ScriptId);
-        if(script == null)
+        if (script == null)
             throw new GlobalException(ResultCode.EDIT_SCRIPT_NOT_EXIST);
 
         script.setRunTimes(script.getRunTimes() + 1);
         int res = scriptMapper.updateById(script);
-        if(res <= 0)
+        if (res <= 0)
             throw new GlobalException(ResultCode.INCREASE_SCRIPT_RUNTIMES_FAIL);
         return true;
     }
@@ -189,10 +189,10 @@ public class ScriptServiceImpl implements ScriptService {
     public List<ScriptVo> getAllScripts() {
         return scriptMapper.getAllScripts();
     }
-    
+
     public List<Script> getScriptsInPage(Long pageNum, Long pageSize) {
 
-        return scriptMapper.getAllScriptsInPage((pageNum-1)*pageSize,pageSize);
+        return scriptMapper.getAllScriptsInPage((pageNum - 1) * pageSize, pageSize);
     }
 
     @Override

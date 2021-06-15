@@ -1,0 +1,15 @@
+Paper=1
+Abstract=2
+Add=3
+Me=4
+Comma=5
+Dot=6
+Number=7
+String=8
+Identifier=9
+Ws=10
+Comment=11
+'论文'=1
+'摘要'=2
+'添加'=3
+'我'=4
