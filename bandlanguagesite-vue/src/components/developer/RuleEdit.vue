@@ -44,6 +44,13 @@
       </el-form-item>
     </el-form>
     <div style="text-align: center; margin-top: 1vh;">
+      <el-popconfirm
+          title="确定删除此规则吗？"
+          @confirm="deleteRule(ruleObj.ruleId)"
+          placement="top-start"
+      >
+        <el-button type="danger" slot="reference" style="margin-right: 10px;">删除</el-button>
+      </el-popconfirm>
       <el-button @click="cancel">重置修改</el-button>
       <el-button type="primary" @click="confirmRuleEdit">确认修改</el-button>
     </div>
@@ -174,6 +181,36 @@ export default {
       this.ruleObj.description = ''
       this.ruleObj.code = ''
       this.$emit("closeEditRuleCard")
+    },
+    deleteRule(id){
+      const _this = this
+      let deleteRule = {}
+      deleteRule["ruleId"] = id
+      deleteRule["userId"] = _this.$store.getters.getUser.userId
+      this.$axios({
+        method: 'delete',
+        url: `${this.global.serverUrl}/rule/deleteRule`,
+        data:deleteRule
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
+          _this.closeEditRuleCard()
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "删除规则失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "删除规则失败",
+          type: 'error'
+        });
+      })
     }
   },
   created() {

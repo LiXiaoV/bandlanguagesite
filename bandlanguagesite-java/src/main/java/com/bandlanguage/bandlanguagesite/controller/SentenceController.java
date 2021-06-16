@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
+import com.bandlanguage.bandlanguagesite.model.vo.ParadigmVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
 import com.bandlanguage.bandlanguagesite.service.SentenceService;
@@ -86,5 +87,14 @@ public class SentenceController {
         if(res)
             return Result.success("修改句型录入状态成功");
         else return Result.fail(500,"修改句型录入状态失败");
+    }
+
+    @RequestMapping(value = "/paradigm", method = RequestMethod.POST)
+    public Result registerParadigm(@RequestBody ParadigmVo paradigmVo) {
+//        System.out.println("paradigmVo = " + paradigmVo);
+        Boolean res = sentenceService.SaveParadigm(paradigmVo);
+        if (res)
+            return Result.success("注册中间范式成功");
+        else return Result.fail(500, "注册中间范式失败");
     }
 }

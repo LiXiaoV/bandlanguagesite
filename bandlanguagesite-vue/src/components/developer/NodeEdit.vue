@@ -27,6 +27,13 @@
       </el-form-item>
     </el-form>
     <div style="text-align: center;">
+      <el-popconfirm
+          title="确定删除此节点吗？"
+          @confirm="deleteNode(nodeObj.nodeId)"
+          placement="top-start"
+      >
+        <el-button type="danger" slot="reference" style="margin-right: 10px;">删除</el-button>
+      </el-popconfirm>
       <el-button @click="cancelEdit">重置修改</el-button>
       <el-button type="primary" @click="confirmEdit">确认修改</el-button>
     </div>
@@ -144,6 +151,36 @@ export default {
       this.nodeObj.package = ''
       this.nodeObj.content = ''
       this.$emit("closeEditNodeCard")
+    },
+    deleteNode(id){
+      const _this = this
+      let deleteNode = {}
+      deleteNode["nodeId"] = id
+      deleteNode["userId"] = _this.$store.getters.getUser.userId
+      this.$axios({
+        method: 'delete',
+        url: `${this.global.serverUrl}/node/deleteNode`,
+        data:deleteNode
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.$emit("updateNodeOptionsEvent")
+          _this.$emit("updateAssociatedNodesEvent")
+          _this.closeEditNodeCard()
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "删除节点失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "删除节点失败",
+          type: 'error'
+        });
+      })
     }
   },
   created() {

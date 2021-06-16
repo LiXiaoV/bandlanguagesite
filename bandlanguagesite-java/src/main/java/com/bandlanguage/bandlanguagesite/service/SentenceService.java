@@ -1,6 +1,7 @@
 package com.bandlanguage.bandlanguagesite.service;
 
 
+import com.bandlanguage.bandlanguagesite.model.vo.ParadigmVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 
 import java.util.List;
@@ -87,4 +88,11 @@ public interface SentenceService {
      * @return 修改录入状态是否成功
      */
     Boolean updateTypeInStatusBySentenceId(Long sentenceId);
+
+    /**
+     * 添加中间范式
+     * @param paradigmVo 中间范式的视图类
+     * @return 添加中间范式是否成功
+     */
+    Boolean SaveParadigm(ParadigmVo paradigmVo);
 }

@@ -53,14 +53,14 @@ public class RuleServiceImpl implements RuleService {
                 .editorId(ruleVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = ruleMapper.insert(rule);
-        if(cnt <= 0)
+        if (cnt <= 0)
             throw new GlobalException(ResultCode.SAVE_RULE_FAIL);
 
         // 插入场景区与规则的关联
         SceneRule sceneRule = SceneRule.builder().sceneId(ruleVo.getSceneId())
                 .ruleId(rule.getRuleId()).build();
         int cnt1 = sceneRuleMapper.insert(sceneRule);
-        if(cnt1 <= 0)
+        if (cnt1 <= 0)
             throw new GlobalException(ResultCode.SAVE_SCENE_RULE_FAIL);
 
         // 插入用户与规则的关联
@@ -68,23 +68,23 @@ public class RuleServiceImpl implements RuleService {
                 .userId(ruleVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt2 = ruleUserMapper.insert(ruleUser);
-        if(cnt2 <= 0)
+        if (cnt2 <= 0)
             throw new GlobalException(ResultCode.SAVE_RULE_USER_FAIL);
 
         // 插入规则与词汇句型的关联
-        if(ruleVo.getType() == 1){
+        if (ruleVo.getType() == 1) {
             // 插入规则与词汇的关联
             WordRule wordRule = WordRule.builder().wordId(ruleVo.getItemId())
                     .ruleId(rule.getRuleId()).build();
             int cnt3 = wordRuleMapper.insert(wordRule);
-            if(cnt3 <= 0)
+            if (cnt3 <= 0)
                 throw new GlobalException(ResultCode.SAVE_WORD_RULE_FAIL);
-        }else if(ruleVo.getType() == 2){
+        } else if (ruleVo.getType() == 2) {
             // 插入规则与句型的关联
             SentenceRule sentenceRule = SentenceRule.builder().sentenceId(ruleVo.getItemId())
                     .ruleId(rule.getRuleId()).build();
             int cnt4 = sentenceRuleMapper.insert(sentenceRule);
-            if(cnt4 <= 0)
+            if (cnt4 <= 0)
                 throw new GlobalException(ResultCode.SAVE_SENTENCE_RULE_FAIL);
         }
         return true;
@@ -136,64 +136,64 @@ public class RuleServiceImpl implements RuleService {
                 .editorId(ruleVo.getUserId())
                 .updateTime(new Date()).build();
         int cnt = ruleMapper.updateById(rule);
-        if(cnt <= 0)
+        if (cnt <= 0)
             throw new GlobalException(ResultCode.UPDATE_RULE_FAIL);
 
         // 查询此用户是否修改或创建过这个规则，如果是，则跟新时间，如果不是，则插入记录
         QueryWrapper<RuleUser> ruleUserQueryWrapper = new QueryWrapper<>();
-        ruleUserQueryWrapper.eq("user_id",ruleVo.getUserId());
-        ruleUserQueryWrapper.eq("rule_id",ruleVo.getRuleId());
+        ruleUserQueryWrapper.eq("user_id", ruleVo.getUserId());
+        ruleUserQueryWrapper.eq("rule_id", ruleVo.getRuleId());
         RuleUser ruleUser = ruleUserMapper.selectOne(ruleUserQueryWrapper);
         int cnt1;
-        if(ruleUser != null){
+        if (ruleUser != null) {
             ruleUser.setUpdateTime(new Date());
             cnt1 = ruleUserMapper.updateById(ruleUser);
-            if(cnt1 <= 0)
+            if (cnt1 <= 0)
                 throw new GlobalException(ResultCode.UPDATE_RULE_USER_FAIL);
-        }else {
+        } else {
             RuleUser insertRuleUser = RuleUser.builder().ruleId(ruleVo.getRuleId())
                     .userId(ruleVo.getUserId())
                     .updateTime(new Date()).build();
             cnt1 = ruleUserMapper.insert(insertRuleUser);
-            if(cnt1 <= 0)
+            if (cnt1 <= 0)
                 throw new GlobalException(ResultCode.SAVE_RULE_USER_FAIL);
         }
 
         // 查询该词汇或句型是否与这个规则关联，如果没有关联，则关联，如果已经关联，则不用做处理
-        if(ruleVo.getType() == 1){
+        if (ruleVo.getType() == 1) {
             // 查看规则与词汇是否有关联，没有就插入
             QueryWrapper<WordRule> wordRuleQueryWrapper = new QueryWrapper<>();
-            wordRuleQueryWrapper.eq("word_id",ruleVo.getItemId());
-            wordRuleQueryWrapper.eq("rule_id",ruleVo.getRuleId());
+            wordRuleQueryWrapper.eq("word_id", ruleVo.getItemId());
+            wordRuleQueryWrapper.eq("rule_id", ruleVo.getRuleId());
             WordRule wordRule = wordRuleMapper.selectOne(wordRuleQueryWrapper);
-            if(wordRule == null){
+            if (wordRule == null) {
                 WordRule insertWordRule = WordRule.builder().wordId(ruleVo.getItemId())
                         .ruleId(rule.getRuleId()).build();
                 int cnt2 = wordRuleMapper.insert(insertWordRule);
-                if(cnt2 <= 0)
+                if (cnt2 <= 0)
                     throw new GlobalException(ResultCode.SAVE_WORD_RULE_FAIL);
-            }else if(wordRule.getStatus() == 0){    // 已删除就恢复
+            } else if (wordRule.getStatus() == 0) {    // 已删除就恢复
                 wordRule.setStatus(1);
                 int updateCnt = wordRuleMapper.updateById(wordRule);
-                if(updateCnt <= 0)
+                if (updateCnt <= 0)
                     throw new GlobalException(ResultCode.UPDATE_WORD_RULE_FAIL);
             }
-        }else if(ruleVo.getType() == 2){
+        } else if (ruleVo.getType() == 2) {
             // 查看规则与句型是否有关联，没有就插入
             QueryWrapper<SentenceRule> sentenceRuleQueryWrapper = new QueryWrapper<>();
-            sentenceRuleQueryWrapper.eq("sentence_id",ruleVo.getItemId());
-            sentenceRuleQueryWrapper.eq("rule_id",ruleVo.getRuleId());
+            sentenceRuleQueryWrapper.eq("sentence_id", ruleVo.getItemId());
+            sentenceRuleQueryWrapper.eq("rule_id", ruleVo.getRuleId());
             SentenceRule sentenceRule = sentenceRuleMapper.selectOne(sentenceRuleQueryWrapper);
-            if(sentenceRule == null){
+            if (sentenceRule == null) {
                 SentenceRule insertSentenceRule = SentenceRule.builder().sentenceId(ruleVo.getItemId())
                         .ruleId(rule.getRuleId()).build();
                 int cnt3 = sentenceRuleMapper.insert(insertSentenceRule);
-                if(cnt3 <= 0)
+                if (cnt3 <= 0)
                     throw new GlobalException(ResultCode.SAVE_SENTENCE_RULE_FAIL);
-            }else if(sentenceRule.getStatus() == 0){    // 已删除就恢复
+            } else if (sentenceRule.getStatus() == 0) {    // 已删除就恢复
                 sentenceRule.setStatus(1);
                 int updateCnt = sentenceRuleMapper.updateById(sentenceRule);
-                if(updateCnt <= 0)
+                if (updateCnt <= 0)
                     throw new GlobalException(ResultCode.UPDATE_SENTENCE_RULE_FAIL);
             }
         }
@@ -218,27 +218,90 @@ public class RuleServiceImpl implements RuleService {
                 .editorId(ruleVo.getEditorId())
                 .updateTime(new Date()).build();
         int updateCnt = ruleMapper.updateById(rule);
-        if(updateCnt <= 0)
+        if (updateCnt <= 0)
             throw new GlobalException(ResultCode.UPDATE_RULE_FAIL);
 
         // 修改规则-词汇或句型表的status
-        if(ruleVo.getType() == 1){
+        if (ruleVo.getType() == 1) {
             // 规则与词汇
             UpdateWrapper<WordRule> wordRuleUpdateWrapper = new UpdateWrapper<>();
-            wordRuleUpdateWrapper.eq("word_id",ruleVo.getItemId())
-                    .eq("rule_id",ruleVo.getRuleId()).set("status",0);
+            wordRuleUpdateWrapper.eq("word_id", ruleVo.getItemId())
+                    .eq("rule_id", ruleVo.getRuleId()).set("status", 0);
             int deleteCnt = wordRuleMapper.update(null, wordRuleUpdateWrapper);
-            if(deleteCnt <= 0)
+            if (deleteCnt <= 0)
                 throw new GlobalException(ResultCode.DELETE_WORD_RULE_FAIL);
-        }else if(ruleVo.getType() == 2){
+        } else if (ruleVo.getType() == 2) {
             // 规则与句型
             UpdateWrapper<SentenceRule> sentenceRuleUpdateWrapper = new UpdateWrapper<>();
-            sentenceRuleUpdateWrapper.eq("sentence_id",ruleVo.getItemId())
-                    .eq("rule_id",ruleVo.getRuleId()).set("status",0);
+            sentenceRuleUpdateWrapper.eq("sentence_id", ruleVo.getItemId())
+                    .eq("rule_id", ruleVo.getRuleId()).set("status", 0);
             int deleteCnt = sentenceRuleMapper.update(null, sentenceRuleUpdateWrapper);
-            if(deleteCnt <= 0)
+            if (deleteCnt <= 0)
                 throw new GlobalException(ResultCode.DELETE_SENTENCE_RULE_FAIL);
         }
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteRule(RuleVo ruleVo) {
+        // 1. 根据规则ID查找节点要删除的规则是否存在
+        if (ruleVo.getRuleId() <= 0 || ruleVo.getRuleId() == null)
+            throw new GlobalException(ResultCode.DELETE_RULE_NOT_EXIST);
+        Rule rule = ruleMapper.selectById(ruleVo.getRuleId());
+        if (rule == null || rule.getStatus() == 0)
+            throw new GlobalException(ResultCode.DELETE_RULE_NOT_EXIST);
+
+        // 2. 修改规则状态和修改者的用户ID和修改时间
+        rule.setStatus(0);
+        rule.setEditorId(ruleVo.getUserId());
+        rule.setUpdateTime(new Date());
+        int deleteRuleCount = ruleMapper.updateById(rule);
+        if (deleteRuleCount <= 0)
+            throw new GlobalException(ResultCode.DELETE_RULE_FAIL);
+
+        // 3. 删除场景区-规则的关联(必定有记录)
+        UpdateWrapper<SceneRule> sceneRuleUpdateWrapper = new UpdateWrapper<>();
+        sceneRuleUpdateWrapper.eq("rule_id", ruleVo.getRuleId())
+                .set("status", 0);
+        int deleteSceneRuleCount = sceneRuleMapper.update(null, sceneRuleUpdateWrapper);
+        if (deleteSceneRuleCount <= 0)
+            throw new GlobalException(ResultCode.DELETE_SCENE_RULE_FAIL);
+
+        // 4. 在规则-用户表里设置删除状态(必定有记录)
+        UpdateWrapper<RuleUser> ruleUserUpdateWrapper = new UpdateWrapper<>();
+        ruleUserUpdateWrapper.eq("rule_id", ruleVo.getRuleId())
+                .set("status", 0);
+        int deleteRuleUserCount = ruleUserMapper.update(null, ruleUserUpdateWrapper);
+        if (deleteRuleUserCount <= 0)
+            throw new GlobalException(ResultCode.DELETE_RULE_USER_FAIL);
+
+        // 5. 在规则-词汇表里设置删除状态(可能没有词汇与节点关联)
+        QueryWrapper<WordRule> wordRuleQueryWrapper = new QueryWrapper<>();
+        wordRuleQueryWrapper.eq("rule_id", ruleVo.getRuleId());
+        wordRuleQueryWrapper.gt("status", 0);
+        Integer needDeleteWordRuleCount = wordRuleMapper.selectCount(wordRuleQueryWrapper);
+
+        UpdateWrapper<WordRule> wordRuleUpdateWrapper = new UpdateWrapper<>();
+        wordRuleUpdateWrapper.eq("rule_id", ruleVo.getRuleId())
+                .gt("status",0)
+                .set("status", 0);
+        int deleteWordRuleCount = wordRuleMapper.update(null, wordRuleUpdateWrapper);
+        if (needDeleteWordRuleCount != deleteWordRuleCount)
+            throw new GlobalException(ResultCode.DELETE_WORD_RULE_FAIL);
+
+        // 6. 在规则-句型表里设置删除状态
+        QueryWrapper<SentenceRule> sentenceRuleQueryWrapper = new QueryWrapper<>();
+        sentenceRuleQueryWrapper.eq("rule_id", ruleVo.getRuleId());
+        sentenceRuleQueryWrapper.gt("status", 0);
+        Integer needDeleteSentenceRuleCount = sentenceRuleMapper.selectCount(sentenceRuleQueryWrapper);
+
+        UpdateWrapper<SentenceRule> sentenceRuleUpdateWrapper = new UpdateWrapper<>();
+        sentenceRuleUpdateWrapper.eq("rule_id", ruleVo.getRuleId())
+                .gt("status",0).set("status", 0);
+        int deleteSentenceRuleCount = sentenceRuleMapper.update(null, sentenceRuleUpdateWrapper);
+        if (needDeleteSentenceRuleCount != deleteSentenceRuleCount)
+            throw new GlobalException(ResultCode.DELETE_SENTENCE_RULE_FAIL);
         return true;
     }
 }

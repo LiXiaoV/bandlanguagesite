@@ -235,4 +235,67 @@ public class NodeServiceImpl implements NodeService {
         }
         return true;
     }
+
+    @Override
+    @Transactional
+    public Boolean deleteNode(NodeVo nodeVo) {
+        // 1. 根据节点ID查找节点要删除的节点是否存在
+        if(nodeVo.getNodeId() <= 0 || nodeVo.getNodeId() == null)
+            throw new GlobalException(ResultCode.DELETE_NODE_NOT_EXIST);
+        Node node = nodeMapper.selectById(nodeVo.getNodeId());
+        if(node == null || node.getStatus() == 0)
+            throw new GlobalException(ResultCode.DELETE_NODE_NOT_EXIST);
+
+        // 2. 修改节点状态和修改者的用户ID和修改时间
+        node.setStatus(0);
+        node.setEditorId(nodeVo.getUserId());
+        node.setUpdateTime(new Date());
+        int deleteCnt = nodeMapper.updateById(node);
+        if(deleteCnt <= 0)
+            throw new GlobalException(ResultCode.DELETE_NODE_FAIL);
+
+        // 3. 删除场景区-节点的关联(必定有记录)
+        UpdateWrapper<SceneNode> sceneNodeUpdateWrapper = new UpdateWrapper<>();
+        sceneNodeUpdateWrapper.eq("node_id",nodeVo.getNodeId())
+                .set("status",0);
+        int deleteSceneNodeCount = sceneNodeMapper.update(null,sceneNodeUpdateWrapper);
+        if(deleteSceneNodeCount <= 0)
+            throw new GlobalException(ResultCode.DELETE_SCENE_NODE_FAIL);
+
+        // 4. 在节点-用户表里设置删除状态(必定有记录)
+        UpdateWrapper<NodeUser> nodeUserUpdateWrapper = new UpdateWrapper<>();
+        nodeUserUpdateWrapper.eq("node_id",nodeVo.getNodeId())
+                .set("status",0);
+        int deleteNodeUserCount = nodeUserMapper.update(null,nodeUserUpdateWrapper);
+        if(deleteNodeUserCount <= 0)
+            throw new GlobalException(ResultCode.DELETE_NODE_USER_FAIL);
+
+        // 5. 在节点-词汇表里设置删除状态(可能没有词汇与节点关联)
+        QueryWrapper<WordNode> wordNodeQueryWrapper = new QueryWrapper<>();
+        wordNodeQueryWrapper.eq("node_id",nodeVo.getNodeId());
+        wordNodeQueryWrapper.gt("status",0);
+        Integer needDeleteWordNodeCount = wordNodeMapper.selectCount(wordNodeQueryWrapper);
+
+        UpdateWrapper<WordNode> wordNodeUpdateWrapper = new UpdateWrapper<>();
+        wordNodeUpdateWrapper.eq("node_id",nodeVo.getNodeId())
+                .gt("status",0)
+                .set("status",0);
+        int deleteWordNodeCount = wordNodeMapper.update(null, wordNodeUpdateWrapper);
+        if(needDeleteWordNodeCount != deleteWordNodeCount)
+            throw new GlobalException(ResultCode.DELETE_WORD_NODE_FAIL);
+
+        // 6. 在节点-句型表里设置删除状态
+        QueryWrapper<SentenceNode> sentenceNodeQueryWrapper = new QueryWrapper<>();
+        sentenceNodeQueryWrapper.eq("node_id",nodeVo.getNodeId());
+        sentenceNodeQueryWrapper.gt("status",0);
+        Integer needDeleteSentenceNodeCount = sentenceNodeMapper.selectCount(sentenceNodeQueryWrapper);
+
+        UpdateWrapper<SentenceNode> sentenceNodeUpdateWrapper = new UpdateWrapper<>();
+        sentenceNodeUpdateWrapper.eq("node_id",nodeVo.getNodeId())
+                .gt("status",0).set("status",0);
+        int deleteSentenceNodeCount = sentenceNodeMapper.update(null, sentenceNodeUpdateWrapper);
+        if(needDeleteSentenceNodeCount != deleteSentenceNodeCount)
+            throw new GlobalException(ResultCode.DELETE_SENTENCE_NODE_FAIL);
+        return true;
+    }
 }

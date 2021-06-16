@@ -15,25 +15,47 @@
         <result property="userId" column="user_id"></result>
         <result property="sceneId" column="dept_id"></result>
         <result property="sceneName" column="scene_name"></result>
+        <collection property="paradigms" ofType="paradigm">
+            <id property="paradigmId" column="paradigm_id"></id>
+            <result property="sentenceId" column="paradigm_sentence_id"></result>
+            <result property="easyParadigm" column="easy_paradigm"></result>
+            <result property="example" column="example"></result>
+            <result property="creatorId" column="paradigm_creator_id"></result>
+            <result property="editorId" column="paradigm_editor_id"></result>
+            <result property="updateTime" column="paradigm_update_time"></result>
+            <result property="status" column="paradigm_status"></result>
+        </collection>
     </resultMap>
 
     <select id="getAllSentencesBySceneId" resultMap="SentenceVo">
-        select tb.*, ta.dept_id from bls_dept_sentence as ta
+        select tb.*, ta.dept_id,
+               tc.paradigm_id,tc.sentence_id as paradigm_sentence_id,tc.easy_paradigm,
+               tc.example,tc.creator_id as paradigm_creator_id,tc.editor_id as paradigm_editor_id,
+               tc.update_time as paradigm_update_time,tc.status as paradigm_status from bls_dept_sentence as ta
             left join bls_sentence as tb on ta.sentence_id = tb.sentence_id
+            left join bls_paradigm as tc on tb.sentence_id = tc.sentence_id and tc.status > 0
             where ta.dept_id = #{sceneId} and tb.status > 0
     </select>
     <select id="getAllSentences" resultMap="SentenceVo">
-        select tb.*,tc.dept_id,tc.name as scene_name from bls_dept_sentence as ta
+        select tb.*,td.dept_id,td.name as scene_name,
+               tc.paradigm_id,tc.sentence_id as paradigm_sentence_id,tc.easy_paradigm,
+               tc.example,tc.creator_id as paradigm_creator_id,tc.editor_id as paradigm_editor_id,
+               tc.update_time as paradigm_update_time,tc.status as paradigm_status from bls_dept_sentence as ta
             left join bls_sentence as tb on ta.sentence_id = tb.sentence_id
-            left join bls_dept as tc on ta.dept_id = tc.dept_id
-            where tb.status > 0 order by tc.dept_id,tb.sentence_id
+            left join bls_paradigm as tc on tb.sentence_id = tc.sentence_id and tc.status > 0
+            left join bls_dept as td on ta.dept_id = td.dept_id
+            where tb.status > 0 order by td.dept_id,tb.sentence_id
     </select>
 
     <select id="getMySentencesBySceneIdAndUserId" resultMap="SentenceVo">
-        select td.sentence_id,td.name,td.description,td.is_type_in,ta.user_id,tc.dept_id from bls_sentence_user as ta
+        select td.sentence_id,td.name,td.description,td.is_type_in,ta.user_id,tc.dept_id,
+               te.paradigm_id,te.sentence_id as paradigm_sentence_id,te.easy_paradigm,
+               te.example,te.creator_id as paradigm_creator_id,te.editor_id as paradigm_editor_id,
+               te.update_time as paradigm_update_time,te.status as paradigm_status from bls_sentence_user as ta
             left join bls_user as tb on ta.user_id = tb.user_id
             left join bls_dept_sentence as tc on ta.sentence_id = tc.sentence_id
             left join bls_sentence as td on ta.sentence_id = td.sentence_id
+            left join bls_paradigm as te on td.sentence_id = te.sentence_id and te.status > 0
             where ta.user_id = #{userId} and tc.dept_id = #{sceneId} and td.status > 0
     </select>
 

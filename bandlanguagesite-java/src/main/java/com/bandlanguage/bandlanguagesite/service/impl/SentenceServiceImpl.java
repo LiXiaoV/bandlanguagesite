@@ -1,14 +1,9 @@
 package com.bandlanguage.bandlanguagesite.service.impl;
 
 import com.bandlanguage.bandlanguagesite.exception.GlobalException;
-import com.bandlanguage.bandlanguagesite.mapper.SceneSentenceMapper;
-import com.bandlanguage.bandlanguagesite.mapper.SentenceMapper;
-import com.bandlanguage.bandlanguagesite.mapper.SentenceUserMapper;
-import com.bandlanguage.bandlanguagesite.mapper.UserMapper;
-import com.bandlanguage.bandlanguagesite.model.entity.SceneSentence;
-import com.bandlanguage.bandlanguagesite.model.entity.Sentence;
-import com.bandlanguage.bandlanguagesite.model.entity.SentenceUser;
-import com.bandlanguage.bandlanguagesite.model.entity.User;
+import com.bandlanguage.bandlanguagesite.mapper.*;
+import com.bandlanguage.bandlanguagesite.model.entity.*;
+import com.bandlanguage.bandlanguagesite.model.vo.ParadigmVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.result.ResultCode;
 import com.bandlanguage.bandlanguagesite.service.SentenceService;
@@ -39,6 +34,9 @@ public class SentenceServiceImpl implements SentenceService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ParadigmMapper paradigmMapper;
 
     @Override
     @Transactional
@@ -93,6 +91,10 @@ public class SentenceServiceImpl implements SentenceService {
 
         User creator = userMapper.selectById(sentence.getCreatorId());
         User editor = userMapper.selectById(sentence.getEditorId());
+        QueryWrapper<Paradigm> paradigmQueryWrapper = new QueryWrapper<>();
+        paradigmQueryWrapper.eq("sentence_id",sentenceId);
+        paradigmQueryWrapper.gt("status",0);
+        List<Paradigm> paradigms = paradigmMapper.selectList(paradigmQueryWrapper);
         return SentenceVo.builder().sentenceId(sentence.getSentenceId())
                 .name(sentence.getName())
                 .description(sentence.getDescription())
@@ -104,7 +106,8 @@ public class SentenceServiceImpl implements SentenceService {
                 .editorUsername(editor.getUsername())
                 .editorNickname(editor.getNickname())
                 .updateTime(sentence.getUpdateTime())
-                .isTypeIn(sentence.getIsTypeIn()).build();
+                .isTypeIn(sentence.getIsTypeIn())
+                .paradigms(paradigms).build();
     }
 
     @Override
@@ -201,6 +204,20 @@ public class SentenceServiceImpl implements SentenceService {
         int res = sentenceMapper.updateById(sentence);
         if(res <= 0)
             throw new GlobalException(ResultCode.EDIT_SENTENCE_FAIL);
+        return true;
+    }
+
+    @Override
+    public Boolean SaveParadigm(ParadigmVo paradigmVo) {
+        Paradigm paradigm = Paradigm.builder().sentenceId(paradigmVo.getSentenceId())
+                .easyParadigm(paradigmVo.getEasyParadigm())
+                .example(paradigmVo.getExample())
+                .creatorId(paradigmVo.getUserId())
+                .editorId(paradigmVo.getUserId())
+                .updateTime(new Date()).build();
+        int insertParadigmCnt = paradigmMapper.insert(paradigm);
+        if(insertParadigmCnt <= 0)
+            throw new GlobalException(ResultCode.SAVE_PARADIGM_FAIL);
         return true;
     }
 }

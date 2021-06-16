@@ -22,7 +22,51 @@
             show-word-limit
         ></el-input>
       </el-form-item>
+      <el-form-item label="巴克斯范式的中间范式" :label-width="formLabelWidth">
+        <el-card>
+          <el-table
+              :data="existSentence.paradigms"
+              style="width: 100%"
+          >
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="a-table-expand">
+                  <el-form-item label="中间范式表示：">
+                    <span>{{ props.row.easyParadigm }}</span>
+                  </el-form-item>
+                  <el-form-item label="这个范式的举例：">
+                    <span>{{ props.row.example }}</span>
+                  </el-form-item>
+                  <el-form-item label="更新时间：">
+                    <span>{{ props.row.updateTime }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column prop="easyParadigm" label="中间范式表示" min-width="30" align="center">
+            </el-table-column>
+
+            <el-table-column label="操作" min-width="30" align="center">
+              <template v-slot:default="scope">
+                <el-button size="mini" @click="editDetail(scope.row.paradigmId)"> 编辑 </el-button>
+                <el-popconfirm
+                    title="确定删除吗？"
+                    @confirm="deleteParadigm(scope.row.paradigmId)"
+                >
+                  <el-button type="danger" size="mini" slot="reference" style="margin-left: 10px;"> 删除 </el-button>
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-button icon="iconfont iconadd" circle size="mini" @click="registerParadigm" style="margin-top: 1vh;"></el-button>
+          <span style="margin-left: 5px;">添加中间范式</span>
+        </el-card>
+      </el-form-item>
     </el-form>
+    <v-paradigm-add :paradigmAddDialogVisible="paradigmAddDialogVisible"
+                    :sentenceId="sentenceId"
+                    @closeParadigmAddDialog="closeParadigmAddDialog"
+                    @updateParadigms="updateParadigms"></v-paradigm-add>
     <div slot="footer">
       <el-button @click="cancelEdit">取消</el-button>
       <el-button type="primary" @click="confirmEdit">更新</el-button>
@@ -31,6 +75,7 @@
 </template>
 
 <script>
+import ParadigmAdd from "@/components/sentence/ParadigmAdd";
 export default {
   name: "SentenceEdit",
   data() {
@@ -41,6 +86,7 @@ export default {
         paradigm: "",
       },
 
+      paradigmAddDialogVisible: false,
       formLabelWidth: "120px",
     };
   },
@@ -110,31 +156,50 @@ export default {
       // console.log(this.existSentence)
       this.$emit('closeEditSentenceDialog',false)
     },
+    editDetail(id){
+      console.log("编辑中间泛式"+id)
+    },
+    deleteParadigm(id){
+      console.log("删除中间泛式"+id)
+    },
+    registerParadigm(){
+      console.log("添加中间泛式")
+      this.paradigmAddDialogVisible = true
+    },
+    closeParadigmAddDialog(){
+      this.paradigmAddDialogVisible = false
+    },
+    reloadExistSentence(){
+      const _this = this
+      let sentenceId = this.$props.sentenceId
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/sentence/${sentenceId}`
+      }).then(res => {
+        let detailSentence = res.data.data
+
+        // 句型状态
+        if(detailSentence.isTypeIn === 0){
+          detailSentence["isTypeInString"] = "未录入"
+        }else if(detailSentence.isTypeIn === 1){
+          detailSentence["isTypeInString"] = "已录入"
+        }else {
+          detailSentence["isTypeInString"] = "其它"
+        }
+        _this.existSentence = detailSentence
+      }).catch( error => {
+        console.log(error)
+      })
+    },
+    updateParadigms(){
+      this.reloadExistSentence()
+    }
   },
   watch: {
     editFormVisible(newVal, oldVal) {
       if (oldVal === false && newVal === true) {
         //请求数据
-        const _this = this
-        let sentenceId = this.$props.sentenceId
-        this.$axios({
-          method: 'get',
-          url: `${this.global.serverUrl}/sentence/${sentenceId}`
-        }).then(res => {
-          let detailSentence = res.data.data
-
-          // 句型状态
-          if(detailSentence.isTypeIn === 0){
-            detailSentence["isTypeInString"] = "未录入"
-          }else if(detailSentence.isTypeIn === 1){
-            detailSentence["isTypeInString"] = "已录入"
-          }else {
-            detailSentence["isTypeInString"] = "其它"
-          }
-          _this.existSentence = detailSentence
-        }).catch( error => {
-          console.log(error)
-        })
+        this.reloadExistSentence()
       }
     },
   },
@@ -142,9 +207,18 @@ export default {
   computed: {
 
   },
+  components:{
+    "v-paradigm-add": ParadigmAdd,
+  }
 }
 </script>
 
 <style scoped>
-
+.a-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-top: 0.3rem;
+  width: 100%;
+  height: fit-content;
+}
 </style>

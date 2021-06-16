@@ -67,4 +67,9 @@ public class NodeController {
     public Result deleteNodeOfAssociate(@RequestBody NodeVo nodeVo){
         return Result.success(nodeService.deleteNodeOfAssociate(nodeVo));
     }
+
+    @RequestMapping(value = "/deleteNode",method = RequestMethod.DELETE)
+    public Result deleteNode(@RequestBody NodeVo nodeVo){
+        return Result.success(nodeService.deleteNode(nodeVo));
+    }
 }

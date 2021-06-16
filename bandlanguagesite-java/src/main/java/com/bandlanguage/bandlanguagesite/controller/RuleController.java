@@ -69,4 +69,9 @@ public class RuleController {
         return Result.success(ruleService.deleteRuleOfAssociate(ruleVo));
     }
 
+    @RequestMapping(value = "/deleteRule",method = RequestMethod.DELETE)
+    public Result deleteRule(@RequestBody RuleVo ruleVo){
+        return Result.success(ruleService.deleteRule(ruleVo));
+    }
+
 }
