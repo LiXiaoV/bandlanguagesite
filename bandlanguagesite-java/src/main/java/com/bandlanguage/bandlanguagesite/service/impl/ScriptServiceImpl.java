@@ -43,27 +43,30 @@ public class ScriptServiceImpl implements ScriptService {
     @Override
     @Transactional
     public Boolean SaveScript(ScriptVo scriptVo) {
+        // 插入剧本
         Script script = Script.builder().name(scriptVo.getName())
                 .content(scriptVo.getContent())
                 .description(scriptVo.getDescription())
                 .creatorId(scriptVo.getUserId())
                 .editorId(scriptVo.getUserId())
                 .updateTime(new Date()).build();
-        int res = scriptMapper.insert(script);
-        if (res <= 0)
+        int insertScriptCount = scriptMapper.insert(script);
+        if (insertScriptCount <= 0)
             throw new GlobalException(ResultCode.SAVE_SCRIPT_FAIL);
 
+        // 插入场景区与剧本的关联，剧本肯定是某一场景区中的剧本
         SceneScript sceneScript = SceneScript.builder().sceneId(scriptVo.getSceneId())
                 .scriptId(script.getScriptId()).build();
-        int res1 = sceneScriptMapper.insert(sceneScript);
-        if (res1 <= 0)
+        int insertSceneScriptCount = sceneScriptMapper.insert(sceneScript);
+        if (insertSceneScriptCount <= 0)
             throw new GlobalException(ResultCode.SAVE_SCENE_SCRIPT_FAIL);
 
+        // 插入用户与剧本的关联，以此来说明是谁插入的剧本
         ScriptUser scriptUser = ScriptUser.builder().scriptId(script.getScriptId())
                 .userId(scriptVo.getUserId())
                 .updateTime(new Date()).build();
-        int res2 = scriptUserMapper.insert(scriptUser);
-        if (res2 <= 0)
+        int insertScriptUserCount = scriptUserMapper.insert(scriptUser);
+        if (insertScriptUserCount <= 0)
             throw new GlobalException(ResultCode.SAVE_SCRIPT_USER_FAIL);
 
         return true;
@@ -83,7 +86,7 @@ public class ScriptServiceImpl implements ScriptService {
     @Override
     public ScriptVo getMyScriptDetailById(Long scriptId) {
         Script script = scriptMapper.selectById(scriptId);
-        if (script == null)
+        if (script == null || script.getStatus() == 0)
             throw new GlobalException(ResultCode.SELECT_SCRIPT_NOT_EXIST);
 
         User creator = userMapper.selectById(script.getCreatorId());
@@ -111,8 +114,8 @@ public class ScriptServiceImpl implements ScriptService {
                 .description(scriptVo.getDescription())
                 .editorId(scriptVo.getUserId())
                 .updateTime(new Date()).build();
-        int cnt = scriptMapper.updateById(script);
-        if (cnt <= 0)
+        int updateScriptCount = scriptMapper.updateById(script);
+        if (updateScriptCount <= 0)
             throw new GlobalException(ResultCode.EDIT_SCRIPT_FAIL);
 
         // 查询此用户是否修改或创建过这个句型，如果是，则更新时间，如果不是，则插入记录
@@ -123,45 +126,47 @@ public class ScriptServiceImpl implements ScriptService {
 
         if (scriptUser != null) {
             scriptUser.setUpdateTime(new Date());
-            int editCount = scriptUserMapper.updateById(scriptUser);
-            if (editCount <= 0)
+            int editScriptUserCount = scriptUserMapper.updateById(scriptUser);
+            if (editScriptUserCount <= 0)
                 throw new GlobalException(ResultCode.UPDATE_SCRIPT_USER_FAIL);
         } else {
             ScriptUser insertScriptUser = ScriptUser.builder().scriptId(scriptVo.getScriptId())
                     .userId(scriptVo.getUserId())
                     .updateTime(new Date()).build();
-            int insertCount = scriptUserMapper.insert(insertScriptUser);
-            if (insertCount <= 0)
+            int insertScriptUserCount = scriptUserMapper.insert(insertScriptUser);
+            if (insertScriptUserCount <= 0)
                 throw new GlobalException(ResultCode.SAVE_SCRIPT_USER_FAIL);
         }
         return true;
     }
 
     @Override
-    public Boolean deleteScriptById(Long scriptId) {
-        Script script = scriptMapper.selectById(scriptId);
-        if (script == null)
+    @Transactional
+    public Boolean deleteScript(ScriptVo scriptVo) {
+        Script script = scriptMapper.selectById(scriptVo.getScriptId());
+        if (script == null || script.getStatus() == 0)
             throw new GlobalException(ResultCode.DELETE_SCRIPT_NOT_EXIST);
 
         script.setStatus(0);
-
-        // 更新剧本状态，肯定有记录要修改
-        int cnt1 = scriptMapper.updateById(script);
-        if (cnt1 <= 0)
+        script.setEditorId(scriptVo.getEditorId());
+        script.setUpdateTime(new Date());
+        // 更新剧本状态，修改的就是页面上显示的剧本，至少有那一条记录
+        int deleteScriptCount = scriptMapper.updateById(script);
+        if (deleteScriptCount <= 0)
             throw new GlobalException(ResultCode.EDIT_SCRIPT_FAIL);
 
-        // 更新剧本-场景区关联表，肯定有记录要修改
+        // 更新剧本-场景区关联表，该剧本一定属于某个场景区
         UpdateWrapper<SceneScript> sceneScriptUpdateWrapper = new UpdateWrapper<>();
         sceneScriptUpdateWrapper.eq("script_id", script.getScriptId()).set("status", 0);
-        int cnt2 = sceneScriptMapper.update(null, sceneScriptUpdateWrapper);
-        if (cnt2 <= 0)
+        int deleteSceneScriptCount = sceneScriptMapper.update(null, sceneScriptUpdateWrapper);
+        if (deleteSceneScriptCount <= 0)
             throw new GlobalException(ResultCode.UPDATE_SCENE_SCRIPT_FAIL);
 
         // 更新剧本-用户关联表，肯定有记录要修改
         UpdateWrapper<ScriptUser> scriptUserUpdateWrapper = new UpdateWrapper<>();
         scriptUserUpdateWrapper.eq("script_id", script.getScriptId()).set("status", 0);
-        int cnt3 = scriptUserMapper.update(null, scriptUserUpdateWrapper);
-        if (cnt3 <= 0)
+        int deleteScriptUserCount = scriptUserMapper.update(null, scriptUserUpdateWrapper);
+        if (deleteScriptUserCount <= 0)
             throw new GlobalException(ResultCode.UPDATE_SCRIPT_USER_FAIL);
 
         return true;
@@ -173,14 +178,15 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
+    @Transactional
     public Boolean increaseRunTimesByScriptId(Long ScriptId) {
         Script script = scriptMapper.selectById(ScriptId);
         if (script == null)
             throw new GlobalException(ResultCode.EDIT_SCRIPT_NOT_EXIST);
 
         script.setRunTimes(script.getRunTimes() + 1);
-        int res = scriptMapper.updateById(script);
-        if (res <= 0)
+        int updateScriptCount = scriptMapper.updateById(script);
+        if (updateScriptCount <= 0)
             throw new GlobalException(ResultCode.INCREASE_SCRIPT_RUNTIMES_FAIL);
         return true;
     }

@@ -52,7 +52,7 @@ public class Sentence implements Serializable {
     // 是否录入
     @TableField(value = "is_type_in")
     private Integer isTypeIn;
-    
+
     @TableField(value = "status")
     private Integer status;
 }

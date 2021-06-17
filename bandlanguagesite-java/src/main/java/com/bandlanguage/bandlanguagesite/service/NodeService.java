@@ -75,4 +75,12 @@ public interface NodeService {
      * @return 是否删除成功
      */
     Boolean deleteNodeOfAssociate(NodeVo nodeVo);
+
+    /**
+     * 删除节点
+     *
+     * @param nodeVo 节点的视图类，主要传节点ID和删除者的用户ID
+     * @return 删除节点是否成功
+     */
+    Boolean deleteNode(NodeVo nodeVo);
 }

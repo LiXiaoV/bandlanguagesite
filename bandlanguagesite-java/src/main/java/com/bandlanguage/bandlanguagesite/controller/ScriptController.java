@@ -35,8 +35,8 @@ public class ScriptController {
 
     @Autowired
     private BLFactory blFactory;
-
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public Result registerScript(@RequestBody ScriptVo scriptVo) {
 
         System.out.println("scriptVo = " + scriptVo);
@@ -62,7 +62,7 @@ public class ScriptController {
         return Result.success(scriptService.getMyScriptDetailById(id));
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
     public Result updateScript(@RequestBody ScriptVo scriptVo) {
 //        System.out.println("scriptVo = " + scriptVo);
         Boolean res = scriptService.editScript(scriptVo);
@@ -71,9 +71,9 @@ public class ScriptController {
         else return Result.fail(500, "修改剧本败");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Result deleteScriptById(@PathVariable("id") Long id) {
-        return Result.success(scriptService.deleteScriptById(id));
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    public Result deleteScript(@RequestBody ScriptVo scriptVo) {
+        return Result.success(scriptService.deleteScript(scriptVo));
     }
 
     @RequestMapping(value = "/hotScripts", method = RequestMethod.GET)

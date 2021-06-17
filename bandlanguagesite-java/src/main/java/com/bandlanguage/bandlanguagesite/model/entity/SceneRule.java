@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 /**
  * 场景区-规则
+ *
  * @author xiaov
  * @since 2021-05-31 10:59
  */
@@ -25,7 +26,7 @@ import java.io.Serializable;
 @TableName("bls_dept_rule")
 public class SceneRule implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "dept_id")

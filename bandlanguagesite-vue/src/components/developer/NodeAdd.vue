@@ -100,7 +100,7 @@ export default {
       }
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/node/insert`,
+        url: `${this.global.serverUrl}/node/`,
         data: registerNodeObj
       }).then(res => {
         if(res.data.code === 0){

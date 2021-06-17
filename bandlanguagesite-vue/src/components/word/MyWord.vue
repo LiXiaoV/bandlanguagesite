@@ -103,9 +103,13 @@ export default {
     },
     deleteWord(id){
       const _this = this
+      let deleteWord = {}
+      deleteWord["wordId"] = Number(id)
+      deleteWord["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/word/${id}`,
+        url: `${this.global.serverUrl}/word/`,
+        data: deleteWord
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
