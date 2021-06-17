@@ -82,7 +82,7 @@ public class SentenceServiceImpl implements SentenceService {
             paradigm.setEditorId(sentenceVo.getUserId());
             paradigm.setUpdateTime(new Date());
             int insertParadigmCount = paradigmMapper.insert(paradigm);
-            if(insertParadigmCount <= 0)
+            if (insertParadigmCount <= 0)
                 throw new GlobalException(ResultCode.SAVE_PARADIGM_FAIL);
         }
         return true;
@@ -207,15 +207,15 @@ public class SentenceServiceImpl implements SentenceService {
         // 更新属于某一句型的中间范式(可能没有)
         // 先查总数
         QueryWrapper<Paradigm> paradigmQueryWrapper = new QueryWrapper<>();
-        paradigmQueryWrapper.eq("sentence_id",sentenceVo.getSentenceId());
-        paradigmQueryWrapper.gt("status",0);
+        paradigmQueryWrapper.eq("sentence_id", sentenceVo.getSentenceId());
+        paradigmQueryWrapper.gt("status", 0);
         Integer needDeleteParadigmCount = paradigmMapper.selectCount(paradigmQueryWrapper);
 
         UpdateWrapper<Paradigm> paradigmUpdateWrapper = new UpdateWrapper<>();
         paradigmUpdateWrapper.eq("sentence_id", sentence.getSentenceId())
-                .gt("status",0).set("status", 0);
+                .gt("status", 0).set("status", 0);
         int deleteParadigmCount = paradigmMapper.update(null, paradigmUpdateWrapper);
-        if(needDeleteParadigmCount != deleteParadigmCount)
+        if (needDeleteParadigmCount != deleteParadigmCount)
             throw new GlobalException(ResultCode.DELETE_PARADIGM_FAIL);
 
         // 更新句型-场景区关联表，句型一定属于某场景区，所以肯定有记录
@@ -240,22 +240,22 @@ public class SentenceServiceImpl implements SentenceService {
 
         UpdateWrapper<SentenceRule> sentenceRuleUpdateWrapper = new UpdateWrapper<>();
         sentenceRuleUpdateWrapper.eq("sentence_id", sentenceVo.getSentenceId())
-                .gt("status",0).set("status", 0);
+                .gt("status", 0).set("status", 0);
         int deleteSentenceRuleCount = sentenceRuleMapper.update(null, sentenceRuleUpdateWrapper);
         if (needDeleteSentenceRuleCount != deleteSentenceRuleCount)
             throw new GlobalException(ResultCode.DELETE_SENTENCE_RULE_FAIL);
 
         // 6. 在节点-句型表里设置删除状态,可能没有记录
         QueryWrapper<SentenceNode> sentenceNodeQueryWrapper = new QueryWrapper<>();
-        sentenceNodeQueryWrapper.eq("sentence_id",sentenceVo.getSentenceId());
-        sentenceNodeQueryWrapper.gt("status",0);
+        sentenceNodeQueryWrapper.eq("sentence_id", sentenceVo.getSentenceId());
+        sentenceNodeQueryWrapper.gt("status", 0);
         Integer needDeleteSentenceNodeCount = sentenceNodeMapper.selectCount(sentenceNodeQueryWrapper);
 
         UpdateWrapper<SentenceNode> sentenceNodeUpdateWrapper = new UpdateWrapper<>();
-        sentenceNodeUpdateWrapper.eq("sentence_id",sentenceVo.getSentenceId())
-                .gt("status",0).set("status",0);
+        sentenceNodeUpdateWrapper.eq("sentence_id", sentenceVo.getSentenceId())
+                .gt("status", 0).set("status", 0);
         int deleteSentenceNodeCount = sentenceNodeMapper.update(null, sentenceNodeUpdateWrapper);
-        if(needDeleteSentenceNodeCount != deleteSentenceNodeCount)
+        if (needDeleteSentenceNodeCount != deleteSentenceNodeCount)
             throw new GlobalException(ResultCode.DELETE_SENTENCE_NODE_FAIL);
 
         return true;
@@ -271,11 +271,11 @@ public class SentenceServiceImpl implements SentenceService {
         return true;
     }
 
-    private Boolean updateSentenceEditorAndTime(Long sentenceId,Long userId){
+    private Boolean updateSentenceEditorAndTime(Long sentenceId, Long userId) {
         Sentence sentence = Sentence.builder().sentenceId(sentenceId)
                 .editorId(userId).updateTime(new Date()).build();
         int updateSentenceCount = sentenceMapper.updateById(sentence);
-        if(updateSentenceCount <= 0)
+        if (updateSentenceCount <= 0)
             throw new GlobalException(ResultCode.EDIT_SENTENCE_FAIL);
 
         return true;
@@ -296,7 +296,7 @@ public class SentenceServiceImpl implements SentenceService {
             throw new GlobalException(ResultCode.SAVE_PARADIGM_FAIL);
 
         // 修改句型的修改者和更新时间
-        updateSentenceEditorAndTime(paradigmVo.getSentenceId(),paradigmVo.getUserId());
+        updateSentenceEditorAndTime(paradigmVo.getSentenceId(), paradigmVo.getUserId());
 
         return true;
     }
@@ -322,7 +322,7 @@ public class SentenceServiceImpl implements SentenceService {
     public Boolean deleteParadigm(ParadigmVo paradigmVo) {
 
         Paradigm paradigm = paradigmMapper.selectById(paradigmVo.getParadigmId());
-        if(paradigm == null || paradigm.getStatus() == 0)
+        if (paradigm == null || paradigm.getStatus() == 0)
             throw new GlobalException(ResultCode.DELETE_PARADIGM_NOT_EXIST);
 
         // 设置谁删除的，并设置删除时间
@@ -331,11 +331,11 @@ public class SentenceServiceImpl implements SentenceService {
         // 逻辑删除
         paradigm.setStatus(0);
         int deleteParadigmCount = paradigmMapper.updateById(paradigm);
-        if(deleteParadigmCount <= 0)
+        if (deleteParadigmCount <= 0)
             throw new GlobalException(ResultCode.DELETE_PARADIGM_FAIL);
 
         // 修改句型的修改者和更新时间
-        updateSentenceEditorAndTime(paradigm.getSentenceId(),paradigmVo.getUserId());
+        updateSentenceEditorAndTime(paradigm.getSentenceId(), paradigmVo.getUserId());
         return true;
     }
 
@@ -343,7 +343,7 @@ public class SentenceServiceImpl implements SentenceService {
     @Transactional
     public Boolean updateParadigm(ParadigmVo paradigmVo) {
         Paradigm selectParadigm = paradigmMapper.selectById(paradigmVo.getParadigmId());
-        if(selectParadigm == null || selectParadigm.getStatus() == 0)
+        if (selectParadigm == null || selectParadigm.getStatus() == 0)
             throw new GlobalException(ResultCode.UPDATE_PARADIGM_NOT_EXIST);
 
         // 插入中间范式
@@ -353,11 +353,11 @@ public class SentenceServiceImpl implements SentenceService {
                 .editorId(paradigmVo.getUserId())
                 .updateTime(new Date()).build();
         int updateParadigmCount = paradigmMapper.updateById(paradigm);
-        if(updateParadigmCount <= 0)
+        if (updateParadigmCount <= 0)
             throw new GlobalException(ResultCode.UPDATE_PARADIGM_FAIL);
 
         // 修改句型的修改者和更新时间
-        updateSentenceEditorAndTime(selectParadigm.getSentenceId(),paradigmVo.getUserId());
+        updateSentenceEditorAndTime(selectParadigm.getSentenceId(), paradigmVo.getUserId());
         return true;
     }
 }

@@ -132,7 +132,7 @@ export default {
 
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/rule/insert`,
+        url: `${this.global.serverUrl}/rule/`,
         data: registerRuleObj
       }).then(res => {
         if(res.data.code === 0){

@@ -19,6 +19,7 @@ public interface SentenceMapper extends BaseMapper<Sentence> {
 
     /**
      * 通过场景区Id获取所有句型
+     *
      * @param sceneId 场景区ID
      * @return 句型对象数组
      */
@@ -41,7 +42,7 @@ public interface SentenceMapper extends BaseMapper<Sentence> {
     List<SentenceVo> getMySentencesBySceneIdAndUserId(Long sceneId, Long userId);
 
     /**
-     *通过关键字查找句型
+     * 通过关键字查找句型
      **/
     List<SentenceVo> getSentencesByKeyword(String keyword);
 

@@ -21,7 +21,7 @@ public class RuleController {
     @Autowired
     private RuleService ruleService;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public Result registerRule(@RequestBody RuleVo ruleVo) {
         System.out.println("ruleVo = " + ruleVo);
         Boolean res = ruleService.saveRule(ruleVo);
@@ -45,7 +45,7 @@ public class RuleController {
         return Result.success(ruleService.getRuleDetailById(id));
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
     public Result updateRule(@RequestBody RuleVo ruleVo) {
 //        System.out.println("ruleVo = " + ruleVo);
         Boolean res = ruleService.editRule(ruleVo);
@@ -64,13 +64,13 @@ public class RuleController {
         return Result.success(ruleService.getSentenceAssociatedRulesBySentenceId(sentenceId));
     }
 
-    @RequestMapping(value = "/deleteRuleOfAssociate",method = RequestMethod.DELETE)
-    public Result deleteRuleOfAssociate(@RequestBody RuleVo ruleVo){
+    @RequestMapping(value = "/deleteRuleOfAssociate", method = RequestMethod.DELETE)
+    public Result deleteRuleOfAssociate(@RequestBody RuleVo ruleVo) {
         return Result.success(ruleService.deleteRuleOfAssociate(ruleVo));
     }
 
-    @RequestMapping(value = "/deleteRule",method = RequestMethod.DELETE)
-    public Result deleteRule(@RequestBody RuleVo ruleVo){
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    public Result deleteRule(@RequestBody RuleVo ruleVo) {
         return Result.success(ruleService.deleteRule(ruleVo));
     }
 

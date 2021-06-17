@@ -81,7 +81,7 @@ public class RedisConfig {
     }
 
     @Bean
-    IGlobalCache cache(RedisTemplate<String,Object> redisTemplate){
+    IGlobalCache cache(RedisTemplate<String, Object> redisTemplate) {
         return new AppRedisCacheManager(redisTemplate);
     }
 }

@@ -106,7 +106,7 @@ export default {
       }
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/node/update`,
+        url: `${this.global.serverUrl}/node/`,
         data: editNodeObj
       }).then(res => {
         if(res.data.code === 0){
@@ -159,7 +159,7 @@ export default {
       deleteNode["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/node/deleteNode`,
+        url: `${this.global.serverUrl}/node/`,
         data:deleteNode
       }).then(res => {
         if(res.data.code === 0){

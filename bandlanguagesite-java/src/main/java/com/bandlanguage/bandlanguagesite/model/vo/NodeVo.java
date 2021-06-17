@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 节点的视图类
+ *
  * @author xiaov
  * @since 2021-05-31 10:56
  */
@@ -33,7 +34,7 @@ public class NodeVo implements Serializable {
     private String editorUsername;
     private String editorNickname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     private Integer status;

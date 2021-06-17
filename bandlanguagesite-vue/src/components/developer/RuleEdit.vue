@@ -134,7 +134,7 @@ export default {
       }
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/rule/update`,
+        url: `${this.global.serverUrl}/rule/`,
         data: editRuleObj
       }).then(res => {
         if(res.data.code === 0){
@@ -189,7 +189,7 @@ export default {
       deleteRule["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/rule/deleteRule`,
+        url: `${this.global.serverUrl}/rule/`,
         data:deleteRule
       }).then(res => {
         if(res.data.code === 0){

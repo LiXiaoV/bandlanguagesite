@@ -134,7 +134,7 @@ export default {
       updateSentence["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/sentence/update/`,
+        url: `${this.global.serverUrl}/sentence/`,
         data: updateSentence
       }).then(res => {
         if(res.data.code === 0){

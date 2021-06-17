@@ -90,7 +90,7 @@ export default {
     deleteSentence(id){
       const _this = this
       let deleteSentence = {}
-      deleteSentence["sentenceId"] = id
+      deleteSentence["sentenceId"] = Number(id)
       deleteSentence["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',

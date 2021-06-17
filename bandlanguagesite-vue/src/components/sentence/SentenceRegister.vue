@@ -36,7 +36,7 @@
             </el-table-column>
           </el-table>
           <el-button icon="iconfont iconadd" circle size="mini" @click="addParadigm" style="margin-top: 1vh;"></el-button>
-          <span style="margin-left: 5px;">新增中间范式</span>
+          <span style="margin-left: 5px;">添加中间范式</span>
           <div v-if="paradigmAddFlag === true" style="margin-top: 1vh;">
             <v-paradigm-add-in-reg-sentence @closeAddParadigmCard="closeAddParadigmCard"
                                             @addParadigmObj="addParadigmObj"></v-paradigm-add-in-reg-sentence>
@@ -148,7 +148,7 @@ export default {
       registerSentence["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/sentence/insert/`,
+        url: `${this.global.serverUrl}/sentence/`,
         data: registerSentence
       }).then(res => {
         if(res.data.code === 0){

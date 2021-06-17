@@ -28,7 +28,7 @@ import java.util.Date;
 @TableName("bls_rule_user")
 public class RuleUser implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "rule_id")

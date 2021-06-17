@@ -20,7 +20,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    public Result exceptionHandler(HttpServletRequest request, Exception e){
+    public Result exceptionHandler(HttpServletRequest request, Exception e) {
         if (e instanceof GlobalException) {
             GlobalException ex = (GlobalException) e;
             return Result.fail(ex.getResultCode());
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
             ObjectError error = errors.get(0);
 
             String msg = error.getDefaultMessage();
-            return Result.fail(500,"BindException:"+msg);
+            return Result.fail(500, "BindException:" + msg);
         } else {
             return Result.fail(ResultCode.SERVER_ERROR);
         }

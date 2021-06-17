@@ -2,7 +2,7 @@
   <el-card>
     <el-row type="flex">
       <el-col :span="12" :offset="11">
-        <span style="font-size: 14px;">新增中间范式</span>
+        <span style="font-size: 14px;">添加中间范式</span>
       </el-col>
       <el-col :span="1">
         <i class="custom-close-icon el-icon el-icon-close" @click="cancelAddParadigm"></i>
@@ -31,7 +31,7 @@
     </el-form>
     <div style="text-align: center;margin-top: 1vh;">
       <el-button @click="cancelAddParadigm">取消</el-button>
-      <el-button type="primary" @click="confirmAddParadigm">新增</el-button>
+      <el-button type="primary" @click="confirmAddParadigm">添加</el-button>
     </div>
   </el-card>
 </template>
