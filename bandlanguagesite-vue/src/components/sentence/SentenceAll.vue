@@ -29,6 +29,11 @@
             <el-form-item label="巴克斯范式表示：">
               <span>{{ props.row.paradigm }}</span>
             </el-form-item>
+            <el-form-item label="中间泛式：">
+              <div v-for="(item,index) in props.row.paradigms" :key="index">
+                {{item.easyParadigm}}
+              </div>
+            </el-form-item>
             <el-form-item label="状态：">
               <span>{{ props.row.isTypeInString }}</span>
             </el-form-item>

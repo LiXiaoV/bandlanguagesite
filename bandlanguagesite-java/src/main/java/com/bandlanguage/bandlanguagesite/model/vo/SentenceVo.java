@@ -1,5 +1,6 @@
 package com.bandlanguage.bandlanguagesite.model.vo;
 
+import com.bandlanguage.bandlanguagesite.model.entity.Paradigm;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,11 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
+ * 句型的视图类
+ *
  * @author xiaov
  * @since 2021-05-22 17:48
  */
@@ -32,11 +36,15 @@ public class SentenceVo implements Serializable {
     private String editorUsername;
     private String editorNickname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     private Integer isTypeIn;
     private Integer status;
+
+    // 中间泛式
+    private List<Paradigm> paradigms;
+
     private Long userId;
     private Long sceneId;
     private String sceneName;

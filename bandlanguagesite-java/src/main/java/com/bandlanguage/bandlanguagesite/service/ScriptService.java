@@ -54,12 +54,12 @@ public interface ScriptService {
     Boolean editScript(ScriptVo scriptVo);
 
     /**
-     * 根据ID删除剧本
+     * 删除剧本
      *
-     * @param scriptId 剧本ID
-     * @return 删除是否成功
+     * @param scriptVo 剧本的视图类，用来传剧本ID和操作者的用户ID
+     * @return 删除剧本是否成功
      */
-    Boolean deleteScriptById(Long scriptId);
+    Boolean deleteScript(ScriptVo scriptVo);
 
     /**
      * 获取火热的剧本

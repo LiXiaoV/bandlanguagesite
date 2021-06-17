@@ -7,6 +7,7 @@ import com.bandlanguage.bandlanguagesite.result.ResultCode;
 import com.bandlanguage.bandlanguagesite.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,7 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
+    @Transactional
     public Boolean SaveScene(Scene scene) {
         scene.setCreateTime(new Date());
         scene.setBandObjId(0L);

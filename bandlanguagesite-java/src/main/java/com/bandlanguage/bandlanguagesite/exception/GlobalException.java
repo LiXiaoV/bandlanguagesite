@@ -6,7 +6,7 @@ import com.bandlanguage.bandlanguagesite.result.ResultCode;
  * @author xiaov
  * @since 2021-05-25 16:48
  */
-public class GlobalException extends RuntimeException{
+public class GlobalException extends RuntimeException {
 
     private ResultCode resultCode;
 

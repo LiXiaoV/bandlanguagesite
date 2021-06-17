@@ -217,7 +217,7 @@ export default {
       registerWord["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/word/insert/`,
+        url: `${this.global.serverUrl}/word/`,
         data: registerWord
       }).then(res => {
         if(res.data.code === 0){

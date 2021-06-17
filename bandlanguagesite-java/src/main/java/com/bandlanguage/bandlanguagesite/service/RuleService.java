@@ -75,4 +75,12 @@ public interface RuleService {
      * @return 删除是否成功
      */
     Boolean deleteRuleOfAssociate(RuleVo ruleVo);
+
+    /**
+     * 删除规则
+     *
+     * @param ruleVo 规则的视图类，，主要传规则ID和删除者的用户ID
+     * @return 删除规则是否成功
+     */
+    Boolean deleteRule(RuleVo ruleVo);
 }

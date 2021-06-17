@@ -70,6 +70,26 @@
         <el-table
             :data="sentences.slice(sentenceStartPage, sentenceEndPage)"
         >
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="a-table-expand">
+                <el-form-item label="句型名：">
+                  <span>{{ props.row.name }}</span>
+                </el-form-item>
+                <el-form-item label="描述：">
+                  <span>{{ props.row.description }}</span>
+                </el-form-item>
+                <el-form-item label="巴克斯范式表示：">
+                  <span>{{ props.row.paradigm }}</span>
+                </el-form-item>
+                <el-form-item label="中间泛式：">
+                  <div v-for="(item,index) in props.row.paradigms" :key="index">
+                    {{item.easyParadigm}}
+                  </div>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column type="index" label="序号" width="60" align="center">
           </el-table-column>
           <el-table-column prop="name" label="句型名" min-width="30" align="center">
@@ -422,4 +442,11 @@ body{
   }
 }
 
+.a-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-top: 0.3rem;
+  width: 100%;
+  height: fit-content;
+}
 </style>

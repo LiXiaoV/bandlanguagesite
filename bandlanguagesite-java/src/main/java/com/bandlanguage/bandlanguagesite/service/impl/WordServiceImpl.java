@@ -1,14 +1,8 @@
 package com.bandlanguage.bandlanguagesite.service.impl;
 
 import com.bandlanguage.bandlanguagesite.exception.GlobalException;
-import com.bandlanguage.bandlanguagesite.mapper.SceneWordMapper;
-import com.bandlanguage.bandlanguagesite.mapper.UserMapper;
-import com.bandlanguage.bandlanguagesite.mapper.WordMapper;
-import com.bandlanguage.bandlanguagesite.mapper.WordUserMapper;
-import com.bandlanguage.bandlanguagesite.model.entity.SceneWord;
-import com.bandlanguage.bandlanguagesite.model.entity.User;
-import com.bandlanguage.bandlanguagesite.model.entity.Word;
-import com.bandlanguage.bandlanguagesite.model.entity.WordUser;
+import com.bandlanguage.bandlanguagesite.mapper.*;
+import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import com.bandlanguage.bandlanguagesite.result.ResultCode;
 import com.bandlanguage.bandlanguagesite.service.WordService;
@@ -40,6 +34,12 @@ public class WordServiceImpl implements WordService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private WordRuleMapper wordRuleMapper;
+
+    @Autowired
+    private WordNodeMapper wordNodeMapper;
+
     @Override
     @Transactional
     public Boolean SaveWord(WordVo wordVo) {
@@ -52,23 +52,23 @@ public class WordServiceImpl implements WordService {
                 .creatorId(wordVo.getUserId())
                 .editorId(wordVo.getUserId())
                 .updateTime(new Date()).build();
-        int res = wordMapper.insert(word);
-        if(res <= 0)
+        int insertWordCount = wordMapper.insert(word);
+        if (insertWordCount <= 0)
             throw new GlobalException(ResultCode.SAVE_WORD_FAIL);
 
         // 插入词汇与场景区的关联
         SceneWord sceneWord = SceneWord.builder().sceneId(wordVo.getSceneId())
                 .wordId(word.getWordId()).build();
-        int res1 = sceneWordMapper.insert(sceneWord);
-        if(res1 <= 0)
+        int insertSceneWordCount = sceneWordMapper.insert(sceneWord);
+        if (insertSceneWordCount <= 0)
             throw new GlobalException(ResultCode.SAVE_SCENE_WORD_FAIL);
 
         // 插入词汇用户的关联
         WordUser wordUser = WordUser.builder().wordId(word.getWordId())
                 .userId(wordVo.getUserId())
                 .updateTime(new Date()).build();
-        int res2 = wordUserMapper.insert(wordUser);
-        if(res2 <= 0)
+        int insertWordUserCount = wordUserMapper.insert(wordUser);
+        if (insertWordUserCount <= 0)
             throw new GlobalException(ResultCode.SAVE_WORD_USER_FAIL);
         return true;
     }
@@ -80,13 +80,13 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public List<WordVo> getWordsBySceneIdAndUserId(Long sceneId, Long userId) {
-        return wordMapper.getWordsBySceneIdAndUserId(sceneId,userId);
+        return wordMapper.getWordsBySceneIdAndUserId(sceneId, userId);
     }
 
     @Override
     public WordVo getWordDetailById(Long wordId) {
         Word word = wordMapper.selectById(wordId);
-        if(word == null)
+        if (word == null || word.getStatus() == 0)
             throw new GlobalException(ResultCode.SELECT_WORD_NOT_EXIST);
 
         User creator = userMapper.selectById(word.getCreatorId());
@@ -114,7 +114,7 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public List<WordVo> getWordsByKeywordInPage(String keyword, Long pageNum, Long pageSize) {
-        return wordMapper.getWordsByKeywordInPage(keyword,(pageNum-1)*pageSize,pageSize);
+        return wordMapper.getWordsByKeywordInPage(keyword, (pageNum - 1) * pageSize, pageSize);
     }
 
     @Override
@@ -133,26 +133,26 @@ public class WordServiceImpl implements WordService {
                 .synonym(wordVo.getSynonym())
                 .editorId(wordVo.getUserId())
                 .updateTime(new Date()).build();
-        int cnt = wordMapper.updateById(word);
-        if(cnt <= 0)
+        int updateWordCount = wordMapper.updateById(word);
+        if (updateWordCount <= 0)
             throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
 
         // 查询此用户是否修改或创建过这个词汇，如果是，则跟新时间，如果不是，则插入记录
         QueryWrapper<WordUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id",wordVo.getUserId());
-        queryWrapper.eq("word_id",wordVo.getWordId());
+        queryWrapper.eq("user_id", wordVo.getUserId());
+        queryWrapper.eq("word_id", wordVo.getWordId());
         WordUser wordUser = wordUserMapper.selectOne(queryWrapper);
-        if(wordUser != null){
+        if (wordUser != null) {
             wordUser.setUpdateTime(new Date());
-            int cnt1 = wordUserMapper.updateById(wordUser);
-            if(cnt1 <= 0)
+            int updateWordUserCount = wordUserMapper.updateById(wordUser);
+            if (updateWordUserCount <= 0)
                 throw new GlobalException(ResultCode.UPDATE_WORD_USER_FAIL);
-        }else {
+        } else {
             WordUser insertWordUser = WordUser.builder().wordId(wordVo.getWordId())
                     .userId(wordVo.getUserId())
                     .updateTime(new Date()).build();
-            int cnt2 = wordUserMapper.insert(insertWordUser);
-            if(cnt2 <= 0)
+            int insertWordUserCount = wordUserMapper.insert(insertWordUser);
+            if (insertWordUserCount <= 0)
                 throw new GlobalException(ResultCode.SAVE_WORD_USER_FAIL);
         }
         return true;
@@ -160,30 +160,61 @@ public class WordServiceImpl implements WordService {
 
     @Override
     @Transactional
-    public Boolean deleteWordById(Long wordId) {
-        Word word = wordMapper.selectById(wordId);
-        if(word == null)
+    public Boolean deleteWord(WordVo wordVo) {
+        Word word = wordMapper.selectById(wordVo.getWordId());
+        if (word == null || word.getStatus() == 0)
             throw new GlobalException(ResultCode.DELETE_WORD_NOT_EXIST);
         word.setStatus(0);
+        word.setEditorId(wordVo.getUserId());
+        word.setUpdateTime(new Date());
 
         // 更新词汇状态，肯定有记录要修改
-        int cnt1 = wordMapper.updateById(word);
-        if(cnt1 <= 0)
+        int deleteWordCount = wordMapper.updateById(word);
+        if (deleteWordCount <= 0)
             throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
 
-        // 更新词汇-场景区关联表，肯定有记录要修改
+        // 更新词汇-场景区关联表，词汇一定属于某个场景区
         UpdateWrapper<SceneWord> sceneWordUpdateWrapper = new UpdateWrapper<>();
-        sceneWordUpdateWrapper.eq("word_id",word.getWordId()).set("status",0);
-        int cnt2 = sceneWordMapper.update(null, sceneWordUpdateWrapper);
-        if(cnt2 <= 0)
+        sceneWordUpdateWrapper.eq("word_id", word.getWordId()).set("status", 0);
+        int deleteSceneWordCount = sceneWordMapper.update(null, sceneWordUpdateWrapper);
+        if (deleteSceneWordCount <= 0)
             throw new GlobalException(ResultCode.UPDATE_SCENE_WORD_FAIL);
 
-        // 更新词汇-用户关联表，肯定有记录要修改
+        // 更新词汇-用户关联表，至少在插入词汇的时候会插入一条操作者的记录
         UpdateWrapper<WordUser> wordUserUpdateWrapper = new UpdateWrapper<>();
-        wordUserUpdateWrapper.eq("word_id",word.getWordId()).set("status",0);
-        int cnt3 = wordUserMapper.update(null, wordUserUpdateWrapper);
-        if(cnt3 <= 0)
+        wordUserUpdateWrapper.eq("word_id", word.getWordId()).set("status", 0);
+        int deleteWordUserCount = wordUserMapper.update(null, wordUserUpdateWrapper);
+        if (deleteWordUserCount <= 0)
             throw new GlobalException(ResultCode.UPDATE_WORD_USER_FAIL);
+
+        // 5. 在规则-词汇表里设置删除状态(可能没有词汇与节点关联)
+        QueryWrapper<WordRule> wordRuleQueryWrapper = new QueryWrapper<>();
+        wordRuleQueryWrapper.eq("word_id", wordVo.getWordId());
+        wordRuleQueryWrapper.gt("status", 0);
+        Integer needDeleteWordRuleCount = wordRuleMapper.selectCount(wordRuleQueryWrapper);
+
+        UpdateWrapper<WordRule> wordRuleUpdateWrapper = new UpdateWrapper<>();
+        wordRuleUpdateWrapper.eq("word_id", wordVo.getWordId())
+                .gt("status", 0)
+                .set("status", 0);
+        int deleteWordRuleCount = wordRuleMapper.update(null, wordRuleUpdateWrapper);
+        if (needDeleteWordRuleCount != deleteWordRuleCount)
+            throw new GlobalException(ResultCode.DELETE_WORD_RULE_FAIL);
+
+        // 在节点-词汇表里设置删除状态(可能没有词汇与节点关联)
+        QueryWrapper<WordNode> wordNodeQueryWrapper = new QueryWrapper<>();
+        wordNodeQueryWrapper.eq("word_id", wordVo.getWordId());
+        wordNodeQueryWrapper.gt("status", 0);
+        Integer needDeleteWordNodeCount = wordNodeMapper.selectCount(wordNodeQueryWrapper);
+
+        UpdateWrapper<WordNode> wordNodeUpdateWrapper = new UpdateWrapper<>();
+        wordNodeUpdateWrapper.eq("word_id", wordVo.getWordId())
+                .gt("status", 0)
+                .set("status", 0);
+        int deleteWordNodeCount = wordNodeMapper.update(null, wordNodeUpdateWrapper);
+        if (needDeleteWordNodeCount != deleteWordNodeCount)
+            throw new GlobalException(ResultCode.DELETE_WORD_NODE_FAIL);
+
         return true;
     }
 
@@ -196,9 +227,9 @@ public class WordServiceImpl implements WordService {
     public Boolean updateTypeInStatusByWordId(Long wordId) {
         Word word = Word.builder().wordId(wordId)
                 .isTypeIn(1).build();
-        int res = wordMapper.updateById(word);
+        int updateWordCount = wordMapper.updateById(word);
 
-        if(res <= 0)
+        if (updateWordCount <= 0)
             throw new GlobalException(ResultCode.EDIT_WORD_FAIL);
         return true;
     }

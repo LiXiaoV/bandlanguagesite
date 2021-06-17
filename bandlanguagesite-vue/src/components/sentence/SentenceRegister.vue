@@ -22,6 +22,28 @@
             show-word-limit
         ></el-input>
       </el-form-item>
+      <el-form-item label="巴克斯范式的中间范式" :label-width="formLabelWidth">
+        <el-card>
+          <el-table
+              :data="paradigms"
+              style="width: 100%"
+          >
+            <el-table-column type="index" label="序号" width="60" align="center">
+            </el-table-column>
+            <el-table-column prop="easyParadigm" label="中间范式表示" min-width="30" align="center">
+            </el-table-column>
+            <el-table-column prop="example" label="例子" min-width="30" align="center">
+            </el-table-column>
+          </el-table>
+          <el-button icon="iconfont iconadd" circle size="mini" @click="addParadigm" style="margin-top: 1vh;"></el-button>
+          <span style="margin-left: 5px;">添加中间范式</span>
+          <div v-if="paradigmAddFlag === true" style="margin-top: 1vh;">
+            <v-paradigm-add-in-reg-sentence @closeAddParadigmCard="closeAddParadigmCard"
+                                            @addParadigmObj="addParadigmObj"></v-paradigm-add-in-reg-sentence>
+          </div>
+
+        </el-card>
+      </el-form-item>
       <el-form-item label="句型所在的场景区 *" :label-width="formLabelWidth">
         <el-select v-model="sceneValue" placeholder="请选择场景区" style="margin-left: 1vw;">
           <el-option
@@ -51,6 +73,7 @@
 
 <script>
 import TypeIn from "@/components/developer/TypeIn";
+import ParadigmAddInRegSentence from "@/components/sentence/ParadigmAddInRegSentence";
 export default {
   data() {
     return {
@@ -67,6 +90,9 @@ export default {
 
       // 是否录入的标识
       isSentenceTypeInFlag: false,
+      paradigms: [],
+      // 添加中间范式的标识
+      paradigmAddFlag: false,
       formLabelWidth: "120px",
     };
   },
@@ -116,12 +142,13 @@ export default {
 
       const _this = this
       let registerSentence = _this.newSentence
+      registerSentence["paradigms"] = _this.paradigms
       registerSentence["isTypeIn"] = _this.isSentenceTypeInFlag?1:0
       registerSentence["userId"] = _this.$store.getters.getUser.userId
       registerSentence["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/sentence/insert/`,
+        url: `${this.global.serverUrl}/sentence/`,
         data: registerSentence
       }).then(res => {
         if(res.data.code === 0){
@@ -167,7 +194,17 @@ export default {
     },
     typeInEvent(){
       this.isSentenceTypeInFlag = true
+    },
+    addParadigm(){
+      this.paradigmAddFlag = true
+    },
+    closeAddParadigmCard(){
+      this.paradigmAddFlag = false
+    },
+    addParadigmObj(paradigm){
+      this.paradigms.push(paradigm)
     }
+
   },
   created() {
     this.reloadSceneOptions()
@@ -177,6 +214,7 @@ export default {
   },
   components:{
     "v-type-in": TypeIn,
+    "v-paradigm-add-in-reg-sentence": ParadigmAddInRegSentence,
   }
 };
 </script>

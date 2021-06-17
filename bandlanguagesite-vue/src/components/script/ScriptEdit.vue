@@ -81,7 +81,7 @@ export default {
       updateScript["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/script/update/`,
+        url: `${this.global.serverUrl}/script/`,
         data: updateScript
       }).then(res => {
         if(res.data.code === 0){

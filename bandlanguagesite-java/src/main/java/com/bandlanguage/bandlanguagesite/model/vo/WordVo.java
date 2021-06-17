@@ -34,7 +34,7 @@ public class WordVo implements Serializable {
     private String editorUsername;
     private String editorNickname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     private Integer isTypeIn;
