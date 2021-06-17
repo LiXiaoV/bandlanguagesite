@@ -89,9 +89,13 @@ export default {
     },
     deleteSentence(id){
       const _this = this
+      let deleteSentence = {}
+      deleteSentence["sentenceId"] = id
+      deleteSentence["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/sentence/${id}`,
+        url: `${this.global.serverUrl}/sentence/`,
+        data: deleteSentence,
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({

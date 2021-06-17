@@ -115,6 +115,11 @@ public enum ResultCode {
     SAVE_SCENE_SENTENCE_FAIL(500407,"保存场景区-句型关联表的记录失败"),
     SAVE_SENTENCE_USER_FAIL(500408,"保存句型-用户关联表的记录失败"),
     SAVE_PARADIGM_FAIL(500409,"保存中间范式失败"),
+    SELECT_PARADIGM_NOT_EXIST(500410,"要查询的中间范式不存在"),
+    DELETE_PARADIGM_NOT_EXIST(500411,"要删除的中间范式不存在"),
+    DELETE_PARADIGM_FAIL(500412,"删除中间范式失败"),
+    UPDATE_PARADIGM_FAIL(500413,"修改中间范式失败"),
+    UPDATE_PARADIGM_NOT_EXIST(500414,"要修改的中间范式不存在"),
 
     // 剧本模块 5005XX
     SAVE_SCRIPT_FAIL(500501,"保存剧本失败"),

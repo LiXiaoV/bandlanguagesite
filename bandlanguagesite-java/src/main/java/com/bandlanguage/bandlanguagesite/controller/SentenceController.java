@@ -75,9 +75,9 @@ public class SentenceController {
         else return Result.fail(500, "修改句型失败");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Result deleteSentenceById(@PathVariable("id") Long id) {
-        return Result.success(sentenceService.deleteSentenceById(id));
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    public Result deleteSentence(@RequestBody SentenceVo sentenceVo) {
+        return Result.success(sentenceService.deleteSentence(sentenceVo));
     }
 
     @RequestMapping(value = "/updateTypeInStatus/{id}",method = RequestMethod.PUT)
@@ -96,5 +96,20 @@ public class SentenceController {
         if (res)
             return Result.success("注册中间范式成功");
         else return Result.fail(500, "注册中间范式失败");
+    }
+
+    @RequestMapping(value = "/paradigm/{id}", method = RequestMethod.GET)
+    public Result getParadigmDetailById(@PathVariable("id") Long id) {
+        return Result.success(sentenceService.getParadigmDetailById(id));
+    }
+
+    @RequestMapping(value = "/paradigm", method = RequestMethod.DELETE)
+    public Result deleteParadigm(@RequestBody ParadigmVo paradigmVo) {
+        return Result.success(sentenceService.deleteParadigm(paradigmVo));
+    }
+
+    @RequestMapping(value = "/paradigm", method = RequestMethod.PUT)
+    public Result updateParadigm(@RequestBody ParadigmVo paradigmVo) {
+        return Result.success(sentenceService.updateParadigm(paradigmVo));
     }
 }

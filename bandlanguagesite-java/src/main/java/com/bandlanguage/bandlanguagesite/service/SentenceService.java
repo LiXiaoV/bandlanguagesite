@@ -52,16 +52,16 @@ public interface SentenceService {
     SentenceVo getMySentenceDetailById(Long sentenceId);
 
     /**
-     *通过关键字查找句型
+     * 通过关键字查找句型
      **/
     List<SentenceVo> getSentencesByKeyword(String keyword);
 
     /**
-     *通过关键字分页查找句型
+     * 通过关键字分页查找句型
      **/
-    List<SentenceVo> getSentencesByKeywordInPage(String keyword,Long pageNum,Long pageSize);
+    List<SentenceVo> getSentencesByKeywordInPage(String keyword, Long pageNum, Long pageSize);
 
-    List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword,Long offset,Long size);
+    List<SentenceVo> getSentencesByKeywordInPageWithOffset(String keyword, Long offset, Long size);
 
     Long getSentencesTotalByKeyword(String keyword);
 
@@ -74,12 +74,12 @@ public interface SentenceService {
     Boolean editSentence(SentenceVo sentenceVo);
 
     /**
-     * 根据ID删除句型
+     * 删除句型
      *
-     * @param sentenceId 句型ID
-     * @return 删除是否成功
+     * @param sentenceVo 句型的视图类
+     * @return 删除句型是否成功
      */
-    Boolean deleteSentenceById(Long sentenceId);
+    Boolean deleteSentence(SentenceVo sentenceVo);
 
     /**
      * 根据ID修改句型录入状态
@@ -91,8 +91,33 @@ public interface SentenceService {
 
     /**
      * 添加中间范式
+     *
      * @param paradigmVo 中间范式的视图类
      * @return 添加中间范式是否成功
      */
     Boolean SaveParadigm(ParadigmVo paradigmVo);
+
+    /**
+     * 根据ID查询中间范式详情
+     *
+     * @param paradigmId 中间范式的ID
+     * @return 中间范式的视图类
+     */
+    ParadigmVo getParadigmDetailById(Long paradigmId);
+
+    /**
+     * 删除中间范式
+     *
+     * @param paradigmVo 中间范式的视图类，主要传ID和userId
+     * @return 删除中间范式是否成功
+     */
+    Boolean deleteParadigm(ParadigmVo paradigmVo);
+
+    /**
+     * 修改中间范式
+     *
+     * @param paradigmVo 中间范式的视图类
+     * @return 修改中间范式是否成功
+     */
+    Boolean updateParadigm(ParadigmVo paradigmVo);
 }

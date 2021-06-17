@@ -67,6 +67,10 @@
                     :sentenceId="sentenceId"
                     @closeParadigmAddDialog="closeParadigmAddDialog"
                     @updateParadigms="updateParadigms"></v-paradigm-add>
+    <v-paradigm-edit :paradigmEditDialogVisible="paradigmEditDialogVisible"
+                     :paradigmId="transParadigmId"
+                     @closeParadigmEditDialog="closeParadigmEditDialog"
+                     @updateParadigms="updateParadigms"></v-paradigm-edit>
     <div slot="footer">
       <el-button @click="cancelEdit">取消</el-button>
       <el-button type="primary" @click="confirmEdit">更新</el-button>
@@ -76,6 +80,7 @@
 
 <script>
 import ParadigmAdd from "@/components/sentence/ParadigmAdd";
+import ParadigmEdit from "@/components/sentence/ParadigmEdit";
 export default {
   name: "SentenceEdit",
   data() {
@@ -87,6 +92,8 @@ export default {
       },
 
       paradigmAddDialogVisible: false,
+      paradigmEditDialogVisible: false,
+      transParadigmId: 0,
       formLabelWidth: "120px",
     };
   },
@@ -157,13 +164,46 @@ export default {
       this.$emit('closeEditSentenceDialog',false)
     },
     editDetail(id){
-      console.log("编辑中间泛式"+id)
+      // console.log("编辑中间泛式"+id)
+      this.transParadigmId = Number(id)
+      this.paradigmEditDialogVisible = true
     },
     deleteParadigm(id){
-      console.log("删除中间泛式"+id)
+      // console.log("删除中间泛式"+id)
+      const _this = this
+      let deleteParadigm = {}
+      deleteParadigm["paradigmId"] = Number(id)
+      deleteParadigm["userId"] = _this.$store.getters.getUser.userId
+      this.$axios({
+        method: 'delete',
+        url: `${this.global.serverUrl}/sentence/paradigm/`,
+        data: deleteParadigm
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.$message({
+            showClose: true,
+            message: "删除中间泛式成功",
+            type: 'success'
+          });
+          _this.updateParadigms()
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "删除中间泛式失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "删除中间泛式失败",
+          type: 'error'
+        });
+      })
     },
     registerParadigm(){
-      console.log("添加中间泛式")
+      // console.log("添加中间泛式")
       this.paradigmAddDialogVisible = true
     },
     closeParadigmAddDialog(){
@@ -193,6 +233,9 @@ export default {
     },
     updateParadigms(){
       this.reloadExistSentence()
+    },
+    closeParadigmEditDialog(){
+      this.paradigmEditDialogVisible = false
     }
   },
   watch: {
@@ -209,6 +252,7 @@ export default {
   },
   components:{
     "v-paradigm-add": ParadigmAdd,
+    "v-paradigm-edit": ParadigmEdit,
   }
 }
 </script>
