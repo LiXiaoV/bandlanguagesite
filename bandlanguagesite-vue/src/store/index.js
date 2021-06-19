@@ -7,8 +7,10 @@ export default new Vuex.Store({
     state:{
         userInfo:JSON.parse(sessionStorage.getItem("userInfo")),
         scriptSelected:{
-            isSelected:true,
-            text:"tttttttext"
+            isSelected:false,
+            text:"tttttttext",
+            sceneId:0,
+            isSceneSelected:false,
         },
         contextPanelVisible:true,
     },

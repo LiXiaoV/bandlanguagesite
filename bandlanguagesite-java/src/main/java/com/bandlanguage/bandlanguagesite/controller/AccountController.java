@@ -26,30 +26,30 @@ public class AccountController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/doLoginByUsername",method = RequestMethod.POST)
-    public Result loginByUsername(HttpServletResponse response,@RequestBody LoginByUsernameVo loginByUsernameVo){
+    @RequestMapping(value = "/doLoginByUsername", method = RequestMethod.POST)
+    public Result loginByUsername(HttpServletResponse response, @RequestBody LoginByUsernameVo loginByUsernameVo) {
         User user = userService.loginByUsername(response, loginByUsernameVo);
-        if(user != null){
+        if (user != null) {
             return Result.success(user);
         }
-        return Result.fail(500,"登陆失败");
-   }
+        return Result.fail(500, "登陆失败");
+    }
 
-    @RequestMapping(value = "/doLoginByEmail",method = RequestMethod.POST)
-    public Result loginByEmail(@RequestBody LoginByEmailVo loginByEmailVo){
+    @RequestMapping(value = "/doLoginByEmail", method = RequestMethod.POST)
+    public Result loginByEmail(@RequestBody LoginByEmailVo loginByEmailVo) {
         return Result.success();
     }
 
-    @RequestMapping(value = "/doLoginByPhone",method = RequestMethod.POST)
-    public Result loginByPhone(@RequestBody LoginByPhoneVo loginByPhoneVo){
+    @RequestMapping(value = "/doLoginByPhone", method = RequestMethod.POST)
+    public Result loginByPhone(@RequestBody LoginByPhoneVo loginByPhoneVo) {
         return Result.success();
     }
 
-    @RequestMapping(value = "/doRegister",method = RequestMethod.POST)
-    public Result register(HttpServletResponse response, @RequestBody User user){
+    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
+    public Result register(HttpServletResponse response, @RequestBody User user) {
         boolean res = userService.register(response, user);
-        if(res)
+        if (res)
             return Result.success("注册用户成功");
-        return Result.fail(500,"注册用户失败");
+        return Result.fail(500, "注册用户失败");
     }
 }

@@ -57,6 +57,8 @@ export default {
   name: "RuleAdd",
   props:{
     sceneId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -123,9 +125,14 @@ export default {
       registerRuleObj["code"] = _this.ruleObj.code
       registerRuleObj["userId"] = _this.$store.getters.getUser.userId
       registerRuleObj["sceneId"] = _this.sceneId
+      if(_this.itemId > 0 && _this.itemType > 0){
+        registerRuleObj["type"] = _this.itemType
+        registerRuleObj["itemId"] = _this.itemId
+      }
+
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/rule/insert`,
+        url: `${this.global.serverUrl}/rule/`,
         data: registerRuleObj
       }).then(res => {
         if(res.data.code === 0){
@@ -135,6 +142,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
           this.cancelRegisterRule()
         }
         else {

@@ -69,7 +69,7 @@ export default {
         let wordId = this.$props.wordId
         this.$axios({
           method: 'get',
-          url: `${this.global.serverUrl}/word/wordDetail/${wordId}`
+          url: `${this.global.serverUrl}/word/${wordId}`
         }).then(res => {
           let detailWord = res.data.data
           // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词

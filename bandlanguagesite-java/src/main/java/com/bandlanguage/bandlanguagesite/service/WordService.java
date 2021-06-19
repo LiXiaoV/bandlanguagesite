@@ -44,12 +44,12 @@ public interface WordService {
     WordVo getWordDetailById(Long wordId);
 
     /**
-     *通过关键字查询相关词汇
+     * 通过关键字查询相关词汇
      **/
     List<WordVo> getWordsByKeyword(String keyword);
 
     /**
-     *通过关键字分页查询相关词汇
+     * 通过关键字分页查询相关词汇
      **/
     List<WordVo> getWordsByKeywordInPage(String keyword, Long pageNum, Long pageSize);
 
@@ -64,12 +64,12 @@ public interface WordService {
     Boolean editWord(WordVo wordVo);
 
     /**
-     * 根据ID删除词汇
+     * 删除词汇
      *
-     * @param wordId 词汇ID
-     * @return 是否成功
+     * @param wordVo 词汇的视图类，主要用来传词汇ID和删除者的用户ID
+     * @return 删除词汇是否成功
      */
-    Boolean deleteWordById(Long wordId);
+    Boolean deleteWord(WordVo wordVo);
 
     /**
      * 获取所有的词汇

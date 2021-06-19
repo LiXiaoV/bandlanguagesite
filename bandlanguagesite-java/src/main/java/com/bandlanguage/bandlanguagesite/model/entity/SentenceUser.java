@@ -28,7 +28,7 @@ import java.util.Date;
 @TableName("bls_sentence_user")
 public class SentenceUser implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "sentence_id")

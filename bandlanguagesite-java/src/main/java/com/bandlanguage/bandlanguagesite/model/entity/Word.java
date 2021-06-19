@@ -15,6 +15,7 @@ import java.util.Date;
 
 /**
  * 词的实体类
+ *
  * @author xiaov
  * @since 2021-05-21 17:08
  */

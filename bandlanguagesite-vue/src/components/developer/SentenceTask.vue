@@ -62,7 +62,7 @@ export default {
       sentenceTypeInDialogVisible: false,
 
       typeInSentenceId: 0,
-      typeInSentenceName: "录入句型",
+      typeInSentenceName: "",
       editStyle: 0,
 
     };
@@ -72,14 +72,14 @@ export default {
       // console.log(sentence)
       this.sentenceTypeInDialogVisible = true
       this.typeInSentenceId = sentence.sentenceId
-      this.typeInSentenceName = "录入句型 -- "+sentence.name
+      this.typeInSentenceName = sentence.name
       this.isSentenceTypeInFlag = false
       this.editStyle = 0
     },
     updateTypeInSentence(sentence){
       this.sentenceTypeInDialogVisible = true
       this.typeInSentenceId = sentence.sentenceId
-      this.typeInSentenceName = "修改录入的句型 -- "+sentence.name
+      this.typeInSentenceName = sentence.name
       this.isSentenceTypeInFlag = true
       this.editStyle = 1
     },

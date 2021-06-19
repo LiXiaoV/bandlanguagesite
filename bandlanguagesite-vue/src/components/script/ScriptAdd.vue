@@ -75,7 +75,7 @@ export default {
       registerScript["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/script/insert/`,
+        url: `${this.global.serverUrl}/script/`,
         data: registerScript
       }).then(res => {
         if(res.data.code === 0){

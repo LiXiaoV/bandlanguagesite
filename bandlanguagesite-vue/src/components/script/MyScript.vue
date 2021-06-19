@@ -77,9 +77,13 @@ export default {
     },
     deleteScript(id){
       const _this = this
+      let deleteScript = {}
+      deleteScript["scriptId"] = Number(id)
+      deleteScript["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/script/${id}`,
+        url: `${this.global.serverUrl}/script/`,
+        data: deleteScript,
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({

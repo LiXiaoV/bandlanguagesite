@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="typeInSentenceName"
+      :title="(editStyle === 0?'录入句型 -- ':'修改录入的句型 -- ')+typeInSentenceName"
       :visible.sync="sentenceTypeInDialogVisible"
       width="60%"
       center
@@ -8,10 +8,15 @@
     <v-type-in :developerEnter="Boolean(1)"
                :sceneId="Number(sceneId)"
                :editStyle="editStyle"
+               :itemId="typeInSentenceId"
+               :itemName="typeInSentenceName"
+               :itemType="Number(2)"
                :clearRuleOptionFlag="clearRuleOptionFlag"
                :clearNodeOptionFlag="clearNodeOptionFlag"
+               :closeRegisterCardFlag="closeRegisterCardFlag"
                @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
+               @returnCloseRegisterCardFlag="returnCloseRegisterCardFlag"
                @typeInEvent="typeInEvent"></v-type-in>
     <div slot="footer" style="text-align: right;margin-top: 3vh;">
       <el-button @click="confirm">关闭</el-button>
@@ -37,6 +42,7 @@ export default {
 
       clearRuleOptionFlag: false,
       clearNodeOptionFlag: false,
+      closeRegisterCardFlag: false,
     }
   },
   components:{
@@ -44,8 +50,11 @@ export default {
   },
   methods:{
     confirm(){
+      // 关闭之前，先把RuleOption和NodeOption清空，把所有的注册页关了，
+      //免得下一次进来这个dialog上一次的操作痕迹还在，就很影响体验
       this.clearRuleOptionFlag = true
       this.clearNodeOptionFlag = true
+      this.closeRegisterCardFlag = true
       this.$emit('closeSentenceTypeInDialog')
     },
     handleClose(){
@@ -56,6 +65,9 @@ export default {
     },
     returnClearNodeOptionFlag(){
       this.clearNodeOptionFlag = false
+    },
+    returnCloseRegisterCardFlag(){
+      this.closeRegisterCardFlag = false
     },
     typeInEvent(){
       if(this.isSentenceTypeInFlag === false){

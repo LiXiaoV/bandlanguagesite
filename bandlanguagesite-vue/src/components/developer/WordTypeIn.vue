@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="typeInWordName"
+      :title="(editStyle === 0?'录入词汇 -- ':'修改录入的词汇 -- ')+typeInWordName"
       :visible.sync="wordTypeInDialogVisible"
       width="60%"
       center
@@ -9,6 +9,8 @@
                :editStyle="editStyle"
                :sceneId="Number(sceneId)"
                :itemId="typeInWordId"
+               :itemName="typeInWordName"
+               :itemType="Number(1)"
                :clearRuleOptionFlag="clearRuleOptionFlag"
                :clearNodeOptionFlag="clearNodeOptionFlag"
                :closeRegisterCardFlag="closeRegisterCardFlag"

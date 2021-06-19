@@ -17,7 +17,7 @@
 9. 如果要合并到dev分支，则到github项目里面创建拉取请求，其他人审核代码通过后合并到dev分支
 10. 如有修改，建议每天push一次到自己的分支
 11. 如果需要更改，建议每次更改之前pull dev分支到自己的分支，如果有冲突自行解决，如：
-`git fetch origin dev`，获取远端的origin/dev分支；
+    `git fetch origin dev`，获取远端的origin/dev分支；
     `git log -p dev..origin/dev`，查看本地dev与远端origin/dev的版本差异；
     `git merge origin/dev`，合并远端分支origin/dev到当前分支
 

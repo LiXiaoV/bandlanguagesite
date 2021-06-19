@@ -36,7 +36,7 @@ public class RuleVo implements Serializable {
     private String editorUsername;
     private String editorNickname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     private Integer status;
@@ -47,6 +47,6 @@ public class RuleVo implements Serializable {
     // 用于规则-句型 或规则-词汇关联
     // 词汇或句型的ID
     private Long itemId;
-    // 0:词汇 1：句型
+    // 1:词汇 2：句型
     private int type;
 }

@@ -100,7 +100,7 @@ export default {
       })
       
       this.CodeMirrorEditor.on('cursorActivity', (cm) => {
-        // this.CodeMirrorEditor.showHint()
+         this.CodeMirrorEditor.showHint()
          this.selection.to = cm.getCursor()
         if (this.CodeMirrorEditor.getSelection().length === 0) {
           this.selection.from = cm.getCursor()
@@ -162,7 +162,7 @@ export default {
       
       return new Promise((accept) => {
         console.log(option)
-        console.log("开始获取提示！")
+        //console.log("开始获取提示！")
         setTimeout(() => {
           //识别中文
           let WORD = /^[\u4E00-\u9FA5]{1,5}$/
@@ -176,6 +176,7 @@ export default {
           let curWord = start != end && curLine.slice(start, end)
           let list = [], isDefinedObj = false
           if (curWord) {
+            //开始获取提示
             if (list.length === 0) {
               var dotIndex = curWord.lastIndexOf('.'),
                   memberStr = curWord.slice(dotIndex + 1),

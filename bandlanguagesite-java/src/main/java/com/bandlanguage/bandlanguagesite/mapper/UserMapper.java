@@ -23,6 +23,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 根据用户的邮箱查询用户
+     *
      * @param email 用户的邮箱号
      * @return 查询的用户实体类
      */
