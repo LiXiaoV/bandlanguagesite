@@ -8,6 +8,8 @@ import com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.node.
 import com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser.BLLexer;
 import com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser.BLParser;
 import com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser.Visitor;
+import com.bandlanguage.bandlanguagesite.compilecore.utils.ThrowingErrorListener;
+import com.bandlanguage.bandlanguagesite.compilecore.utils.TreeUtils;
 import com.bandlanguage.bandlanguagesite.service.BLService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -23,7 +25,12 @@ import org.springframework.stereotype.Service;
 public class FunctionalIntegrationBLServiceImpl implements BLService {
     @Override
     public String getAST(String script) {
-        return null;
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
+        BLParser parser = new BLParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+        ParseTree tree = parser.script();
+        return TreeUtils.printSyntaxTree(parser,tree);
     }
 
     @Override
@@ -42,9 +49,7 @@ public class FunctionalIntegrationBLServiceImpl implements BLService {
         EnvironmentConst.environment.set(environment);
 
 //        String script = "显示 专家列表";
-        CharStream input = CharStreams.fromString(script);
-        BLLexer lexer = new BLLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
         BLParser parser = new BLParser(tokens);
         ParseTree tree = parser.script();
         Visitor visitor = new Visitor();
@@ -60,5 +65,11 @@ public class FunctionalIntegrationBLServiceImpl implements BLService {
         }
         environment.showForUser.clear();
         return res;
+    }
+
+    private CommonTokenStream getCommonTokenStream(String script){
+        CharStream input = CharStreams.fromString(script);
+        BLLexer lexer = new BLLexer(input);
+        return new CommonTokenStream(lexer);
     }
 }

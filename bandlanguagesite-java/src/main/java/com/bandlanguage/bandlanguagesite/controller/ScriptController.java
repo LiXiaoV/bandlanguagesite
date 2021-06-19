@@ -172,7 +172,7 @@ public class ScriptController {
 
     @RequestMapping(value = "/runScript", method = RequestMethod.POST)
     public Result runScript(@RequestParam String script, Long sceneId) {
-//        System.out.println("script = " + script);
+        System.out.println("script = " + script);
         BLService blService = blFactory.getBLService(sceneId);
         return Result.success(blService.runScript(script));
     }

@@ -1,19 +1,17 @@
-package com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser;// Generated from Language.g4 by ANTLR 4.8
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+// Generated from /Users/xiaov/IdeaProjects/bandlanguagesite/bandlanguagesite-java/src/main/java/com/bandlanguage/bandlanguagesite/compilecore/organizationmanage/parser/Language.g4 by ANTLR 4.9.1
+package com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LanguageParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -155,7 +153,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_script; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitScript(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitScript(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -217,7 +215,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -278,7 +276,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_simpleStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSimpleStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSimpleStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -355,7 +353,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_complexStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitComplexStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitComplexStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -423,7 +421,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject_predicate_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSubject_predicate_object_stmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSubject_predicate_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -481,7 +479,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject_predicate_attribute_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSubject_predicate_attribute_object_stmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSubject_predicate_attribute_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -545,7 +543,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject_adverbial_predicate_attribute_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSubject_adverbial_predicate_attribute_object_stmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSubject_adverbial_predicate_attribute_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -661,7 +659,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject_adverbial_predicate_complement_attribute_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSubject_adverbial_predicate_complement_attribute_object_stmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSubject_adverbial_predicate_complement_attribute_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -794,7 +792,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_ifStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitIfStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitIfStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -858,7 +856,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_concurrentStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitConcurrentStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitConcurrentStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -921,7 +919,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_judgeStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitJudgeStmt(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitJudgeStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -975,7 +973,7 @@ public class LanguageParser extends Parser {
 			setState(186);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
-			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
@@ -1018,7 +1016,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitSubject(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitSubject(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1036,7 +1034,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1063,7 +1061,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitPredicate(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitPredicate(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1110,7 +1108,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_object; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitObject(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitObject(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1189,7 +1187,7 @@ public class LanguageParser extends Parser {
 			setState(208);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,25,_ctx);
-			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
@@ -1256,7 +1254,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_attribute; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitAttribute(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitAttribute(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1350,7 +1348,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitAdverbial(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitAdverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1402,7 +1400,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_complement; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitComplement(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitComplement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1459,7 +1457,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_place_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitPlace_adverbial(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitPlace_adverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1517,7 +1515,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_preposition_object; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitPreposition_object(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitPreposition_object(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1573,7 +1571,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_isExist; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitIsExist(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitIsExist(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1607,7 +1605,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_notExist; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitNotExist(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitNotExist(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1643,7 +1641,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_time_complement; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitTime_complement(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitTime_complement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1692,7 +1690,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_comparator; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitComparator(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitComparator(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1710,7 +1708,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1736,7 +1734,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_logic_operator; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitLogic_operator(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitLogic_operator(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1754,7 +1752,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1804,7 +1802,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_noun; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitNoun(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitNoun(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1822,7 +1820,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1867,7 +1865,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_verb; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitVerb(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitVerb(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1885,7 +1883,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1911,7 +1909,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_adjective; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitAdjective(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitAdjective(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1929,7 +1927,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1956,7 +1954,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_preposition; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitPreposition(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitPreposition(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1974,7 +1972,7 @@ public class LanguageParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			else {
-				if ( _input.LA(1)== Token.EOF ) matchedEOF = true;
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 				_errHandler.reportMatch(this);
 				consume();
 			}
@@ -1999,7 +1997,7 @@ public class LanguageParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_direction; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor) return ((LanguageVisitor<? extends T>)visitor).visitDirection(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitDirection(this);
 			else return visitor.visitChildren(this);
 		}
 	}

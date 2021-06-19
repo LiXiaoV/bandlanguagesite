@@ -1,9 +1,9 @@
 <template>
   <div class="code-mirror-div">
     <div class="codeMenu">
-      <el-button size="small" @click="runCommand()">执行 </el-button>
+      <el-button size="small" @click="runScript">执行 </el-button>
       <el-button size="small">保存</el-button>
-      <el-button size="small">语法树</el-button>
+      <el-button size="small" @click="showSyntaxTree">语法树</el-button>
       <el-button size="small">默认剧本 </el-button>
     </div>
 
@@ -23,6 +23,24 @@
       <textarea class="form-control" id="code" name="code"></textarea>
     </div>
 
+    <el-dialog
+        title="语法树"
+        :visible.sync="syntaxTreeDialogVisible"
+        width="80%"
+        center
+        :before-close="handleClose"
+        :append-to-body="Boolean(1)">
+      <v-syntax-tree :treeJsonString="treeJsonString"></v-syntax-tree>
+    </el-dialog>
+
+    <div style="margin-top: 2vh;">
+      <v-run-script-result :addResultFlag="addResultFlag"
+                           :result="runScriptResult"
+                            @returnAddResult="returnAddResult"></v-run-script-result>
+    </div>
+
+
+
   </div>
 </template>
 <script>
@@ -33,9 +51,14 @@ import "codemirror/addon/hint/show-hint.css"
 require("codemirror/addon/hint/show-hint")
 let CodeMirror = require("codemirror/lib/codemirror")
 
+import SyntaxTree from "@/components/debugger/SyntaxTree";
+import RunScriptResult from "@/components/debugger/RunScriptResult";
+
 export default {
   name: 'Command',
   components: {
+    "v-syntax-tree": SyntaxTree,
+    "v-run-script-result": RunScriptResult,
     //CodeMirrorEditor
   },
 
@@ -51,7 +74,15 @@ export default {
       toolBar: { isLint: false },
       codeHints: [],
       selection: { from: {}, to: {} },
-      
+
+      // 语法树
+      syntaxTreeDialogVisible: false,
+      treeJsonString: '{}',
+
+      // 帮语运行结果
+      runScriptResult: null,
+      addResultFlag: false,
+
     };
   },
   computed: {
@@ -245,7 +276,93 @@ export default {
       })
  
       
+    },
+
+    handleClose(){
+      this.syntaxTreeDialogVisible = false
+    },
+
+    runScript(){
+      const _this = this
+
+      this.$axios({
+        method: 'post',
+        url: `${this.global.serverUrl}/script/runScript`,
+        params: {
+          sceneId: _this.$route.params.id,
+          script: _this.codeValue,
+        }
+      }).then(res => {
+        if(res.data.code === 0){
+          let responseResult = res.data.data
+          // console.log(responseResult)
+          if(responseResult === true)
+            responseResult = "执行成功"
+          else if(responseResult === false){
+            _this.$message({
+              showClose: true,
+              message: "运行剧本失败",
+              type: 'error'
+            });
+            return;
+          }
+          _this.runScriptResult = responseResult
+          _this.addResultFlag = true
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "运行剧本失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "运行剧本失败",
+          type: 'error'
+        });
+      })
+      // console.log(this.codeValue)
+      // console.log("场景区:"+this.$route.params.id)
+    },
+
+    showSyntaxTree(){
+      const _this = this
+
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/script/showAST`,
+        params: {
+          sceneId: _this.$route.params.id,
+          script: _this.codeValue,
+        }
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.treeJsonString = res.data.data
+          _this.syntaxTreeDialogVisible = true
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "解析语法树失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "获取语法树失败",
+          type: 'error'
+        });
+      })
+      // console.log(this.codeValue)
+      // console.log("场景区:"+this.$route.params.id)
+    },
+    returnAddResult(){
+      this.addResultFlag = false
     }
+
 
 
   },

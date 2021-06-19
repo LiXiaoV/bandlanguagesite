@@ -4,6 +4,7 @@ import com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.node.scr
 import com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser.LanguageLexer;
 import com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser.LanguageParser;
 import com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser.MyVisitor;
+import com.bandlanguage.bandlanguagesite.compilecore.utils.TreeUtils;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -38,6 +39,7 @@ public class OrganizationManageTests {
         LanguageParser parser = new LanguageParser(tokens);
         // 生成树推到语法树
         ParseTree tree = parser.script();
+        System.out.println("tree.toStringTree() = " + TreeUtils.printSyntaxTree(parser,tree));
         long endTime1 = System.currentTimeMillis();
         System.out.println("语法程序运行时间：" + (endTime1 - startTime1) + "ms");
 

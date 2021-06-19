@@ -1,19 +1,17 @@
-package com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser;// Generated from BL.g4 by ANTLR 4.7.2
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+// Generated from /Users/xiaov/IdeaProjects/bandlanguagesite/bandlanguagesite-java/src/main/java/com/bandlanguage/bandlanguagesite/compilecore/functionalintegration/parser/BL.g4 by ANTLR 4.9.1
+package com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class BLParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -146,7 +144,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_script; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitScript(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitScript(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -208,7 +206,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -272,7 +270,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_complexStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitComplexStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitComplexStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -364,7 +362,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_simpleStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSimpleStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSimpleStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -458,7 +456,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_runToolStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitRunToolStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitRunToolStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -521,7 +519,7 @@ public class BLParser extends Parser {
 						setState(105); 
 						_errHandler.sync(this);
 						_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
-					} while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER );
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 					}
 					break;
 				}
@@ -580,7 +578,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_setStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSetStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSetStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -655,7 +653,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_sortStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSortStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSortStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -703,7 +701,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_groupStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitGroupStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitGroupStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -756,7 +754,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_baStmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitBaStmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitBaStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -821,7 +819,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_newObj; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitNewObj(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitNewObj(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -889,7 +887,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate_adverbial_attribute_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPredicate_adverbial_attribute_object_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPredicate_adverbial_attribute_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -937,7 +935,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate_adverbial_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPredicate_adverbial_object_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPredicate_adverbial_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -983,7 +981,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate_attribute_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPredicate_attribute_object_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPredicate_attribute_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1029,7 +1027,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject_predicate_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSubject_predicate_object_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSubject_predicate_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1072,7 +1070,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate_object_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPredicate_object_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPredicate_object_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1111,7 +1109,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_compare_stmt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitCompare_stmt(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitCompare_stmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1155,7 +1153,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_compare; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitCompare(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitCompare(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1193,7 +1191,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_subject; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSubject(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSubject(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1238,7 +1236,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_object; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitObject(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitObject(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1255,7 +1253,7 @@ public class BLParser extends Parser {
 			setState(195);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
-			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
@@ -1291,7 +1289,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_object_split; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitObject_split(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitObject_split(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1345,7 +1343,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_object_single; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitObject_single(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitObject_single(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1397,7 +1395,7 @@ public class BLParser extends Parser {
 				setState(211);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
-				while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
@@ -1483,7 +1481,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_predicate; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPredicate(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPredicate(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1530,7 +1528,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_attribute; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitAttribute(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitAttribute(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1619,7 +1617,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitAdverbial(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitAdverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1675,7 +1673,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_place_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitPlace_adverbial(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitPlace_adverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1725,7 +1723,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_time_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitTime_adverbial(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitTime_adverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1762,7 +1760,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_common_adverbial; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitCommon_adverbial(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitCommon_adverbial(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1805,7 +1803,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_noun; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitNoun(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitNoun(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1864,7 +1862,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_verb; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitVerb(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitVerb(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2005,7 +2003,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_adjective; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitAdjective(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitAdjective(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2039,7 +2037,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_numerals; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitNumerals(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitNumerals(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2073,7 +2071,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_quantifiers; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitQuantifiers(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitQuantifiers(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2107,7 +2105,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_time; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitTime(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitTime(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2146,7 +2144,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_compareWord; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitCompareWord(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitCompareWord(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2190,7 +2188,7 @@ public class BLParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_sort; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BLVisitor) return ((BLVisitor<? extends T>)visitor).visitSort(this);
+			if ( visitor instanceof BLVisitor ) return ((BLVisitor<? extends T>)visitor).visitSort(this);
 			else return visitor.visitChildren(this);
 		}
 	}

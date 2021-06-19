@@ -1,4 +1,5 @@
-package com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser;// Generated from Language.g4 by ANTLR 4.8
+// Generated from /Users/xiaov/IdeaProjects/bandlanguagesite/bandlanguagesite-java/src/main/java/com/bandlanguage/bandlanguagesite/compilecore/organizationmanage/parser/Language.g4 by ANTLR 4.9.1
+package com.bandlanguage.bandlanguagesite.compilecore.organizationmanage.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

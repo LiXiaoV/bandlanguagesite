@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 public class PapersAnalysisBLServiceImpl implements BLService {
     @Override
     public String getAST(String script) {
-        CharStream input = CharStreams.fromString(script.trim());
-        LanguageLexer lexer = new LanguageLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
         LanguageParser parser = new LanguageParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(ThrowingErrorListener.INSTANCE);
@@ -33,11 +31,7 @@ public class PapersAnalysisBLServiceImpl implements BLService {
 
     @Override
     public Object runScript(String script) {
-        CharStream input = CharStreams.fromString(script.trim());
-
-        // 文法-标记
-        LanguageLexer lexer = new LanguageLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
 
         // 满足规则
         LanguageParser parser = new LanguageParser(tokens);
@@ -48,5 +42,13 @@ public class PapersAnalysisBLServiceImpl implements BLService {
         MyVisitor myVisitor = new MyVisitor();
         Script text = (Script) myVisitor.visit(tree);
         return text.run("");
+    }
+
+    private CommonTokenStream getCommonTokenStream(String script){
+        CharStream input = CharStreams.fromString(script);
+
+        // 文法-标记
+        LanguageLexer lexer = new LanguageLexer(input);
+        return new CommonTokenStream(lexer);
     }
 }

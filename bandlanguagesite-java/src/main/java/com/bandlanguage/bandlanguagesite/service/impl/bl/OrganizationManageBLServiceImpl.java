@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 public class OrganizationManageBLServiceImpl implements BLService {
     @Override
     public String getAST(String script) {
-        CharStream input = CharStreams.fromString(script.trim());
-        LanguageLexer lexer = new LanguageLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
         LanguageParser parser = new LanguageParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(ThrowingErrorListener.INSTANCE);
@@ -33,14 +31,18 @@ public class OrganizationManageBLServiceImpl implements BLService {
 
     @Override
     public Object runScript(String script) {
-        CharStream input = CharStreams.fromString(script.trim());
-        LanguageLexer lexer = new LanguageLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = getCommonTokenStream(script.trim());
         LanguageParser parser = new LanguageParser(tokens);
         ParseTree parseTree = parser.script();
 
         MyVisitor myVisitor = new MyVisitor();
         Script text = (Script) myVisitor.visit(parseTree);
         return text.run("");
+    }
+
+    private CommonTokenStream getCommonTokenStream(String script){
+        CharStream input = CharStreams.fromString(script);
+        LanguageLexer lexer = new LanguageLexer(input);
+        return new CommonTokenStream(lexer);
     }
 }

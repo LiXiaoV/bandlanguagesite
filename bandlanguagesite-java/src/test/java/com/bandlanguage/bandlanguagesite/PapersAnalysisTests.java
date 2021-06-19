@@ -4,6 +4,7 @@ import com.bandlanguage.bandlanguagesite.compilecore.papersanalysis.node.script.
 import com.bandlanguage.bandlanguagesite.compilecore.papersanalysis.parser.LanguageLexer;
 import com.bandlanguage.bandlanguagesite.compilecore.papersanalysis.parser.LanguageParser;
 import com.bandlanguage.bandlanguagesite.compilecore.papersanalysis.parser.MyVisitor;
+import com.bandlanguage.bandlanguagesite.compilecore.utils.TreeUtils;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -38,6 +39,8 @@ public class PapersAnalysisTests {
         LanguageParser parser = new LanguageParser(tokens);
         // 生成树推到语法树
         ParseTree tree = parser.script();
+        System.out.println("tree.toStringTree() = " + TreeUtils.printSyntaxTree(parser,tree));
+        System.out.println("tree.toStringTree(parser) = " + tree.toStringTree(parser));
         long endTime1 = System.currentTimeMillis();
         System.out.println("语法程序运行时间：" + (endTime1 - startTime1) + "ms");
 

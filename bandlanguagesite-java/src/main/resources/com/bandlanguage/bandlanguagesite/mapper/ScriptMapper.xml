@@ -44,11 +44,6 @@
             where tb.status > 0 order by tc.dept_id,tb.script_id
     </select>
 
-    <select id="getAllScriptsBySceneId" resultType="com.bandlanguage.bandlanguagesite.model.entity.Script">
-        select tb.* from bls_dept_script as ta left join bls_script as tb on ta.script_id = tb.script_id
-        where ta.dept_id = #{sceneId}
-    </select>
-
     <select id="getScriptsTotal" resultType="java.lang.Long" >
         select count(*) from bls_script where status>0
     </select>

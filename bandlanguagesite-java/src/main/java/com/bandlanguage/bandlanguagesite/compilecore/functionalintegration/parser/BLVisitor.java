@@ -1,4 +1,5 @@
-package com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser;// Generated from BL.g4 by ANTLR 4.7.2
+// Generated from /Users/xiaov/IdeaProjects/bandlanguagesite/bandlanguagesite-java/src/main/java/com/bandlanguage/bandlanguagesite/compilecore/functionalintegration/parser/BL.g4 by ANTLR 4.9.1
+package com.bandlanguage.bandlanguagesite.compilecore.functionalintegration.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

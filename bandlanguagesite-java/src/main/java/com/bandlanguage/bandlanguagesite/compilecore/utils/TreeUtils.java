@@ -32,7 +32,7 @@ public class TreeUtils {
         names.put("adverbial", "状语");
         names.put("complement", "补语");
         names.put("place_adverbial", "地点状语");
-        names.put("numberals", "数量词");
+        names.put("numerals", "数词");
         names.put("comparator", "比较词");
         names.put("conjunction", "介词");
         names.put("noun", "名词");
@@ -40,7 +40,21 @@ public class TreeUtils {
         names.put("adjective", "形容词");
         names.put("preposition", "介词");
         names.put("direction", "方位词");
+        names.put("preposition_object", "介宾短语");
+        names.put("time_complement", "时量补语");
 
+        // 功能集成
+        names.put("runToolStmt", "执行工具句");
+        names.put("compare", "比较句");
+        names.put("compareWord", "比较词汇");
+        names.put("predicate_object_stmt", "谓宾句");
+        names.put("object_single", "单个对象");
+        names.put("setStmt", "设定句");
+        names.put("baStmt", "把字句");
+        names.put("predicate_adverbial_attribute_object_stmt", "谓状定宾句");
+        names.put("common_adverbial", "普通状语");
+        names.put("sortStmt", "排序句");
+        names.put("sort", "排序");
     }
 
     public static String printSyntaxTree(Parser parser, ParseTree root) {
@@ -54,23 +68,32 @@ public class TreeUtils {
             buf.append("{");
         }
         String s = Trees.getNodeText(aRoot, ruleNames);
+//        System.out.println("s = " + s);
         if (names.containsKey(Trees.getNodeText(aRoot, ruleNames))){
             s = names.get(Trees.getNodeText(aRoot, ruleNames));
         }
-        buf.append("\"name\":\""+ s).append("\",");
+        buf.append("\"name\":\"").append(s).append("\"");
         if (aRoot instanceof ParserRuleContext) {
             ParserRuleContext prc = (ParserRuleContext) aRoot;
             if (prc.children != null) {
+                buf.append(",");
                 buf.append("\"children\":[");
-                for (ParseTree child : prc.children) {
+                int size = prc.children.size();
+                for (int i = 0; i < size; i++) {
+                    ParseTree child = prc.children.get(i);
                     buf.append("{");
                     recursive(child, buf, offset + 1, ruleNames);
-                    buf.append(",");
+                    buf.append("}");
+                    if(i+1 < size)
+                        buf.append(",");
                 }
+                buf.append("]");
             }
-            buf.append("]");
         }
-        buf.append("}");
+        if(offset == 0){
+            buf.append("}");
+        }
+
     }
 
 }
