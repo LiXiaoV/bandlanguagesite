@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">新增规则</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="closeRegisterRuleCard"></i>
+      </el-col>
+    </el-row>
+    
     <el-form :model="ruleObj" label-position="top">
       <el-form-item label="规则符号 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="ruleObj.rule" maxlength="50" show-word-limit></el-input>
@@ -35,11 +44,11 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
+    <div style="text-align: center;">
       <el-button @click="cancelRegisterRule">取消</el-button>
       <el-button type="primary" @click="confirmRegister">新增</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -48,6 +57,8 @@ export default {
   name: "RuleAdd",
   props:{
     sceneId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -68,9 +79,43 @@ export default {
       this.ruleObj.express = ""
       this.ruleObj.description = ""
       this.ruleObj.code = ""
-      this.$emit('closeRegisterRuleDialog',false)
+      this.$emit('closeRegisterRuleCard',false)
     },
     confirmRegister() {
+      // 检查输入
+      if(this.ruleObj.rule === '' || this.ruleObj.rule === undefined || this.ruleObj.rule === null){
+        this.$message({
+          showClose: true,
+          message: "规则名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.chineseName === '' || this.ruleObj.chineseName === undefined || this.ruleObj.chineseName === null){
+        this.$message({
+          showClose: true,
+          message: "规则中文名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.express === '' || this.ruleObj.express === undefined || this.ruleObj.express === null){
+        this.$message({
+          showClose: true,
+          message: "规则表达式不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.code === '' || this.ruleObj.code === undefined || this.ruleObj.code === null){
+        this.$message({
+          showClose: true,
+          message: "规则代码不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
       let registerRuleObj = {}
       registerRuleObj["rule"] = _this.ruleObj.rule
@@ -80,9 +125,14 @@ export default {
       registerRuleObj["code"] = _this.ruleObj.code
       registerRuleObj["userId"] = _this.$store.getters.getUser.userId
       registerRuleObj["sceneId"] = _this.sceneId
+      if(_this.itemId > 0 && _this.itemType > 0){
+        registerRuleObj["type"] = _this.itemType
+        registerRuleObj["itemId"] = _this.itemId
+      }
+
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/rule/insert`,
+        url: `${this.global.serverUrl}/rule/`,
         data: registerRuleObj
       }).then(res => {
         if(res.data.code === 0){
@@ -92,6 +142,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
           this.cancelRegisterRule()
         }
         else {
@@ -109,6 +160,9 @@ export default {
         });
       })
     },
+    closeRegisterRuleCard(){
+      this.cancelRegisterRule()
+    }
   },
   created() {
   }

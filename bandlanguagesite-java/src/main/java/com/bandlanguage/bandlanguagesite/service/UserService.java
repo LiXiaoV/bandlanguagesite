@@ -37,6 +37,7 @@ public interface UserService {
 
     /**
      * 根据用户的邮箱查询用户
+     *
      * @param email 用户的邮箱号
      * @return 查询的用户实体类
      */
@@ -44,32 +45,34 @@ public interface UserService {
 
     /**
      * 注册用户
+     *
      * @param response HttpServletResponse
-     * @param user 用户实体类
+     * @param user     用户实体类
      * @return 是否成功
      */
-    boolean register(HttpServletResponse response,User user);
+    boolean register(HttpServletResponse response, User user);
 
     /**
      * 根据用户名登陆
+     *
      * @param response HttpServletResponse
-     * @param loginVo 用户名登陆的输入类
+     * @param loginVo  用户名登陆的输入类
      * @return 登陆是否成功
      */
     User loginByUsername(HttpServletResponse response, LoginByUsernameVo loginVo);
 
     /**
      * 修改密码
-     * @param token 用户token
-     * @param userId 用户ID
+     *
+     * @param token    用户token
+     * @param userId   用户ID
      * @param formPass 输入的密码
      * @return 修改密码是否成功
      */
     boolean updatePassword(String token, long userId, String formPass);
 
 
+    User getByToken(HttpServletResponse response, String token);
 
-    User getByToken(HttpServletResponse response,String token);
-
-    String createToken(HttpServletResponse response,LoginByUsernameVo login);
+    String createToken(HttpServletResponse response, LoginByUsernameVo login);
 }

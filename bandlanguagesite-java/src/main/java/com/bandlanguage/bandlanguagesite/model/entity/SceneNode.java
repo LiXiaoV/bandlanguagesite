@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 /**
  * 场景区-节点
+ *
  * @author xiaov
  * @since 2021-05-31 11:01
  */
@@ -25,7 +26,7 @@ import java.io.Serializable;
 @TableName("bls_dept_node")
 public class SceneNode implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "dept_id")

@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <el-form :model="newScript" label-position="top">
-      <el-form-item label="剧本名称" :label-width="formLabelWidth">
-        <el-input v-model="newScript.name" maxlength="100" show-word-limit></el-input>
+  <el-dialog title="编辑剧本" :visible="editFormVisible" :show-close="false">
+    <el-form :model="existScript" label-position="top">
+      <el-form-item label="剧本名称 *" :label-width="formLabelWidth">
+        <el-input v-model="existScript.name" maxlength="20" show-word-limit></el-input>
       </el-form-item>
-      <el-form-item label="剧本内容" :label-width="formLabelWidth">
+      <el-form-item label="剧本描述 *" :label-width="formLabelWidth">
         <el-input
-            v-model="newScript.content"
+            v-model="existScript.description"
             type="textarea"
             :autosize="{ minRows: 2 }"
-            maxlength="1000"
+            maxlength="250"
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="剧本描述" :label-width="formLabelWidth">
+      <el-form-item label="剧本内容" :label-width="formLabelWidth">
         <el-input
-            v-model="newScript.description"
+            v-model="existScript.content"
             type="textarea"
             :autosize="{ minRows: 2 }"
             maxlength="250"
@@ -24,66 +24,114 @@
       </el-form-item>
     </el-form>
     <div slot="footer">
-      <el-button @click="cancelRegister">清除</el-button>
-      <el-button type="primary" @click="confirmRegister">保存</el-button>
+      <el-button @click="cancelEdit">取消</el-button>
+      <el-button type="primary" @click="confirmEdit">更新</el-button>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
 export default {
   name: "ScriptEdit",
-  data(){
+  data() {
     return {
-      newScript: {
+      existScript: {
         name: "",
-        content: "",
         description: "",
+        content: "",
       },
-      userId: 3,
+
       formLabelWidth: "120px",
-    }
+    };
   },
-  methods:{
-    cancelRegister() {
-      this.newScript.name = ""
-      this.newScript.content = ""
-      this.newScript.description = ""
+  props:{
+    editFormVisible:Boolean,
+    scriptId:Number
+  },
+  methods: {
+    clearInput(){
+      this.existScript = {}
     },
-    confirmRegister() {
+    cancelEdit() {
+      this.clearInput()
+      this.$emit('closeEditScriptDialog',false)
+    },
+    confirmEdit() {
+      // 检查输入
+      if(this.existScript.name === '' || this.existScript.name === undefined || this.existScript.name === null){
+        this.$message({
+          showClose: true,
+          message: "剧本名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.existScript.description === '' || this.existScript.description === undefined || this.existScript.description === null){
+        this.$message({
+          showClose: true,
+          message: "剧本描述不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
-      let registerScript = _this.newScript
-      registerScript["userId"] = _this.$store.getters.getUser.userId
-      registerScript["sceneId"] = _this.$route.params.id
+      let updateScript = _this.existScript
+      updateScript["userId"] = _this.$store.getters.getUser.userId
+      updateScript["sceneId"] = _this.$route.params.id
       this.$axios({
-        method: 'post',
-        url: `${this.global.serverUrl}/script/insert/`,
-        data: registerScript
+        method: 'put',
+        url: `${this.global.serverUrl}/script/`,
+        data: updateScript
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
             showClose: true,
-            message: "保存剧本成功",
+            message: "修改剧本成功",
             type: 'success'
           });
-          this.cancelRegister()
+          _this.cancelEdit()
         }
         else {
           _this.$message({
             showClose: true,
-            message: "保存剧本失败",
+            message: "修改剧本失败",
             type: 'error'
           });
         }
       }).catch( () => {
         _this.$message({
           showClose: true,
-          message: "保存剧本失败",
+          message: "修改剧本失败",
           type: 'error'
         });
       })
+      // console.log("existScript:")
+      // console.log(this.existScript)
+      this.$emit('closeEditScriptDialog',false)
     },
-  }
+  },
+  watch: {
+    editFormVisible(newVal, oldVal) {
+      if (oldVal === false && newVal === true) {
+        //请求数据
+        const _this = this
+        let scriptId = this.$props.scriptId
+        this.$axios({
+          method: 'get',
+          url: `${this.global.serverUrl}/script/${scriptId}`
+        }).then(res => {
+          _this.existScript = res.data.data
+        }).catch( error => {
+          console.log(error)
+        })
+      }
+    },
+  },
+  created() {},
+  computed: {
+
+  },
 }
 </script>
 

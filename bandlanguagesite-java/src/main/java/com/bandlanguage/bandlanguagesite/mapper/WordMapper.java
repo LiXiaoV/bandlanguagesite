@@ -42,7 +42,7 @@ public interface WordMapper extends BaseMapper<Word> {
     List<WordVo> getAllWords();
 
     /**
-     *通过关键字获取词汇
+     * 通过关键字获取词汇
      **/
     List<WordVo> getWordsByKeyword(String keyword);
 

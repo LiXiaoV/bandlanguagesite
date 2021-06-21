@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * Jwt工具类，生成JWT和认证
+ *
  * @author xiaov
  * @since 2021-05-22 10:11
  */
@@ -42,19 +43,20 @@ public class JwtUtil {
 
     /**
      * 过期时间
+     *
      * @param userId 用户ID
      * @return token字符串
      */
-    public String createToken(long userId){
+    public String createToken(long userId) {
         //过期时间
-        Date expireDate = new Date(System.currentTimeMillis()+expire * 1000);
+        Date expireDate = new Date(System.currentTimeMillis() + expire * 1000);
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("alg","HS512");
-        map.put("typ","JWT");
+        Map<String, Object> map = new HashMap<>();
+        map.put("alg", "HS512");
+        map.put("typ", "JWT");
         String token = JWT.create()
                 .withHeader(map)    // 添加头部
-                .withClaim("id",userId) // //可以将基本信息放到claims中
+                .withClaim("id", userId) // //可以将基本信息放到claims中
                 .withExpiresAt(expireDate)  //超时设置,设置过期的日期
                 .withIssuedAt(new Date())   //签发时间
                 .sign(Algorithm.HMAC512(secret));   //SECRET加密
@@ -63,10 +65,11 @@ public class JwtUtil {
 
     /**
      * 校验token并解析token
+     *
      * @param token token字符串
      * @return 关于Claim的map
      */
-    public Map<String, Claim> verifyToken(String token){
+    public Map<String, Claim> verifyToken(String token) {
         DecodedJWT jwt;
 
         try {

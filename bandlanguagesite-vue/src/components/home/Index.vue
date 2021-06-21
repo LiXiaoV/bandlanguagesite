@@ -70,9 +70,31 @@
         <el-table
             :data="sentences.slice(sentenceStartPage, sentenceEndPage)"
         >
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="a-table-expand">
+                <el-form-item label="句型名：">
+                  <span>{{ props.row.name }}</span>
+                </el-form-item>
+                <el-form-item label="描述：">
+                  <span>{{ props.row.description }}</span>
+                </el-form-item>
+                <el-form-item label="巴克斯范式表示：">
+                  <span>{{ props.row.paradigm }}</span>
+                </el-form-item>
+                <el-form-item label="中间泛式：">
+                  <div v-for="(item,index) in props.row.paradigms" :key="index">
+                    {{item.easyParadigm}}
+                  </div>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column type="index" label="序号" width="60" align="center">
           </el-table-column>
           <el-table-column prop="name" label="句型名" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="paradigm" label="巴克斯泛式" min-width="30" align="center">
           </el-table-column>
           <el-table-column prop="description" label="句型描述" min-width="30" align="center">
           </el-table-column>
@@ -92,12 +114,23 @@
 
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span style="float: left;font-size: 1.5rem">剧本</span>
-          <el-button style="float: right; padding: 3px 0" type="text">全部</el-button>
+          <span style="float: left;font-size: 1.5rem">常用剧本</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="enterAllScripts">全部</el-button>
         </div>
-        <div v-for="o in 5" :key="o" class="text item">
-          {{'剧本 ' + o }}
-        </div>
+        <el-table
+            :data="hotScripts"
+        >
+          <el-table-column type="index" label="序号" width="60" align="center">
+          </el-table-column>
+          <el-table-column prop="name" label="剧本名" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="description" label="剧本描述" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="content" label="剧本内容" min-width="30" align="center">
+          </el-table-column>
+          <el-table-column prop="sceneName" label="剧本所在的场景区" min-width="30" align="center">
+          </el-table-column>
+        </el-table>
       </el-card>
 
       <el-card class="box-card">
@@ -170,6 +203,9 @@ export default {
       sentences: [],
       sentenceCurrentPage: 1,
       sentencePageSize: 10,
+
+      // 常用的剧本
+      hotScripts: [],
     };
   },
   methods: {
@@ -249,7 +285,10 @@ export default {
       const _this = this
       this.$axios({
         method: 'get',
-        url: `${this.global.serverUrl}/scene/scenes/`
+        url: `${this.global.serverUrl}/scene/hotScenes/`,
+        params:{
+          limitCount: 5,
+        }
       }).then(res => {
         let scenes = res.data.data
         if(scenes){
@@ -262,12 +301,29 @@ export default {
         console.log(error)
       })
     },
+    reloadHotScripts(){
+      const _this = this
+      this.$axios({
+        method: 'get',
+        url: `${this.global.serverUrl}/script/hotScripts/`,
+        params: {
+          limitCount: 5,
+        }
+      }).then(res => {
+        _this.hotScripts = res.data.data
+      }).catch( error => {
+        console.log(error)
+      })
+    },
     registerSentence() {
       this.registerSentenceDlg = true
     },
     closeRegisterSentenceDialog(flag){
       this.registerSentenceDlg = flag
     },
+    enterAllScripts(){
+      this.$router.push("/allScripts")
+    }
   },
   mounted() {
 
@@ -277,6 +333,7 @@ export default {
     this.reloadScenes()
     this.reloadWords()
     this.reloadSentences()
+    this.reloadHotScripts()
   },
   computed: {
     wordStartPage: function () {
@@ -385,4 +442,11 @@ body{
   }
 }
 
+.a-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-top: 0.3rem;
+  width: 100%;
+  height: fit-content;
+}
 </style>

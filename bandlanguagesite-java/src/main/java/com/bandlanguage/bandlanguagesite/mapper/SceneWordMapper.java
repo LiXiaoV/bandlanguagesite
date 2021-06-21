@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 场景区-词汇联合表的模型类
+ *
  * @author xiaov
  * @since 2021-05-22 17:13
  */

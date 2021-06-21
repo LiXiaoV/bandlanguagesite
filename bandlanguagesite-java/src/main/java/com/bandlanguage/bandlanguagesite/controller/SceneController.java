@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
+ * 场景区控制器
+ *
  * @author xiaov
  * @since 2021-05-21 15:49
  */
@@ -21,18 +21,27 @@ public class SceneController {
     @Autowired
     private SceneService sceneService;
 
-    @RequestMapping(value = "/scenes",method = RequestMethod.GET)
-    public Result getScenes(){
+    @RequestMapping(value = "/scenes", method = RequestMethod.GET)
+    public Result getScenes() {
         return Result.success(sceneService.getScenes());
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Scene getSceneById(@PathVariable("id") Long id){
+    @RequestMapping(value = "/hotScenes", method = RequestMethod.GET)
+    public Result getHotScenes(@RequestParam Long limitCount) {
+        return Result.success(sceneService.getHotScenes(limitCount));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Scene getSceneById(@PathVariable("id") Long id) {
         return sceneService.getSceneById(id);
     }
 
-    @RequestMapping(value = "/getScenesByKeyword",method = RequestMethod.GET)
-    public Result getScenesByKeyword(@RequestParam String keyword){
-        return Result.success(sceneService.getScenesByKeyword(keyword));
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public Result registerScene(@RequestBody Scene scene) {
+        System.out.println("scene = " + scene);
+        Boolean res = sceneService.SaveScene(scene);
+        if (res)
+            return Result.success("新增场景区成功");
+        else return Result.fail(500, "新增场景区失败");
     }
 }

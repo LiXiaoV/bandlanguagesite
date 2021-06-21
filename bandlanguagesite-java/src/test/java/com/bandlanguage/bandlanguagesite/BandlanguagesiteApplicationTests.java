@@ -39,6 +39,9 @@ class BandlanguagesiteApplicationTests {
     @Autowired
     private SentenceUserMapper sentenceUserMapper;
 
+    @Autowired
+    private ScriptUserMapper scriptUserMapper;
+
     @Test
     public void testGetScenes() {
         List<Scene> scenes = sceneMapper.getScenes();
@@ -115,6 +118,21 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
+    public void testInsertScriptUser(){
+        List<Script> scripts = scriptMapper.selectList(null);
+        for (Script script : scripts) {
+            ScriptUser scriptUser = new ScriptUser();
+            scriptUser.setScriptId(script.getScriptId());
+            scriptUser.setUserId(script.getCreatorId());
+            scriptUser.setUpdateTime(script.getUpdateTime());
+            int res = scriptUserMapper.insert(scriptUser);
+            System.out.println("res = " + res);
+            System.out.println("剧本id = " + scriptUser.getScriptId());
+            System.out.println("用户id = " + scriptUser.getUserId());
+            System.out.println();
+        }
+    }
+
     public void testGetCount(){
         Long scriptTotal = scriptMapper.getScriptsTotal();
         System.out.println(scriptTotal);
@@ -146,12 +164,6 @@ class BandlanguagesiteApplicationTests {
         System.out.println(scripts.size());
         System.out.println(scriptTotal);
 
-    }
-
-    @Test
-    public void testGetSceneByKeyword(){
-        List<Scene> scenes=sceneMapper.getScenesByKeyword("部门");
-        System.out.println(scenes);
     }
 
 }

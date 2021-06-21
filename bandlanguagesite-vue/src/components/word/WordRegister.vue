@@ -22,8 +22,8 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-row>
+      <el-form-item label="词汇类型与场景区 *">
+        <el-row style="margin-left: 1vw;">
           <el-col :span="6">
             <el-select v-model="wordTypeValue" placeholder="请选择词汇类型">
               <el-option
@@ -74,7 +74,8 @@
                    :clearNodeOptionFlag="clearNodeOptionFlag"
                     @returnClearRuleOptionFlag="returnClearRuleOptionFlag"
                     @returnClearNodeOptionFlag="returnClearNodeOptionFlag"
-                    @typeInEvent="typeInEvent"></v-type-in>
+                    @typeInEvent="typeInEvent"
+                    style="margin-left: 1vw;"></v-type-in>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -178,7 +179,7 @@ export default {
       if(this.newWord.name === '' || this.newWord.name === undefined || this.newWord.name === null){
         this.$message({
           showClose: true,
-          message: "请输入词汇名",
+          message: "词汇名称不能为空",
           type: 'error'
         });
         return;
@@ -186,7 +187,7 @@ export default {
       if(this.newWord.description === '' || this.newWord.description === undefined || this.newWord.description === null){
         this.$message({
           showClose: true,
-          message: "请输入词汇描述",
+          message: "词汇描述不能为空",
           type: 'error'
         });
         return;
@@ -216,7 +217,7 @@ export default {
       registerWord["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',
-        url: `${this.global.serverUrl}/word/insert/`,
+        url: `${this.global.serverUrl}/word/`,
         data: registerWord
       }).then(res => {
         if(res.data.code === 0){
@@ -278,4 +279,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+//.type-in-word{
+//  .el-form-item__label{
+//    font-size: 1rem;
+//  }
+//}
+</style>

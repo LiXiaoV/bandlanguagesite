@@ -54,6 +54,7 @@
 <script>
 import UserWordDetails from "./UserWordDetails";
 import WordEdit from "@/components/word/WordEdit";
+
 export default {
   components: {
     "v-user-word-details": UserWordDetails,
@@ -79,7 +80,7 @@ export default {
       //   } else {
       //     return "success-row";
       //   }
-      if (row.status === 0) {
+      if (row.isTypeInString === "未实现") {
         return "warning-row";
       } else {
         return "success-row";
@@ -102,10 +103,13 @@ export default {
     },
     deleteWord(id){
       const _this = this
-      let wordId = id
+      let deleteWord = {}
+      deleteWord["wordId"] = Number(id)
+      deleteWord["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/word/${wordId}`,
+        url: `${this.global.serverUrl}/word/`,
+        data: deleteWord
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
@@ -171,9 +175,9 @@ export default {
 
           // 词汇状态
           if(element.isTypeIn === 0){
-            element["isTypeInString"] = "未录入"
+            element["isTypeInString"] = "未实现"
           }else if(element.isTypeIn === 1){
-            element["isTypeInString"] = "已录入"
+            element["isTypeInString"] = "已实现"
           }else {
             element["isTypeInString"] = "其它"
           }

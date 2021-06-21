@@ -8,17 +8,23 @@
         <v-script-edit></v-script-edit>
     </el-tab-pane>
 
+    <el-tab-pane label="我提交的剧本" >
+      <v-my-script></v-my-script>
+    </el-tab-pane>
+
   </el-tabs>
 </template>
 
 <script>
 import ScriptAll from "@/components/script/ScriptAll";
-import ScriptEdit from "@/components/script/ScriptEdit";
+import ScriptEdit from "@/components/script/ScriptAdd";
+import MyScript from "@/components/script/MyScript";
 export default {
   components:{
     //使用组件
     "v-script-all":ScriptAll,
     "v-script-edit": ScriptEdit,
+    "v-my-script": MyScript,
   },
   data() {
       return  {

@@ -1,5 +1,13 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">修改规则</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="closeEditRuleCard"></i>
+      </el-col>
+    </el-row>
     <el-form :model="ruleObj" label-position="top">
       <el-form-item label="规则符号 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="ruleObj.rule" maxlength="50" show-word-limit></el-input>
@@ -35,11 +43,18 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center; margin-top: 1vh;">
-      <el-button @click="cancel">取消</el-button>
+    <div style="text-align: center; margin-top: 1vh;">
+      <el-popconfirm
+          title="确定删除此规则吗？"
+          @confirm="deleteRule(ruleObj.ruleId)"
+          placement="top-start"
+      >
+        <el-button type="danger" slot="reference" style="margin-right: 10px;">删除</el-button>
+      </el-popconfirm>
+      <el-button @click="cancel">重置修改</el-button>
       <el-button type="primary" @click="confirmRuleEdit">确认修改</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -49,6 +64,8 @@ export default {
   props:{
     sceneId: Number,
     ruleObjId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -67,20 +84,58 @@ export default {
       this.updateRuleObj()
     },
     confirmRuleEdit() {
+      // 检查输入
+      if(this.ruleObj.rule === '' || this.ruleObj.rule === undefined || this.ruleObj.rule === null){
+        this.$message({
+          showClose: true,
+          message: "规则名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.chineseName === '' || this.ruleObj.chineseName === undefined || this.ruleObj.chineseName === null){
+        this.$message({
+          showClose: true,
+          message: "规则中文名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.express === '' || this.ruleObj.express === undefined || this.ruleObj.express === null){
+        this.$message({
+          showClose: true,
+          message: "规则表达式不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.ruleObj.code === '' || this.ruleObj.code === undefined || this.ruleObj.code === null){
+        this.$message({
+          showClose: true,
+          message: "规则代码不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
-      let registerRuleObj = {}
-      registerRuleObj["ruleId"] = _this.ruleObj.ruleId
-      registerRuleObj["rule"] = _this.ruleObj.rule
-      registerRuleObj["chineseName"] = _this.ruleObj.chineseName
-      registerRuleObj["express"] = _this.ruleObj.express
-      registerRuleObj["description"] = _this.ruleObj.description
-      registerRuleObj["code"] = _this.ruleObj.code
-      registerRuleObj["userId"] = _this.$store.getters.getUser.userId
-      registerRuleObj["sceneId"] = _this.sceneId
+      let editRuleObj = {}
+      editRuleObj["ruleId"] = _this.ruleObj.ruleId
+      editRuleObj["rule"] = _this.ruleObj.rule
+      editRuleObj["chineseName"] = _this.ruleObj.chineseName
+      editRuleObj["express"] = _this.ruleObj.express
+      editRuleObj["description"] = _this.ruleObj.description
+      editRuleObj["code"] = _this.ruleObj.code
+      editRuleObj["userId"] = _this.$store.getters.getUser.userId
+      editRuleObj["sceneId"] = _this.sceneId
+      if(_this.itemId > 0 && _this.itemType > 0){
+        editRuleObj["type"] = _this.itemType
+        editRuleObj["itemId"] = _this.itemId
+      }
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/rule/update`,
-        data: registerRuleObj
+        url: `${this.global.serverUrl}/rule/`,
+        data: editRuleObj
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
@@ -89,6 +144,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
         }
         else {
           _this.$message({
@@ -117,6 +173,45 @@ export default {
         console.log(error)
       })
     },
+    closeEditRuleCard(){
+      // console.log("关闭编辑规则卡片")
+      this.ruleObj.rule = ''
+      this.ruleObj.chineseName = ''
+      this.ruleObj.express = ''
+      this.ruleObj.description = ''
+      this.ruleObj.code = ''
+      this.$emit("closeEditRuleCard")
+    },
+    deleteRule(id){
+      const _this = this
+      let deleteRule = {}
+      deleteRule["ruleId"] = id
+      deleteRule["userId"] = _this.$store.getters.getUser.userId
+      this.$axios({
+        method: 'delete',
+        url: `${this.global.serverUrl}/rule/`,
+        data:deleteRule
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.$emit("updateRuleOptionsEvent")
+          _this.$emit("updateAssociatedRulesEvent")
+          _this.closeEditRuleCard()
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "删除规则失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "删除规则失败",
+          type: 'error'
+        });
+      })
+    }
   },
   created() {
     this.updateRuleObj()

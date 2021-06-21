@@ -66,7 +66,7 @@ export default {
   },
   methods:{
     tableRowClassName({ row }) {
-      if (row.isTypeInString === "未录入") {
+      if (row.isTypeInString === "未实现") {
         return "warning-row";
       } else {
         return "success-row";
@@ -89,9 +89,13 @@ export default {
     },
     deleteSentence(id){
       const _this = this
+      let deleteSentence = {}
+      deleteSentence["sentenceId"] = Number(id)
+      deleteSentence["userId"] = _this.$store.getters.getUser.userId
       this.$axios({
         method: 'delete',
-        url: `${this.global.serverUrl}/sentence/${id}`,
+        url: `${this.global.serverUrl}/sentence/`,
+        data: deleteSentence,
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
@@ -130,9 +134,9 @@ export default {
         sentences.forEach( (element) => {
           // 句型状态
           if(element.isTypeIn === 0){
-            element["isTypeInString"] = "未录入"
+            element["isTypeInString"] = "未实现"
           }else if(element.isTypeIn === 1){
-            element["isTypeInString"] = "已录入"
+            element["isTypeInString"] = "已实现"
           }else {
             element["isTypeInString"] = "其它"
           }

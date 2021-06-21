@@ -16,6 +16,7 @@ import java.util.Date;
 /**
  * 节点-用户实体类
  * 用于记录参与节点创建或修改的人
+ *
  * @author xiaov
  * @since 2021-05-31 11:40
  */
@@ -27,7 +28,7 @@ import java.util.Date;
 @TableName("bls_node_user")
 public class NodeUser implements Serializable {
 
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "node_id")

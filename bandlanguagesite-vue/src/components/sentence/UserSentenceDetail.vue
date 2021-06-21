@@ -67,9 +67,9 @@ export default {
           let detailSentence = res.data.data
           // 句型状态
           if(detailSentence.isTypeIn === 0){
-            detailSentence["isTypeInString"] = "未录入"
+            detailSentence["isTypeInString"] = "未实现"
           }else if(detailSentence.isTypeIn === 1){
-            detailSentence["isTypeInString"] = "已录入"
+            detailSentence["isTypeInString"] = "已实现"
           }else {
             detailSentence["isTypeInString"] = "其它"
           }

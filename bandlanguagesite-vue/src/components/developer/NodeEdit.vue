@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <el-card>
+    <el-row type="flex">
+      <el-col :span="12" :offset="11">
+        <span style="font-size: 14px;">修改节点</span>
+      </el-col>
+      <el-col :span="1">
+        <i class="custom-close-icon el-icon el-icon-close" @click="closeEditNodeCard"></i>
+      </el-col>
+    </el-row>
+
     <el-form :model="nodeObj" label-position="top">
       <el-form-item label="节点类名 *" :label-width="formLabelWidth">
         <el-input placeholder="" v-model="nodeObj.name" maxlength="50" show-word-limit></el-input>
@@ -17,11 +26,18 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center;">
-      <el-button @click="cancelEdit">取消</el-button>
+    <div style="text-align: center;">
+      <el-popconfirm
+          title="确定删除此节点吗？"
+          @confirm="deleteNode(nodeObj.nodeId)"
+          placement="top-start"
+      >
+        <el-button type="danger" slot="reference" style="margin-right: 10px;">删除</el-button>
+      </el-popconfirm>
+      <el-button @click="cancelEdit">重置修改</el-button>
       <el-button type="primary" @click="confirmEdit">确认修改</el-button>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -31,6 +47,8 @@ export default {
   props:{
     sceneId: Number,
     nodeObjId: Number,
+    itemId: Number,
+    itemType: Number,
   },
   data(){
     return {
@@ -47,18 +65,49 @@ export default {
       this.updateNodeObj()
     },
     confirmEdit() {
+      // 检查输入
+      if(this.nodeObj.name === '' || this.nodeObj.name === undefined || this.nodeObj.name === null){
+        this.$message({
+          showClose: true,
+          message: "节点名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.nodeObj.packageName === '' || this.nodeObj.packageName === undefined || this.nodeObj.packageName === null){
+        this.$message({
+          showClose: true,
+          message: "节点包名不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.nodeObj.content === '' || this.nodeObj.content === undefined || this.nodeObj.content === null){
+        this.$message({
+          showClose: true,
+          message: "节点代码不能为空",
+          type: 'error'
+        });
+        return;
+      }
+
       const _this = this
-      let EditNodeObj = {}
-      EditNodeObj["nodeId"] = _this.nodeObj.nodeId
-      EditNodeObj["name"] = _this.nodeObj.name
-      EditNodeObj["package"] = _this.nodeObj.package
-      EditNodeObj["content"] = _this.nodeObj.content
-      EditNodeObj["userId"] = _this.$store.getters.getUser.userId
-      EditNodeObj["sceneId"] = _this.sceneId
+      let editNodeObj = {}
+      editNodeObj["nodeId"] = _this.nodeObj.nodeId
+      editNodeObj["name"] = _this.nodeObj.name
+      editNodeObj["package"] = _this.nodeObj.package
+      editNodeObj["content"] = _this.nodeObj.content
+      editNodeObj["userId"] = _this.$store.getters.getUser.userId
+      editNodeObj["sceneId"] = _this.sceneId
+
+      if(_this.itemId > 0 && _this.itemType > 0){
+        editNodeObj["type"] = _this.itemType
+        editNodeObj["itemId"] = _this.itemId
+      }
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/node/update`,
-        data: EditNodeObj
+        url: `${this.global.serverUrl}/node/`,
+        data: editNodeObj
       }).then(res => {
         if(res.data.code === 0){
           _this.$message({
@@ -67,6 +116,7 @@ export default {
             type: 'success'
           });
           _this.$emit("updateNodeOptionsEvent")
+          _this.$emit("updateAssociatedNodesEvent")
         }
         else {
           _this.$message({
@@ -93,6 +143,43 @@ export default {
         _this.nodeObj = res.data.data
       }).catch( error => {
         console.log(error)
+      })
+    },
+    closeEditNodeCard(){
+      // console.log("关闭编辑节点卡片")
+      this.nodeObj.name = ''
+      this.nodeObj.package = ''
+      this.nodeObj.content = ''
+      this.$emit("closeEditNodeCard")
+    },
+    deleteNode(id){
+      const _this = this
+      let deleteNode = {}
+      deleteNode["nodeId"] = id
+      deleteNode["userId"] = _this.$store.getters.getUser.userId
+      this.$axios({
+        method: 'delete',
+        url: `${this.global.serverUrl}/node/`,
+        data:deleteNode
+      }).then(res => {
+        if(res.data.code === 0){
+          _this.$emit("updateNodeOptionsEvent")
+          _this.$emit("updateAssociatedNodesEvent")
+          _this.closeEditNodeCard()
+        }
+        else {
+          _this.$message({
+            showClose: true,
+            message: "删除节点失败",
+            type: 'error'
+          });
+        }
+      }).catch( () => {
+        _this.$message({
+          showClose: true,
+          message: "删除节点失败",
+          type: 'error'
+        });
       })
     }
   },

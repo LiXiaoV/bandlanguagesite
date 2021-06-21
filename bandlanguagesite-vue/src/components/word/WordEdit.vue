@@ -1,10 +1,10 @@
 <template>
   <el-dialog title="编辑词汇" :visible="editFormVisible" :show-close="false">
     <el-form :model="existWord" label-position="top">
-      <el-form-item label="词汇名称" :label-width="formLabelWidth">
+      <el-form-item label="词汇名称 *" :label-width="formLabelWidth">
         <el-input v-model="existWord.name" maxlength="20" show-word-limit></el-input>
       </el-form-item>
-      <el-form-item label="词汇描述" :label-width="formLabelWidth">
+      <el-form-item label="词汇描述 *" :label-width="formLabelWidth">
         <el-input
             v-model="existWord.description"
             type="textarea"
@@ -84,13 +84,30 @@ export default {
       this.$emit('closeEditWordDialog',false)
     },
     confirmEdit() {
+      // 检查输入
+      if(this.existWord.name === '' || this.existWord.name === undefined || this.existWord.name === null){
+        this.$message({
+          showClose: true,
+          message: "词汇名称不能为空",
+          type: 'error'
+        });
+        return;
+      }
+      if(this.existWord.description === '' || this.existWord.description === undefined || this.existWord.description === null){
+        this.$message({
+          showClose: true,
+          message: "词汇描述不能为空",
+          type: 'error'
+        });
+        return;
+      }
       const _this = this
       let updateWord = _this.existWord
       updateWord["userId"] = _this.$store.getters.getUser.userId
       updateWord["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',
-        url: `${this.global.serverUrl}/word/update/`,
+        url: `${this.global.serverUrl}/word/`,
         data: updateWord
       }).then(res => {
         if(res.data.code === 0){
@@ -128,7 +145,7 @@ export default {
         let wordId = this.$props.wordId
         this.$axios({
           method: 'get',
-          url: `${this.global.serverUrl}/word/wordDetail/${wordId}`
+          url: `${this.global.serverUrl}/word/${wordId}`
         }).then(res => {
           let detailWord = res.data.data
           // 词汇类型 1：名词 2：动词 3：形容词 4：副词 5：数词 6：量词 7：代词 8：叹词  9：拟声词 10：介词 11：连词 12：助词

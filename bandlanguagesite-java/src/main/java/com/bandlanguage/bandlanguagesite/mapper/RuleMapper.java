@@ -31,4 +31,20 @@ public interface RuleMapper extends BaseMapper<Rule> {
      * @return RuleVo对象数组
      */
     List<RuleVo> getAllWholeRulesBySceneId(Long sceneId);
+
+    /**
+     * 获得与某个词汇关联的所有规则
+     *
+     * @param wordId 词汇ID
+     * @return 规则的视图类数组
+     */
+    List<RuleVo> getWordAssociatedRulesByWordId(Long wordId);
+
+    /**
+     * 获得与某个句型关联的所有规则
+     *
+     * @param sentenceId 句型ID
+     * @return 规则的视图类数组
+     */
+    List<RuleVo> getSentenceAssociatedRulesBySentenceId(Long sentenceId);
 }

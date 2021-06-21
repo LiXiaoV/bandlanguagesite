@@ -25,5 +25,19 @@ public interface SceneService {
      */
     Scene getSceneById(Long id);
 
-    List<Scene> getScenesByKeyword(String keyword);
+    /**
+     * 获取火热的场景区（暂时按获取ID前几个，后面可以修改为在某一段时间进去的人数的数量来排序）
+     *
+     * @param limitCount 获取的数量
+     * @return 场景区对象数组
+     */
+    List<Scene> getHotScenes(Long limitCount);
+
+    /**
+     * 新增场景区
+     *
+     * @param scene 场景区实体类
+     * @return 增加是否成功
+     */
+    Boolean SaveScene(Scene scene);
 }
