@@ -200,7 +200,7 @@
             ></el-pagination>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="选中信息" v-if="isScriptedSelect"
+        <el-tab-pane label="预览" v-if="isScriptedSelect"
           ><h2>{{ selectedText }}</h2>
           <p class="titleFont">场景区信息</p>
 

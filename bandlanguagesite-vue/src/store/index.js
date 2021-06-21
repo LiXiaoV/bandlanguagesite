@@ -26,7 +26,15 @@ export default new Vuex.Store({
         },
         SET_SCRIPT_SELECTED:(state,selectionInfo)=>{
             state.scriptSelected.isSelected=selectionInfo.isSelected;
-            state.scriptSelected.text=selectionInfo.text;
+            if(selectionInfo.text!=null){
+                state.scriptSelected.text=selectionInfo.text;
+            }        
+            if(selectionInfo.sceneId!=null){
+                state.scriptSelected.sceneId=selectionInfo.sceneId;
+            }
+            if(selectionInfo.isSceneSelected!=null){
+                state.scriptSelected.isSceneSelected=selectionInfo.isSceneSelected;
+            }  
         },
         SET_CONTEXT_PANEL_VISIBLE:(state,value)=>{
             state.contextPanelVisible=value;
