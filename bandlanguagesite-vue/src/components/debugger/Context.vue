@@ -46,7 +46,7 @@
                   </div>
                 </el-collapse-item>
                 <el-collapse-item name="band">
-                  <template slot="title"> 场景区语境 </template>
+                  <template slot="title"> 帮区语境 </template>
                   <div style="width: 100%">
                     <div v-for="(item, index) in contextList.bandContext" :key="index">
                       <div v-if="item.value.length > 1">
@@ -62,7 +62,7 @@
                   </div>
                 </el-collapse-item>
                 <el-collapse-item name="script">
-                  <template slot="title"> 剧本当前语境 </template>
+                  <template slot="title"> 剧本语境 </template>
                   <div style="height:width: 100%">
                     <div v-for="(item, index) in contextList.scriptContext" :key="index">
                       <div v-if="item.value.length > 1">
@@ -455,6 +455,9 @@ export default {
     selectedText: function () {
       return this.$store.getters.getScriptSelected.text;
     },
+    currentSceneId:function(){
+      return this.$store.getters.getCurrentSceneId;
+    },
   },
   watch: {
     isScriptedSelect(newVal,oldVal){
@@ -470,7 +473,10 @@ export default {
           this.selectedSceneInfo={};
         }
       }
-    }
+    },
+    currentSceneId(){
+      
+    }                                    
   },
 };
 </script>

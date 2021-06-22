@@ -99,6 +99,7 @@ export default {
       if(key){
         console.log(key);
         // sessionStorage.setItem("activePath",key)
+        this.$store.commit("SET_CURRENT_SCENE_ID",0);
         this.global.setActivePath(key)
       }
     },

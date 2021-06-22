@@ -221,6 +221,7 @@ export default {
       if(sceneId){
         // sessionStorage.setItem("activePath","scenes")
         this.global.setActivePath("/scenes");
+        this.$store.commit("SET_CURRENT_SCENE_ID",sceneId);
         this.$router.push({ path: `/sceneDetail/${sceneId}` })
       }
     },

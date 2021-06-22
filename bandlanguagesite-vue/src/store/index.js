@@ -13,6 +13,7 @@ export default new Vuex.Store({
             isSceneSelected:false,
         },
         contextPanelVisible:true,
+        currentSceneId:0,
     },
     mutations:{
         // set
@@ -38,7 +39,10 @@ export default new Vuex.Store({
         },
         SET_CONTEXT_PANEL_VISIBLE:(state,value)=>{
             state.contextPanelVisible=value;
-        }
+        },
+        SET_CURRENT_SCENE_ID:(state,value)=>{
+            state.currentSceneId=value;
+        },
     },
     getters:{
         // get
@@ -59,7 +63,10 @@ export default new Vuex.Store({
         },
         getContextPanelVisible:state=>{
             return state.contextPanelVisible;
-        }
+        },
+        getCurrentSceneId:state=>{
+            return state.currentSceneId;
+        },
     },
     actions:{
 
