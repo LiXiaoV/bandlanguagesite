@@ -6,9 +6,7 @@ import com.bandlanguage.bandlanguagesite.model.vo.ScriptVo;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
 import com.bandlanguage.bandlanguagesite.result.Result;
-import com.bandlanguage.bandlanguagesite.service.ScriptService;
-import com.bandlanguage.bandlanguagesite.service.SentenceService;
-import com.bandlanguage.bandlanguagesite.service.WordService;
+import com.bandlanguage.bandlanguagesite.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +33,9 @@ public class ScriptController {
     @Autowired
     private SentenceService sentenceService;
 
+    @Autowired
+    private BLFactory blFactory;
+    
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public Result registerScript(@RequestBody ScriptVo scriptVo) {
 
@@ -160,6 +161,20 @@ public class ScriptController {
         map.put("scripts", scripts);
         map.put("scriptsTotal", scriptTotal);
         return Result.success(map);
+    }
+
+    @RequestMapping(value = "/showAST", method = RequestMethod.GET)
+    public Result showAST(@RequestParam String script, Long sceneId) {
+        BLService blService = blFactory.getBLService(sceneId);
+        String treeJson = blService.getAST(script);
+        return Result.success(treeJson);
+    }
+
+    @RequestMapping(value = "/runScript", method = RequestMethod.POST)
+    public Result runScript(@RequestParam String script, Long sceneId) {
+        System.out.println("script = " + script);
+        BLService blService = blFactory.getBLService(sceneId);
+        return Result.success(blService.runScript(script));
     }
 
 }

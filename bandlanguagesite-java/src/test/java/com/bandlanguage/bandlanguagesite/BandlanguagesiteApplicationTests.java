@@ -59,7 +59,7 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testSaveWord(){
+    public void testSaveWord() {
         Word word = new Word();
         word.setName("论文");
         word.setCreatorId(2L);
@@ -74,21 +74,21 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testRedisOps(){
-        globalCache.set("key1","xiaov");
-        globalCache.lSetAll("list", Arrays.asList("hello","redis"));
+    public void testRedisOps() {
+        globalCache.set("key1", "xiaov");
+        globalCache.lSetAll("list", Arrays.asList("hello", "redis"));
         List<Object> list = globalCache.lGet("list", 0, -1);
         System.out.println("list = " + list);
     }
 
     @Test
-    public void testGetWordsBySceneIdAndUserId(){
+    public void testGetWordsBySceneIdAndUserId() {
         List<WordVo> words = wordMapper.getWordsBySceneIdAndUserId(2L, 3L);
         System.out.println("words = " + words);
     }
 
     @Test
-    public void testInsertWordUser(){
+    public void testInsertWordUser() {
         List<Word> words = wordMapper.selectList(null);
         for (Word word : words) {
             WordUser wordUser = new WordUser();
@@ -105,7 +105,7 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testInsertSentenceUser(){
+    public void testInsertSentenceUser() {
         List<Sentence> sentences = sentenceMapper.selectList(null);
         for (Sentence sentence : sentences) {
             SentenceUser sentenceUser = new SentenceUser();
@@ -122,7 +122,7 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testInsertScriptUser(){
+    public void testInsertScriptUser() {
         List<Script> scripts = scriptMapper.selectList(null);
         for (Script script : scripts) {
             ScriptUser scriptUser = new ScriptUser();
@@ -137,13 +137,13 @@ class BandlanguagesiteApplicationTests {
         }
     }
 
-    public void testGetCount(){
+    public void testGetCount() {
         Long scriptTotal = scriptMapper.getScriptsTotal();
         System.out.println(scriptTotal);
     }
 
     @Test
-    public void getSentencesTotalByKeyword(){
+    public void getSentencesTotalByKeyword() {
         List<SentenceVo> sentences = sentenceMapper.getSentencesByKeywordInPage("部门", 1L, 5L);
         Long total = sentenceMapper.getSentencesTotalByKeyword("部门");
         System.out.println(sentences);
@@ -151,7 +151,7 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testGetWordsByKeyword(){
+    public void testGetWordsByKeyword() {
         List<WordVo> words = wordMapper.getWordsByKeywordInPage("帮区", 1L, 3L);
         Long total = wordMapper.getWordsTotalByKeyword("帮区");
         System.out.println(words);
@@ -161,7 +161,7 @@ class BandlanguagesiteApplicationTests {
     }
 
     @Test
-    public void testGetScripts(){
+    public void testGetScripts() {
         List<Script> scripts = scriptMapper.getAllScriptsInPage(2L, 5L);
         Long scriptTotal = scriptMapper.getScriptsTotal();
         System.out.println(scripts);
