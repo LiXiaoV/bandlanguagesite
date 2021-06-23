@@ -126,6 +126,9 @@
                   show-overflow-tooltip
                   align="center"
                 ></el-table-column>
+                <el-table-column>
+                  <el-button>调用剧本</el-button>
+                </el-table-column>
               </el-table>
               <el-pagination
                 :total="scriptLibraryTotal"
@@ -261,7 +264,7 @@ export default {
         ],
 
         //帮区语境
-        bandContext: [{ name: "场景区名", value: ["物流场景"] }],
+        bandContext: [{ name: "帮区名", value: ["物流场景"] }],
 
         //剧本语境
         scriptContext: [],

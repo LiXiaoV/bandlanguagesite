@@ -1,16 +1,20 @@
 package com.bandlanguage.bandlanguagesite;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
+import com.bandlanguage.bandlanguagesite.remote.service.CoreRemoteService;
+import com.bandlanguage.bandlanguagesite.remote.service.Impl.CoreRemoteServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -166,4 +170,13 @@ class BandlanguagesiteApplicationTests {
 
     }
 
+
+    @Test
+    public void testDoGet() throws Exception {
+        CoreRemoteService coreRemoteService=new CoreRemoteServiceImpl();
+        List<Long> bandObjIds=new ArrayList<>();
+        bandObjIds.add(4977955L);
+        JSONObject bandIdByBandObjId = coreRemoteService.getBandIdByBandObjId(bandObjIds);
+        System.out.println(bandIdByBandObjId);
+    }
 }
