@@ -11,8 +11,11 @@ import java.util.Set;
 
 public class WtbCoreUtil {
 
-    public static String userName = "qq1020224260";
-    public static String passWord = "qq1020224260";
+//    public static String userName = "qq1020224260";
+//    public static String passWord = "qq1020224260";
+
+    public static String userName = "_lym";
+    public static String passWord = "_lymWetoband2020";
 
     String domainName="https://www.wetoband.com/core/";
 
@@ -286,6 +289,10 @@ public class WtbCoreUtil {
 
         if(!keys.contains("returnType")){
             stringBuffer.append("&returnType=value");
+        }
+
+        if(!keys.contains("gid")){
+            stringBuffer.append("&gid=1");
         }
 
         for (String key :
