@@ -6,9 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state:{
         userInfo:JSON.parse(sessionStorage.getItem("userInfo")),
+        isLogin: sessionStorage.getItem("isLogin"),
         scriptSelected:{
-            isSelected:true,
-            text:"tttttttext"
+            isSelected:false,
+            text:"tttttttext",
+            sceneId:0,
+            isSceneSelected:false,
         },
         contextPanelVisible:true,
     },
@@ -22,6 +25,10 @@ export default new Vuex.Store({
             state.userInfo = {}
             sessionStorage.setItem("userInfo",JSON.stringify(''))
         },
+        SET_IS_LOGIN(state,value){
+            state.isLogin = value
+            sessionStorage.setItem("isLogin",value)
+        },
         SET_SCRIPT_SELECTED:(state,selectionInfo)=>{
             state.scriptSelected.isSelected=selectionInfo.isSelected;
             state.scriptSelected.text=selectionInfo.text;
@@ -33,16 +40,21 @@ export default new Vuex.Store({
     getters:{
         // get
         getUser:state => {
-            if(state.userInfo == null){
-                let user = {}
-                user["userId"] = 1
-                user["username"] = "visitor"
-                user["nickname"] = "游客"
-                user["head"] = ""
-                state.userInfo = user
-                sessionStorage.setItem("userInfo",JSON.stringify(user))
-            }
+            // if(state.userInfo == null){
+            //     let user = {}
+            //     user["userID"] = 28
+            //     user["myBandID"] = 29
+            //     user["userStatus"] = "NORMAL"
+            //     user["userAccount"] = "wtbpublic"
+            //     user["userName"] = "游客"
+            //     user["representPositionID"] = 163
+            //     state.userInfo = user
+            //     sessionStorage.setItem("userInfo",JSON.stringify(user))
+            // }
             return state.userInfo
+        },
+        getIsLogin:state => {
+            return state.isLogin
         },
         getScriptSelected:state=>{
             return state.scriptSelected;
