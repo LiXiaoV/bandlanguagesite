@@ -24,8 +24,8 @@
         <el-tab-pane label="语境" name="context">
           <div>
             <div class="titleFont">语境</div>
-            <div style="height: 75vh; overflow-y: auto" class="contextStyle">
-              <el-collapse style="border: none" :value="activePanel">
+            <div style="height: 55vh; overflow-y: auto;overflow-x:auto" class="contextStyle">
+              <!-- <el-collapse style="border: none" :value="activePanel">
                 <el-collapse-item name="organization">
                   <template slot="title"> 机构语境 </template>
                   <div style="width: 100%">
@@ -77,7 +77,13 @@
                     </div>
                   </div>
                 </el-collapse-item>
-              </el-collapse>
+              </el-collapse> -->
+
+              <v-tree :data="contextList.organizationContext" show-line> </v-tree>
+              <v-tree :data="contextList.bandContext" show-line></v-tree>
+            </div>
+            <div style="height:27vh;border-style: inset">
+              <p>剧本语境</p>
             </div>
           </div>
         </el-tab-pane>
@@ -143,7 +149,7 @@
         ></el-tab-pane>
 
         <el-tab-pane label="词汇句型手册" name="menu">
-          <div style="margin-top: 10px;padding-left:4px">
+          <div style="margin-top: 10px; padding-left: 4px">
             <el-input
               placeholder="请输入词汇/句型关键字"
               v-model="searchText"
@@ -156,7 +162,11 @@
                 @click.native="searchContent(1)"
               ></el-button>
             </el-input>
-            <el-radio-group v-model="searchType" @change="searchTypeChange" style="padding-left:4px;padding-right:4px;text-align:center">
+            <el-radio-group
+              v-model="searchType"
+              @change="searchTypeChange"
+              style="padding-left: 4px; padding-right: 4px; text-align: center"
+            >
               <el-radio :label="1">词汇</el-radio>
               <el-radio :label="2">句型</el-radio>
               <el-radio :label="3">词句</el-radio>
@@ -199,7 +209,7 @@
               :total="searchTotal"
               layout="prev, pager, next"
               @current-change="searchContent(searchPageNum)"
-              style="text-align:center;width:100%"
+              style="text-align: center; width: 100%"
             ></el-pagination>
           </div>
         </el-tab-pane>
@@ -210,7 +220,7 @@
           <p>存在{{ selectedText }}所有场景区</p>
           <ul>
             <li v-for="item in possibleSceneList" :key="item">
-              <el-link :underline="false">{{item.name}}</el-link>
+              <el-link :underline="false">{{ item.name }}</el-link>
             </li>
           </ul>
         </el-tab-pane>
@@ -259,12 +269,65 @@ export default {
       contextList: {
         //机构语境
         organizationContext: [
-          { name: "机构名称", value: ["B8实验室", "飞元工厂"] },
-          { name: "机构人数", value: ["30"] },
+          {
+            title: "机构语境",
+            expanded: true,
+            children: [
+              {
+                title: "机构基本信息",
+                organizationId: 0,
+                expanded: true,
+                disabled: false,
+                children: [],
+              },
+              {
+                title: "部门",
+                expanded: false,
+                disabled: false,
+                children: [],
+              },
+              {
+                title: "岗位",
+                expanded: false,
+                disabled: false,
+                children: [],
+              },
+              {
+                title: "机构用户",
+                expanded: false,
+                disabled: false,
+                children: [],
+              },
+            ],
+          },
         ],
 
         //帮区语境
-        bandContext: [{ name: "帮区名", value: ["物流场景"] }],
+        bandContext: [
+          {
+            title: "帮区语境",
+            expanded: true,
+            children: [
+              {
+                title: "帮区对象信息",
+                children: [],
+              },
+              {
+                title: "帮区角色",
+                children: [],
+              }, {
+                title: "帮区资料",
+                children: [],
+              },{
+                title:"帮区消息板",
+                children:[]
+              },{
+                title: "帮区用户",
+                children: [],
+              },
+            ],
+          },
+        ],
 
         //剧本语境
         scriptContext: [],
@@ -276,8 +339,8 @@ export default {
       scriptPageSize: 10,
 
       //
-      possibleSceneList:[],
-      selectedSceneInfo:{},
+      possibleSceneList: [],
+      selectedSceneInfo: {},
     };
   },
   methods: {
@@ -319,24 +382,24 @@ export default {
         }).then((res) => {
           this.searchList = res.data.data.result;
           this.searchTotal = res.data.data.total;
-          let typeName="";
-          if(this.searchTotal==0){
-            switch(this.searchType){
-              case 1:{
-                typeName="词汇";
+          let typeName = "";
+          if (this.searchTotal == 0) {
+            switch (this.searchType) {
+              case 1: {
+                typeName = "词汇";
                 break;
               }
-              case 2:{
-                typeName="句型";
+              case 2: {
+                typeName = "句型";
                 break;
               }
-              case 3:{
-                typeName="词汇和句型";
+              case 3: {
+                typeName = "词汇和句型";
                 break;
               }
             }
-            this.$message.info({message:"没有相关词汇"+typeName});
-            console.log("没有相关词汇"+typeName);
+            this.$message.info({ message: "没有相关词汇" + typeName });
+            console.log("没有相关词汇" + typeName);
           }
           console.log(res.data.data);
           if (res.data.data.type == 1) {
@@ -355,9 +418,9 @@ export default {
     pressToConfirm(e) {
       if (e.keyCode == 13) {
         this.searchContent(1);
-      }else if(trimSpaceLR(this.searchText)==""){
-        this.searchList=[];
-        this.searchTotal=0;
+      } else if (trimSpaceLR(this.searchText) == "") {
+        this.searchList = [];
+        this.searchTotal = 0;
       }
     },
 
@@ -411,30 +474,150 @@ export default {
       this.getScripts(val, this.scriptPageSize);
     },
 
+    //调用剧本
+    // userScript(index){
+      
+    // },
+
     /**
-     * 
+     *
      */
-    getSceneInfo(sceneId){
+    getSceneInfo(sceneId) {
       this.$axios({
-        methods:'get',
-        url:`${this.global.serverUrl}/scene/${sceneId}`
-      }).then((res)=>{
-        this.selectedSceneInfo=res.data.data;
+        methods: "get",
+        url: `${this.global.serverUrl}/scene/${sceneId}`,
+      }).then((res) => {
+        this.selectedSceneInfo = res.data.data;
+      });
+    },
+
+    getScenesByKeyword(keyword) {
+      this.$axios({
+        methods: "get",
+        url: `${this.global.serverUrl}/scene/getScenesByKeyword`,
+        params: {
+          keyword: keyword,
+        },
+      }).then((res) => {
+        this.possibleSceneList = res.data.data;
+      });
+    },
+
+    /**
+     * 语境
+     */
+    //获取机构和帮区语境
+    getOrganizationAndBandEnvironment() {
+      this.$axios({
+        methods: "get",
+        url: `${this.global.serverUrl}/environment/initEnvironment`,
+        params: {
+          bandObjId: 4977955,
+        },
+      }).then((res) => {
+        //机构
+        let organizationData = res.data.data.organizationEnvironment.environment;
+        this.contextList.organizationContext[0].children[0].children = this.processOrganizationInfo(
+          organizationData.organizationInfo
+        );
+        this.contextList.organizationContext[0].children[1].children = this.concatNameIdInArray(
+          organizationData.department
+        );
+        this.contextList.organizationContext[0].children[2].children = this.concatNameIdInArray(
+          organizationData.position
+        );
+        this.contextList.organizationContext[0].children[3].children = this.concatNameIdInArray(
+          organizationData.users
+        );
+
+        //帮区
+        let bandData=res.data.data.bandEnvironment.environment;
+        this.contextList.bandContext[0].children[0].children=this.processBandInfo(bandData.bandInfo);
+        this.contextList.bandContext[0].children[1].children=this.concatNameIdInArray(bandData.bandRoles);
+        this.contextList.bandContext[0].children[2].children=this.concatNameIdInArray(bandData.bandDocuments);
+        this.contextList.bandContext[0].children[3].children=this.concatNameIdInArray(bandData.bandChatrooms);
+        this.contextList.bandContext[0].children[4].children=this.concatNameIdInArray(bandData.bandUsers);
+
+      });
+    },
+
+    updateOrganizationContext(){
+      this.$axios({
+        methods: "get",
+        url: `${this.global.serverUrl}/environment/initEnvironment`,
+        params: {
+          organizationId: 4977955,
+        },
+      }).then((res) => {
+        //机构
+        let organizationData = res.data.data.organizationEnvironment.environment;
+        this.contextList.organizationContext[0].children[0].children = this.processOrganizationInfo(
+          organizationData.organizationInfo
+        );
+        this.contextList.organizationContext[0].children[1].children = this.concatNameIdInArray(
+          organizationData.department
+        );
+        this.contextList.organizationContext[0].children[2].children = this.concatNameIdInArray(
+          organizationData.position
+        );
+        this.contextList.organizationContext[0].children[3].children = this.concatNameIdInArray(
+          organizationData.users
+        );
       })
     },
 
-    getScenesByKeyword(keyword){
+    updateBandContext(){
       this.$axios({
-        methods:'get',
-        url:`${this.global.serverUrl}/scene/getScenesByKeyword`,
+        methods:"get",
+        url:`${this.global.serverUrl}/environment/updateOrganizationEnvironment`,
         params:{
-          keyword:keyword
+          bandId:5240552
         }
       }).then((res)=>{
-        this.possibleSceneList=res.data.data;
+        console.log(res)
       })
     },
 
+    //处理数组
+    concatNameIdInArray(array) {
+      array.forEach((item) => {
+        item.title = this.concatNameId(item);
+      });
+      return array;
+    },
+
+    //拼接Name和Id
+    concatNameId(object) {
+      let keys = Object.keys(object);
+      let expr1 = /Name/;
+      let expr2 = /Id/;
+      let name = "";
+      let id = "";
+      keys.forEach((item) => {
+        if (item.match(expr1)) {
+          name = object[item];
+        } else if (item.match(expr2)) {
+          id = object[item];
+        }
+      });
+      return name + "(id:" + id + ")";
+    },
+
+    //处理机构基本信息展示数据
+    processOrganizationInfo(info) {
+      let array = [];
+      array.push({ title: "机构名称:" + info.organizationName });
+      array.push({ title: "机构地址:" + info.address });
+      array.push({ title: "机构介绍:" + info.introduction });
+      return array;
+    },
+
+    processBandInfo(info){
+      let array = [];
+      array.push({ title: "帮区名称:" + info.bandName });
+      array.push({ title: "帮区Id:" + info.bandId });
+      return array;
+    },
   },
   created() {
     this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
@@ -447,6 +630,8 @@ export default {
     if (this.contextList.scriptContext.length > 0) {
       this.activePanel.push("script");
     }
+
+    this.getOrganizationAndBandEnvironment();
   },
   mounted() {
     this.getScripts(this.scriptPageNum, this.scriptPageSize);
@@ -458,28 +643,26 @@ export default {
     selectedText: function () {
       return this.$store.getters.getScriptSelected.text;
     },
-    currentSceneId:function(){
+    currentSceneId: function () {
       return this.$store.getters.getCurrentSceneId;
     },
   },
   watch: {
-    isScriptedSelect(newVal,oldVal){
-      if(oldVal==false&&newVal==true){
-        if(trimSpaceLR(this.selectedText)!=""){
+    isScriptedSelect(newVal, oldVal) {
+      if (oldVal == false && newVal == true) {
+        if (trimSpaceLR(this.selectedText) != "") {
           this.getScenesByKeyword(trimSpaceLR(this.selectedText));
-        }else{
-          this.possibleSceneList=[];
+        } else {
+          this.possibleSceneList = [];
         }
-        if(this.$store.getters.getScriptSelected.isSceneSelected){
+        if (this.$store.getters.getScriptSelected.isSceneSelected) {
           this.getSceneInfo(this.$store.getters.getScriptSelected.sceneId);
-        }else{
-          this.selectedSceneInfo={};
+        } else {
+          this.selectedSceneInfo = {};
         }
       }
     },
-    currentSceneId(){
-      
-    }                                    
+    currentSceneId() {},
   },
 };
 </script>
@@ -523,8 +706,9 @@ export default {
 .tabBox {
   border-style: outset;
   margin-top: 10px;
+  height: inherit;
   .el-tabs--right {
-    height: 75vh !important;
+    height: 80vh !important;
     .el-tabs__item {
       width: 45px;
       line-height: 24px;

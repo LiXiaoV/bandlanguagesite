@@ -4,6 +4,7 @@ import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -23,6 +24,10 @@ import java.util.concurrent.TimeUnit;
 public class AppRedisCacheManager implements IGlobalCache {
 
     private RedisTemplate<String, Object> redisTemplate;
+
+    public AppRedisCacheManager() {
+
+    }
 
     @Override
     public boolean expire(String key, long time) {

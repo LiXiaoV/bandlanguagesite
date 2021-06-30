@@ -19,6 +19,14 @@ window.JSHINT = jshint.JSHINT;
 import store from '@/store/index'
 import './assets/style/font.scss'
 
+//vue-beauty
+//import css
+import 'vue-beauty/package/style/vue-beauty.min.css'
+
+//import components
+import vueBeauty from 'vue-beauty'
+Vue.use(vueBeauty)
+
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;
 Vue.prototype.global = global;

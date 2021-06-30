@@ -1,5 +1,7 @@
 package com.bandlanguage.bandlanguagesite.environment;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,12 +12,16 @@ public class ScriptEnvironment extends Environment{
 
     private Map<String,Object> map;
 
-    private Long sessionId;
+    private Long scriptId;
 
-    public ScriptEnvironment(Long sessionId) {
-        this.sessionId = sessionId;
+    public ScriptEnvironment(Long scriptId) {
+        this.scriptId = scriptId;
 
         map=new HashMap<String, Object>();
+    }
+
+    public void setMap(String map) {
+        this.map = JSON.parseObject(map);
     }
 
     @Override

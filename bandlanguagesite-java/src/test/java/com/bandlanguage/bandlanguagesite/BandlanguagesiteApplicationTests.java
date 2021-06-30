@@ -1,7 +1,9 @@
 package com.bandlanguage.bandlanguagesite;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
+import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
+import com.bandlanguage.bandlanguagesite.constant.EnvironmentType;
+import com.bandlanguage.bandlanguagesite.environment.EnvironmentManagement;
 import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
@@ -14,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -176,7 +176,44 @@ class BandlanguagesiteApplicationTests {
         CoreRemoteService coreRemoteService=new CoreRemoteServiceImpl();
         List<Long> bandObjIds=new ArrayList<>();
         bandObjIds.add(4977955L);
-        JSONObject bandIdByBandObjId = coreRemoteService.getBandIdByBandObjId(bandObjIds);
+        Map<String, Object> bandIdByBandObjId = coreRemoteService.getBandByBandObjId(bandObjIds);
+//        JSONObject membersByOrganizationId = coreRemoteService.getMembersByOrganizationId(4053563L);
         System.out.println(bandIdByBandObjId);
+
+    }
+
+    @Test
+    public void testEnvironment() throws Exception{
+        CoreRemoteService coreRemoteService=new CoreRemoteServiceImpl();
+        List<Long> bandObjIds=new ArrayList<Long>();
+        bandObjIds.add(4977955L);
+        Map<String, Object> bandByBandObjId = coreRemoteService.getBandByBandObjId(bandObjIds);
+
+        Long bandId = Long.valueOf(bandByBandObjId.get("objID").toString());
+
+        Long organizationId = Long.valueOf(bandByBandObjId.get("organizationID").toString());
+
+        Map<String,Object> result=new HashMap<String, Object>();
+
+        if(globalCache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId)!=null){
+            result.put("organizationEnvironment", globalCache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId));
+
+        }else{
+            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironment(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
+            result.put("organizationEnvironment",oEnvironment);
+        }
+
+        System.out.println("get Organization");
+
+        if(globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId)!=null){
+            result.put("bandEnvironment",globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
+            System.out.println(globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
+        }else{
+            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironment(bandId, EnvironmentType.BAND_ENVIRONMENT);
+            result.put("bandEnvironment",bEnvironment);
+            System.out.println(bEnvironment);
+        }
+
+        System.out.println(result);
     }
 }

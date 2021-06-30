@@ -10,4 +10,9 @@ public class ScriptEnvironmentFactory implements  EnvironmentFactory{
     public Environment createEnvironment(Long id) throws Exception {
         return new ScriptEnvironment(id);
     }
+
+    @Override
+    public Environment updateEnvironment(Long id) throws Exception {
+        return null;
+    }
 }

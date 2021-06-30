@@ -7,4 +7,6 @@ public interface EnvironmentFactory {
 
     public Environment createEnvironment(Long id) throws Exception;
 
+    public Environment updateEnvironment(Long id) throws Exception;
+
 }

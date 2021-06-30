@@ -36,7 +36,7 @@ public class WtbCoreUtil {
         return getString(userName, passWord);
     }
 
-    public JSONObject doGet(String api,String accessToken,Map<String,Object> params){
+    public JSONObject doGet(String api,String accessToken,Map<String,Object> params) throws Exception{
         HttpURLConnection connection = null;
         InputStream is = null;
         BufferedReader br = null;
@@ -275,9 +275,8 @@ public class WtbCoreUtil {
         return accessToken;
     }
 
-    private String getURL(String api,Map<String,Object> params){
+    private String getURL(String api,Map<String,Object> params) throws Exception {
         StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append(domainName);
         stringBuffer.append(api);
         stringBuffer.append("?");
         stringBuffer.append("aid=21419389378723787447");
@@ -295,12 +294,43 @@ public class WtbCoreUtil {
             stringBuffer.append("&gid=1");
         }
 
+        //query对应的value一定要是Map类型的
+        if(keys.contains("query")){
+            Map<String,Object> query = (Map<String, Object>) params.get("query");
+
+            Set<String> queryKeys = query.keySet();
+            if(!queryKeys.isEmpty()){
+                StringBuffer buffer=new StringBuffer();
+
+                stringBuffer.append("&query={");
+
+                for (String key :
+                        queryKeys) {
+                    buffer.append("\""+key+"\":");
+                    buffer.append("\""+query.get(key).toString()+"\"");
+                    buffer.append(",");
+                }
+
+                buffer.deleteCharAt(buffer.length()-1);
+
+                stringBuffer.append(buffer.toString());
+                stringBuffer.append("}");
+
+                keys.remove("query");
+            }
+        }
+
         for (String key :
                 keys) {
             stringBuffer.append("&" + key);
             stringBuffer.append("="+params.get(key).toString());
         }
 
-        return stringBuffer.toString();
+
+        String s = URIEncodeUtil.encodeURI(stringBuffer.toString());
+
+        s=domainName+s;
+        System.out.println(s);
+        return s;
     }
 }
