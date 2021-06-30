@@ -71,7 +71,7 @@ export default {
 
       const _this = this
       let registerScript = _this.newScript
-      registerScript["userId"] = _this.$store.getters.getUser.userId
+      registerScript["userId"] = _this.$store.getters.getUser.userID
       registerScript["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'post',

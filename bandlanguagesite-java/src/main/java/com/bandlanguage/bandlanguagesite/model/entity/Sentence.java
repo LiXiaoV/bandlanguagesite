@@ -36,7 +36,7 @@ public class Sentence implements Serializable {
     @TableField(value = "description")
     private String description;
 
-    // 句型的巴克斯范式表示
+    // 句型的巴科斯范式表示
     @TableField(value = "paradigm")
     private String paradigm;
 

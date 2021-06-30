@@ -15,7 +15,7 @@
           <el-form-item label="句子描述">
             <span>{{ props.row.desc }}</span>
           </el-form-item>
-          <el-form-item label="巴克斯范式">
+          <el-form-item label="巴科斯范式">
             <span>{{ props.row.paradigm }}</span>
           </el-form-item>
           <el-form-item label="场景id">
@@ -91,84 +91,84 @@
           id: '1',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '2',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '3',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '4',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '5',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '6',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '7',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '8',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '9',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '10',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '11',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },{
           id: '12',
           name: "显示 张三",
           desc: '显示张三的信息',
-          paradigm: '“显示 张三”的巴克斯范式',
+          paradigm: '“显示 张三”的巴科斯范式',
           sceneid: '1',
           status: '待审核'
         },],

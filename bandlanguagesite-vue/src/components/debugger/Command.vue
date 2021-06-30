@@ -210,7 +210,7 @@ export default {
       const _this = this
       console.log("sceneId")
       console.log(_this.$route.params.id)
-      console.log(_this.$store.getters.getUser.userId)
+      console.log(_this.$store.getters.getUser.userID)
       this.$axios({
         method: 'get',
         url: `${this.global.serverUrl}/word/allWords/`,

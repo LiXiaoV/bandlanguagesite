@@ -10,7 +10,7 @@
             <el-form-item label="句型描述：">
               <span>{{props.row.description}}</span>
             </el-form-item>
-            <el-form-item label="句型的巴克斯范式表示：">
+            <el-form-item label="句型的巴科斯范式表示：">
               <span>{{ props.row.paradigm }}</span>
             </el-form-item>
             <el-form-item label="状态：">
