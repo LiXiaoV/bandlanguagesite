@@ -80,8 +80,8 @@ public enum ResultCode {
     SERVER_ERROR(500100, "服务端异常"),
 
     // 用户模块 5002XX
-    SESSION_ERROR(500201, "Session不存在或者已经失效"),
-    USERNAME_EMPTY(50002, "用户名不能为空"),
+    SESSION_ERROR(500201, "AccessToken不存在或者已经失效"),
+    USERNAME_EMPTY(500202, "用户名不能为空"),
     USERNAME_NOT_EXIST(500203, "用户名不存在"),
     MOBILE_EMPTY(500204, "手机号码不能为空"),
     MOBILE_ERROR(500205, "手机号码格式错误"),
@@ -92,8 +92,9 @@ public enum ResultCode {
     PASSWORD_ERROR(500210, "密码错误"),
     VISITOR_NEED_NOT_LOGIN(500211, "游客无需登陆"),
     REGISTER_USERNAME_EXIST(500212, "注册用户名已存在"),
-    REGISTER_MOBILE_EXISTZ(500213, "注册电话号码已存在"),
+    REGISTER_MOBILE_EXIST(500213, "注册电话号码已存在"),
     REGISTER_EMAIL_EXIST(500214, "注册邮箱已存在"),
+    LOGIN_FAIL(500215,"登录失败"),
 
     // 词汇模块 5003XX
     SAVE_WORD_FAIL(500301, "保存词汇失败"),

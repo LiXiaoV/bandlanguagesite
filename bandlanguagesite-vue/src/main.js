@@ -28,6 +28,8 @@ import vueBeauty from 'vue-beauty'
 Vue.use(vueBeauty)
 
 Vue.config.productionTip = false
+
+axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios;
 Vue.prototype.global = global;
 

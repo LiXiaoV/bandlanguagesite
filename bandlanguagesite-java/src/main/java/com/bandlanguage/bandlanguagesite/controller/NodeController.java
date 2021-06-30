@@ -21,7 +21,7 @@ public class NodeController {
     @Autowired
     private NodeService nodeService;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public Result registerNode(@RequestBody NodeVo nodeVo) {
 //        System.out.println("nodeVo = " + nodeVo);
         Boolean res = nodeService.saveNode(nodeVo);
