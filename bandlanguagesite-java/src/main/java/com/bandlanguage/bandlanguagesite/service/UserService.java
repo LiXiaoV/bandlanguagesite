@@ -1,9 +1,11 @@
 package com.bandlanguage.bandlanguagesite.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.model.entity.User;
 import com.bandlanguage.bandlanguagesite.model.vo.LoginByUsernameVo;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author xiaov
@@ -17,15 +19,15 @@ public interface UserService {
      * @param userId 用户ID
      * @return 查询的用户实体类
      */
-    User getUserById(Long userId);
+    JSONObject getUserById(Long userId);
 
     /**
      * 根据用户的用户名查询用户
      *
-     * @param phone 用户的用户名
-     * @return 查询的用户实体类
+     * @param username 用户的用户名
+     * @return 查询的用户JSON对象
      */
-    User getUserByUsername(String username);
+//    Object getUserByUsername(String username);    //(对接帮区，该方法无)
 
     /**
      * 根据用户的电话号码查询用户
@@ -33,7 +35,7 @@ public interface UserService {
      * @param phone 用户的电话号码
      * @return 查询的用户实体类
      */
-    User getUserByPhone(String phone);
+//    User getUserByPhone(String phone);    //(对接帮区，该方法无)
 
     /**
      * 根据用户的邮箱查询用户
@@ -41,7 +43,7 @@ public interface UserService {
      * @param email 用户的邮箱号
      * @return 查询的用户实体类
      */
-    User getUserByEmail(String email);
+//    User getUserByEmail(String email);    //(对接帮区，该方法无)
 
     /**
      * 注册用户
@@ -50,7 +52,7 @@ public interface UserService {
      * @param user     用户实体类
      * @return 是否成功
      */
-    boolean register(HttpServletResponse response, User user);
+//    boolean register(HttpServletResponse response, User user);    //(对接帮区，直接使用帮区注册工具)
 
     /**
      * 根据用户名登陆
@@ -59,7 +61,7 @@ public interface UserService {
      * @param loginVo  用户名登陆的输入类
      * @return 登陆是否成功
      */
-    User loginByUsername(HttpServletResponse response, LoginByUsernameVo loginVo);
+    JSONObject loginByUsername(HttpServletResponse response, LoginByUsernameVo loginVo) throws Exception;
 
     /**
      * 修改密码
@@ -69,10 +71,25 @@ public interface UserService {
      * @param formPass 输入的密码
      * @return 修改密码是否成功
      */
-    boolean updatePassword(String token, long userId, String formPass);
+//    boolean updatePassword(String token, long userId, String formPass);   //(对接帮区，该方法无)
 
 
-    User getByToken(HttpServletResponse response, String token);
+    /**
+     * 根据session里面的accessToken来请求用户
+     *
+     * @return 用户的JSON格式对象
+     */
+    JSONObject getUserByToken() throws IOException;
 
-    String createToken(HttpServletResponse response, LoginByUsernameVo login);
+    /**
+     * 用户登出
+     * @return 用户登出是否成功
+     */
+    Boolean logout() throws Exception;
+
+    /**
+     * 获得session里面的accessToken
+     * @return session里面的accessToken
+     */
+    String getAccessToken();
 }

@@ -20,6 +20,8 @@ import store from '@/store/index'
 import './assets/style/font.scss'
 
 Vue.config.productionTip = false
+
+axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios;
 Vue.prototype.global = global;
 
