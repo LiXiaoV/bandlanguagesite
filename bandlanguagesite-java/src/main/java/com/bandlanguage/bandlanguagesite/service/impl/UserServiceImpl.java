@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     private void addCookie(HttpServletResponse response, String cookieName, String cookieValue, int maxAge) {
         Cookie cookie = new Cookie(cookieName, cookieValue);
-//        cookie.setDomain("www.wetoband.com");
+        cookie.setDomain(".wetoband.com");
         cookie.setPath("/");
         cookie.setHttpOnly(false);
         if (maxAge > 0)
