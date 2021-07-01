@@ -42,7 +42,7 @@ public class SentenceVo implements Serializable {
     private Integer isTypeIn;
     private Integer status;
 
-    // 中间泛式
+    // 中间范式
     private List<Paradigm> paradigms;
 
     private Long userId;

@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-row type="flex" justify="center" style="background-color: white;">
+    <el-row type="flex" align="center" style="background-color: white;">
       <el-col :sm="2" :md="2" :lg="1"><span class="iconfont iconluntan" style="font-size: 3rem;"></span></el-col>
-      <el-col :sm="3" :md="2" :lg="2"><div style="margin-top: 1.5vh;font-size: 1.1rem;">帮语网站</div></el-col>
-      <el-col :sm="11" :md="10" :lg="13">
-        <el-menu :default-active="global.activePath" class="el-menu-head" mode="horizontal" :router="true" @select="handleSelect">
+      <el-col :sm="4" :md="3" :lg="2"><div style="margin-top: 1.5vh;font-size: 1.1rem;"><span>帮语网站</span></div></el-col>
+      <el-col :sm="10" :md="10" :lg="13">
+        <el-menu :default-active="global.activePath" class="el-menu-demo" mode="horizontal"
+                 :router="true" @select="handleSelect" style="border-bottom:none">
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/scenes">场景区</el-menu-item>
           <el-menu-item index="/discuss">公共讨论</el-menu-item>
@@ -20,8 +21,8 @@
         >
         </el-input>
       </el-col >
-      <el-col :sm="2" :md="1" :lg="1"><span style="float: right;font-size: 2rem;margin-top:1.5vh;margin-left: 1vw;" class="iconfont iconyouxiang"></span></el-col>
-      <el-col :sm="2" :md="2" :lg="1">
+      <el-col :sm="1" :md="1" :lg="1"><div style="margin-left: 1vw;margin-top: 1.5vh;"><span style="font-size: 2rem;" class="iconfont iconyouxiang"></span></div></el-col>
+      <el-col :sm="2" :md="2" :lg="2">
         <el-popover
             width="250"
             placement="bottom-end"
@@ -54,7 +55,7 @@
               </el-col>
             </el-row>
           </div>
-          <el-avatar slot="reference" :size="40" :src="userInfo.head" @error="errorHandler" style="margin-top: 1vh;margin-left: 1vw;">
+          <el-avatar slot="reference" :size="40" :src="userInfo.head" @error="errorHandler" style="margin-top: 1vh;margin-left: 0.5vw;">
             <img :src="default_avatar" alt="我的头像"/>
           </el-avatar>
         </el-popover>
@@ -145,12 +146,12 @@ export default {
           if(_this.userInfo != null && Number(_this.userInfo.userID) > 0 && Number(_this.userInfo.userID) !== 28){
             _this.$store.commit("SET_IS_LOGIN",true)
             _this.isLogin = _this.$store.getters.getIsLogin
-            _this.$message({
-              showClose: true,
-              message: "注销成功",
-              type: 'success'
-            });
           }
+          _this.$message({
+            showClose: true,
+            message: "注销成功",
+            type: 'success'
+          });
         }
       }).catch( error => {
         console.log(error)

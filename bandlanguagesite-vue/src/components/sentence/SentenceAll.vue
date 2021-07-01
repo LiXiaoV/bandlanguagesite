@@ -26,10 +26,10 @@
             <el-form-item label="描述：">
               <span>{{ props.row.description }}</span>
             </el-form-item>
-            <el-form-item label="巴克斯范式表示：">
+            <el-form-item label="巴科斯范式表示：">
               <span>{{ props.row.paradigm }}</span>
             </el-form-item>
-            <el-form-item label="中间泛式：">
+            <el-form-item label="中间范式：">
               <div v-for="(item,index) in props.row.paradigms" :key="index">
                 {{item.easyParadigm}}
               </div>
@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column prop="description" label="描述" header-align="center">
       </el-table-column>
-      <el-table-column prop="paradigm" label="巴克斯范式表示" header-align="center">
+      <el-table-column prop="paradigm" label="巴科斯范式表示" header-align="center">
       </el-table-column>
     </el-table>
     <el-pagination

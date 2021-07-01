@@ -13,7 +13,7 @@
       <el-form-item label="描述：">
         <span>{{ detailSentence.description }}</span>
       </el-form-item>
-      <el-form-item label="句型的巴克斯范式表示：">
+      <el-form-item label="句型的巴科斯范式表示：">
         <span>{{ detailSentence.paradigm }}</span>
       </el-form-item>
       <el-form-item label="创建者：">

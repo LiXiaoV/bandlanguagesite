@@ -8,7 +8,7 @@
     <div class="v-content">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span style="float: left;font-size: 1.5rem">火热的场景区</span>
+          <span style="float: left;font-size: 1.5rem">帮区</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="enterScenes">全部</el-button>
         </div>
         <el-row>
@@ -79,10 +79,10 @@
                 <el-form-item label="描述：">
                   <span>{{ props.row.description }}</span>
                 </el-form-item>
-                <el-form-item label="巴克斯范式表示：">
+                <el-form-item label="巴科斯范式表示：">
                   <span>{{ props.row.paradigm }}</span>
                 </el-form-item>
-                <el-form-item label="中间泛式：">
+                <el-form-item label="中间范式：">
                   <div v-for="(item,index) in props.row.paradigms" :key="index">
                     {{item.easyParadigm}}
                   </div>
@@ -94,7 +94,7 @@
           </el-table-column>
           <el-table-column prop="name" label="句型名" min-width="30" align="center">
           </el-table-column>
-          <el-table-column prop="paradigm" label="巴克斯泛式" min-width="30" align="center">
+          <el-table-column prop="paradigm" label="巴科斯范式" min-width="30" align="center">
           </el-table-column>
           <el-table-column prop="description" label="句型描述" min-width="30" align="center">
           </el-table-column>
@@ -135,7 +135,7 @@
 
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span style="float: left;font-size: 1.5rem">火热的帖子</span>
+          <span style="float: left;font-size: 1.5rem">受关注的帖子</span>
         </div>
         <div v-for="o in 3" :key="o" class="hot-invitation">
           <div class="invitation-item">

@@ -117,7 +117,7 @@ CREATE TABLE `sentence`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '句子本身',
   `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '相关描述',
-  `paradigm` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '句型的巴克斯范式表示',
+  `paradigm` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '句型的巴科斯范式表示',
   `sceneid` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '该句型所属的场景ID，如果属于多个，以、隔开',
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE

@@ -13,7 +13,7 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="句型的巴克斯范式表示" :label-width="formLabelWidth">
+      <el-form-item label="句型的巴科斯范式表示" :label-width="formLabelWidth">
         <el-input
             v-model="newSentence.paradigm"
             type="textarea"
@@ -22,7 +22,7 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="巴克斯范式的中间范式" :label-width="formLabelWidth">
+      <el-form-item label="巴科斯范式的中间范式" :label-width="formLabelWidth">
         <el-card>
           <el-table
               :data="paradigms"
@@ -144,7 +144,7 @@ export default {
       let registerSentence = _this.newSentence
       registerSentence["paradigms"] = _this.paradigms
       registerSentence["isTypeIn"] = _this.isSentenceTypeInFlag?1:0
-      registerSentence["userId"] = _this.$store.getters.getUser.userId
+      registerSentence["userId"] = _this.$store.getters.getUser.userID
       registerSentence["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',

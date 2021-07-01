@@ -126,7 +126,7 @@ export default {
       editRuleObj["express"] = _this.ruleObj.express
       editRuleObj["description"] = _this.ruleObj.description
       editRuleObj["code"] = _this.ruleObj.code
-      editRuleObj["userId"] = _this.$store.getters.getUser.userId
+      editRuleObj["userId"] = _this.$store.getters.getUser.userID
       editRuleObj["sceneId"] = _this.sceneId
       if(_this.itemId > 0 && _this.itemType > 0){
         editRuleObj["type"] = _this.itemType
@@ -186,7 +186,7 @@ export default {
       const _this = this
       let deleteRule = {}
       deleteRule["ruleId"] = id
-      deleteRule["userId"] = _this.$store.getters.getUser.userId
+      deleteRule["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'delete',
         url: `${this.global.serverUrl}/rule/`,

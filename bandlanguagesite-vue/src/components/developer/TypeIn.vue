@@ -349,7 +349,7 @@ export default {
       const _this = this
       let deleteAssociateRule = {}
       deleteAssociateRule["ruleId"] = id
-      deleteAssociateRule["userId"] = _this.$store.getters.getUser.userId
+      deleteAssociateRule["userId"] = _this.$store.getters.getUser.userID
       deleteAssociateRule["itemId"] = _this.itemId
       deleteAssociateRule["type"] = _this.itemType
       this.$axios({
@@ -384,7 +384,7 @@ export default {
       const _this = this
       let deleteAssociateNode = {}
       deleteAssociateNode["nodeId"] = id
-      deleteAssociateNode["userId"] = _this.$store.getters.getUser.userId
+      deleteAssociateNode["userId"] = _this.$store.getters.getUser.userID
       deleteAssociateNode["itemId"] = _this.itemId
       deleteAssociateNode["type"] = _this.itemType
       this.$axios({
