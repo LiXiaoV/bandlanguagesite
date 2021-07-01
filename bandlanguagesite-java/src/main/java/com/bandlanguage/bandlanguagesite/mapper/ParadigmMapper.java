@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 中间泛式的模型类
+ * 中间范式的模型类
  *
  * @author xiaov
  * @since 2021-06-16 20:19

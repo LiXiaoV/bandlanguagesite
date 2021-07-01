@@ -13,7 +13,7 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="句型的巴克斯范式表示" :label-width="formLabelWidth">
+      <el-form-item label="句型的巴科斯范式表示" :label-width="formLabelWidth">
         <el-input
             v-model="existSentence.paradigm"
             type="textarea"
@@ -22,7 +22,7 @@
             show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="巴克斯范式的中间范式" :label-width="formLabelWidth">
+      <el-form-item label="巴科斯范式的中间范式" :label-width="formLabelWidth">
         <el-card>
           <el-table
               :data="existSentence.paradigms"
@@ -130,7 +130,7 @@ export default {
 
       const _this = this
       let updateSentence = _this.existSentence
-      updateSentence["userId"] = _this.$store.getters.getUser.userId
+      updateSentence["userId"] = _this.$store.getters.getUser.userID
       updateSentence["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',
@@ -164,16 +164,16 @@ export default {
       this.$emit('closeEditSentenceDialog',false)
     },
     editDetail(id){
-      // console.log("编辑中间泛式"+id)
+      // console.log("编辑中间范式"+id)
       this.transParadigmId = Number(id)
       this.paradigmEditDialogVisible = true
     },
     deleteParadigm(id){
-      // console.log("删除中间泛式"+id)
+      // console.log("删除中间范式"+id)
       const _this = this
       let deleteParadigm = {}
       deleteParadigm["paradigmId"] = Number(id)
-      deleteParadigm["userId"] = _this.$store.getters.getUser.userId
+      deleteParadigm["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'delete',
         url: `${this.global.serverUrl}/sentence/paradigm/`,
@@ -182,7 +182,7 @@ export default {
         if(res.data.code === 0){
           _this.$message({
             showClose: true,
-            message: "删除中间泛式成功",
+            message: "删除中间范式成功",
             type: 'success'
           });
           _this.updateParadigms()
@@ -190,20 +190,20 @@ export default {
         else {
           _this.$message({
             showClose: true,
-            message: "删除中间泛式失败",
+            message: "删除中间范式失败",
             type: 'error'
           });
         }
       }).catch( () => {
         _this.$message({
           showClose: true,
-          message: "删除中间泛式失败",
+          message: "删除中间范式失败",
           type: 'error'
         });
       })
     },
     registerParadigm(){
-      // console.log("添加中间泛式")
+      // console.log("添加中间范式")
       this.paradigmAddDialogVisible = true
     },
     closeParadigmAddDialog(){

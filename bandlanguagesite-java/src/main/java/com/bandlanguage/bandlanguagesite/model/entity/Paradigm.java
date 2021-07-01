@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 中间泛式实体类
+ * 中间范式实体类
  *
  * @author xiaov
  * @since 2021-06-16 17:37

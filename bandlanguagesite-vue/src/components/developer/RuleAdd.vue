@@ -123,7 +123,7 @@ export default {
       registerRuleObj["express"] = _this.ruleObj.express
       registerRuleObj["description"] = _this.ruleObj.description
       registerRuleObj["code"] = _this.ruleObj.code
-      registerRuleObj["userId"] = _this.$store.getters.getUser.userId
+      registerRuleObj["userId"] = _this.$store.getters.getUser.userID
       registerRuleObj["sceneId"] = _this.sceneId
       if(_this.itemId > 0 && _this.itemType > 0){
         registerRuleObj["type"] = _this.itemType

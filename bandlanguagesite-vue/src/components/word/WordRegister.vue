@@ -213,7 +213,7 @@ export default {
       let registerWord = _this.newWord
       registerWord["type"] = Number(_this.wordTypeValue)
       registerWord["isTypeIn"] = _this.isWordTypeInFlag?1:0
-      registerWord["userId"] = _this.$store.getters.getUser.userId
+      registerWord["userId"] = _this.$store.getters.getUser.userID
       registerWord["sceneId"] = Number(_this.sceneValue)
       this.$axios({
         method: 'post',

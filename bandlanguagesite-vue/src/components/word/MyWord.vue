@@ -105,7 +105,7 @@ export default {
       const _this = this
       let deleteWord = {}
       deleteWord["wordId"] = Number(id)
-      deleteWord["userId"] = _this.$store.getters.getUser.userId
+      deleteWord["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'delete',
         url: `${this.global.serverUrl}/word/`,
@@ -141,7 +141,7 @@ export default {
         url: `${this.global.serverUrl}/word/myWords/`,
         params: {
           "sceneId": _this.$route.params.id,
-          "userId": _this.$store.getters.getUser.userId
+          "userId": _this.$store.getters.getUser.userID
         }
       }).then(res => {
         let words = res.data.data
