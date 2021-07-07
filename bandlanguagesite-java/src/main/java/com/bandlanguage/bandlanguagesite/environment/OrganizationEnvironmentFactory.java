@@ -3,10 +3,10 @@ package com.bandlanguage.bandlanguagesite.environment;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
 import com.bandlanguage.bandlanguagesite.util.SpringContextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,20 +38,22 @@ public class OrganizationEnvironmentFactory implements EnvironmentFactory {
     @Override
     public Environment createEnvironment(Long id) throws Exception{
         Environment environment=null;
-        if(!generatingOrganizationId.contains(id)){
-            synchronized (OrganizationEnvironmentFactory.class){
-                if(!generatingOrganizationId.contains(id)&&isNotInRedis(id)){
-                    generatingOrganizationId.add(id);
-                    environment=new OrganizationEnvironment(id);
-                    saveInRedis(environment,id);
-                    generatingOrganizationId.remove(id);
-                }
-            }
+        if(isNotInRedis(id)){
+            environment=new OrganizationEnvironment(id);
+            saveInRedis(environment,id);
+        }else{
+            Map<String, Object> map = getFromRedis(id);
+            environment=new OrganizationEnvironment(id,map);
         }
         return environment;
     }
 
     @Override
+    public Environment createEnvironment(Long id, Map<String, Object> map) throws Exception {
+        Environment environment=new OrganizationEnvironment(id,map);
+        return environment;
+    }
+
     public Environment updateEnvironment(Long id) throws Exception {
 
         Environment environment=null;
@@ -79,6 +81,10 @@ public class OrganizationEnvironmentFactory implements EnvironmentFactory {
 
     private Boolean isNotInRedis(Long id){
         return cache.get(EnvironmentKey.instance.getPrefix()+"organization"+id)==null;
+    }
+
+    private Map<String,Object> getFromRedis(Long id){
+        return (Map<String, Object>) ((Map<String, Object>) cache.get(EnvironmentKey.instance.getPrefix()+"organization"+id)).get("all");
     }
 
     private void removeFromRedis(Long id){

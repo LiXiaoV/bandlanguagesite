@@ -199,7 +199,7 @@ class BandlanguagesiteApplicationTests {
             result.put("organizationEnvironment", globalCache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId));
 
         }else{
-            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironment(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
+            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
             result.put("organizationEnvironment",oEnvironment);
         }
 
@@ -209,7 +209,7 @@ class BandlanguagesiteApplicationTests {
             result.put("bandEnvironment",globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
             System.out.println(globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
         }else{
-            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironment(bandId, EnvironmentType.BAND_ENVIRONMENT);
+            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(bandId, EnvironmentType.BAND_ENVIRONMENT);
             result.put("bandEnvironment",bEnvironment);
             System.out.println(bEnvironment);
         }

@@ -3,10 +3,10 @@ package com.bandlanguage.bandlanguagesite.environment;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
 import com.bandlanguage.bandlanguagesite.util.SpringContextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,20 +38,22 @@ public class BandEnvironmentFactory implements EnvironmentFactory{
     @Override
     public Environment createEnvironment(Long id) throws Exception{
         Environment environment=null;
-        if(!generatingBand.contains(id)){
-            synchronized (BandEnvironmentFactory.class){
-                if(!generatingBand.contains(id)&&isNotInRedis(id)){
-                    generatingBand.add(id);
-                    environment=new BandEnvironment(id);
-                    saveInRedis(environment,id);
-                    generatingBand.remove(id);
-                }
-            }
+        if(isNotInRedis(id)){
+            environment=new BandEnvironment(id);
+            saveInRedis(environment,id);
+        }else{
+            Map<String, Object> map = getFromRedis(id);
+            environment=new BandEnvironment(id,map);
         }
         return environment;
     }
 
     @Override
+    public Environment createEnvironment(Long id, Map<String, Object> map) throws Exception {
+        Environment environment=new BandEnvironment(id,map);
+        return environment;
+    }
+
     public Environment updateEnvironment(Long id) throws Exception {
         Environment environment=null;
         if(!generatingBand.contains(id)){
@@ -74,11 +76,15 @@ public class BandEnvironmentFactory implements EnvironmentFactory{
         cache.set(EnvironmentKey.instance.getPrefix() +"band"+id,environment);
     }
 
+    private Map<String,Object> getFromRedis(Long bandId){
+        return (Map<String, Object>) ((Map<String, Object>) cache.get(EnvironmentKey.instance.getPrefix() +"band"+bandId)).get("all");
+    }
+
     private Boolean isNotInRedis(Long id){
-        return cache.get(EnvironmentKey.instance.getPrefix()+"organization"+id)==null;
+        return cache.get(EnvironmentKey.instance.getPrefix()+"band"+id)==null;
     }
 
     private void removeFromRedis(Long id){
-        cache.del(EnvironmentKey.instance.getPrefix()+"organization"+id);
+        cache.del(EnvironmentKey.instance.getPrefix()+"band"+id);
     }
 }

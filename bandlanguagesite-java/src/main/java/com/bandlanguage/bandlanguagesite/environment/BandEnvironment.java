@@ -2,8 +2,11 @@ package com.bandlanguage.bandlanguagesite.environment;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
+import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
 import com.bandlanguage.bandlanguagesite.remote.service.CoreRemoteService;
 import com.bandlanguage.bandlanguagesite.remote.service.Impl.CoreRemoteServiceImpl;
+import com.bandlanguage.bandlanguagesite.util.SpringContextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -21,8 +24,14 @@ public class BandEnvironment extends Environment {
 
     private String updateTime;
 
+    private IGlobalCache cache;
+
+    private static final long serialVersionUID = -5809782578272943999L;
+
     public BandEnvironment(Long bandId) throws Exception {
         this.bandId = bandId;
+        cache= SpringContextUtils.getBean(IGlobalCache.class);
+
         map=new HashMap<String, Object>();
         coreRemoteService=new CoreRemoteServiceImpl();
 
@@ -37,6 +46,17 @@ public class BandEnvironment extends Environment {
         updateTime=simpleDateFormat.format(new Date());
     }
 
+    public BandEnvironment(Long bandId,Map<String,Object> map) throws Exception{
+        this.bandId = bandId;
+        cache= SpringContextUtils.getBean(IGlobalCache.class);
+        coreRemoteService=new CoreRemoteServiceImpl();
+
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        updateTime=simpleDateFormat.format(new Date());
+
+        this.map=map;
+    }
+
     public String getUpdateTime() {
         return updateTime;
     }
@@ -47,8 +67,19 @@ public class BandEnvironment extends Environment {
     }
 
     @Override
-    public void set(String key, Object value) {
+    public void add(String key, Object value) {
         map.put(key,value);
+    }
+
+    @Override
+    public void addAll(Map<String, Object> map) {
+        this.map.putAll(map);
+    }
+
+    @Override
+    public Environment remove(String key) {
+        this.map.remove(key);
+        return this;
     }
 
     @Override
@@ -57,11 +88,27 @@ public class BandEnvironment extends Environment {
     }
 
     @Override
-    public Map<String, Object> getEnvironment() {
+    public Map<String, Object> getAll() {
         Map<String,Object> environment=new HashMap<String, Object>();
         environment.putAll(map);
         environment.put("updateTime",updateTime);
         return environment;
+    }
+
+    @Override
+    public void updateEnvironmentInRedis() {
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            updateTime=simpleDateFormat.format(new Date());
+        this.saveInRedis(600);
+    }
+
+    @Override
+    public Boolean isKeyInEnvironment(String key) {
+        return this.map.containsKey(key);
+    }
+
+    private void saveInRedis(long expiredTime){
+        cache.set(EnvironmentKey.instance.getPrefix() +"band"+bandId,this,expiredTime);
     }
 
     private Map<String,Object> getBandInfo() throws Exception{

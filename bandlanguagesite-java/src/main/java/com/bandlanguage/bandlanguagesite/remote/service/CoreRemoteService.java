@@ -32,4 +32,13 @@ public interface CoreRemoteService {
     JSONObject getPositionByOrganizationId(Long organizationId) throws Exception;
 
     JSONObject getMembersByOrganizationId(Long organizationId) throws Exception;
+
+    /**
+     *部门
+     **/
+
+    JSONObject getUsersInDepartment(Long departmentId) throws Exception;
+
+    JSONObject getPositionsInDepartment(Long departmentId) throws Exception;
+
 }

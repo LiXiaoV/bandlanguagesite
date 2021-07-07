@@ -5,6 +5,7 @@ import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
 import com.bandlanguage.bandlanguagesite.constant.EnvironmentType;
 import com.bandlanguage.bandlanguagesite.util.SpringContextUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -37,7 +38,7 @@ public class EnvironmentManagement {
      * 机构和帮语语境使推荐用
      * 获取语境,其中帮区和机构的语境先判断redis中是否有,没有则去创建并保存到语境中
      **/
-    public Map<String,Object> getEnvironment(Long id, EnvironmentType environmentType) throws Exception {
+    public Map<String,Object> getEnvironmentInfo(Long id, EnvironmentType environmentType) throws Exception {
         Environment environment=null;
         EnvironmentFactory factory=null;
         Map<String,Object> result;
@@ -71,7 +72,7 @@ public class EnvironmentManagement {
                 break;
             }
             case SCRIPT_ENVIRONMENT:{
-                factory=new ScriptEnvironmentFactory();
+                factory=ScriptEnvironmentFactory.getInstance();
                 environment=factory.createEnvironment(id);
                 break;
             }
@@ -80,7 +81,7 @@ public class EnvironmentManagement {
             }
         }
 
-        return environment.getEnvironment();
+        return environment.getAll();
     }
 
     public Map<String,Object> updateEnvironment(Long id,EnvironmentType environmentType) throws Exception{
@@ -108,17 +109,56 @@ public class EnvironmentManagement {
         }
 
         if(environment!=null){
-            result=environment.getEnvironment();
+            result=environment.getAll();
         }
 
         return result;
     }
 
+    //运行剧本时使用,获取三种语境;Object都是Environment类型
+    public Map<String,Environment> getRuntimeEnvironment(Long organizationId,Long bandId,Long scriptId,Map<String,Object> scriptInitialEnvironment) throws Exception{
+
+        Map<String,Environment> environment=new HashMap<String, Environment>();
+
+        Environment organizationEnvironment = OrganizationEnvironmentFactory.getInstance().createEnvironment(organizationId);
+
+        Environment bandEnvironment = BandEnvironmentFactory.getInstance().createEnvironment(bandId);
+
+        Environment scriptEnvironment = ScriptEnvironmentFactory.getInstance().createEnvironment(scriptId);
+
+        scriptEnvironment.addAll(scriptInitialEnvironment);
+
+        environment.put("organization",organizationEnvironment);
+        environment.put("band",bandEnvironment);
+        environment.put("script",scriptEnvironment);
+
+        return environment;
+    }
+
+    public Environment write2Environment(Long id,Map<String,Object> map,EnvironmentType environmentType) throws Exception{
+
+        Environment environment=null;
+
+        switch (environmentType){
+            case ORGANIZATION_ENVIRONMENT:{
+                environment=OrganizationEnvironmentFactory.getInstance().createEnvironment(id,map);
+                break;
+            }
+            case BAND_ENVIRONMENT:{
+                environment=BandEnvironmentFactory.getInstance().createEnvironment(id,map);
+            }
+        }
+        return environment;
+
+    }
+
+
+
     /**
      * 获取语境对象
      * 推荐剧本语境使用，需要更新机构和帮区语境时可使用，创建语境
      **/
-    private Environment getEnvironmentObject(Long id, EnvironmentType environmentType) throws Exception{
+    private Environment getEnvironment(Long id, EnvironmentType environmentType) throws Exception{
         Environment environment=null;
         EnvironmentFactory factory=null;
         switch (environmentType){
@@ -131,7 +171,7 @@ public class EnvironmentManagement {
                 break;
             }
             case SCRIPT_ENVIRONMENT:{
-                factory=new ScriptEnvironmentFactory();
+                factory=ScriptEnvironmentFactory.getInstance();
                 break;
             }
             default:{
@@ -141,5 +181,4 @@ public class EnvironmentManagement {
         environment=factory.createEnvironment(id);
         return environment;
     }
-
 }

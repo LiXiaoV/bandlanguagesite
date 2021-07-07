@@ -3,7 +3,9 @@ package com.bandlanguage.bandlanguagesite.remote.service.Impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.remote.service.CoreRemoteService;
+import com.bandlanguage.bandlanguagesite.service.UserService;
 import com.bandlanguage.bandlanguagesite.util.WtbCoreUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +17,13 @@ import java.util.Map;
  **/
 @Service
 public class CoreRemoteServiceImpl implements CoreRemoteService {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     *帮区
+     **/
 
     @Override
     public Map<String, Object> getBandByBandObjId(List<Long> bandObjIds) throws Exception {
@@ -106,6 +115,11 @@ public class CoreRemoteServiceImpl implements CoreRemoteService {
         return WtbCoreUtil.getInstance().doGet(api.toString(),WtbCoreUtil.getInstance().getAccessToken(),params);
     }
 
+
+    /**
+     *机构
+     **/
+
     @Override
     public JSONObject getOrganizationInfo(Long organizationId) throws Exception {
         Map<String,Object> params=new HashMap<String, Object>();
@@ -150,5 +164,27 @@ public class CoreRemoteServiceImpl implements CoreRemoteService {
         params.put("query",query);
 
         return WtbCoreUtil.getInstance().doGet(api.toString(),WtbCoreUtil.getInstance().getAccessToken(),params);
+    }
+
+    @Override
+    public JSONObject getUsersInDepartment(Long departmentId) throws Exception {
+        Map<String,Object> params=new HashMap<String, Object>();
+        StringBuffer api=new StringBuffer();
+        api.append("/core/v4/department/");
+        api.append(departmentId+"/user");
+
+//        userService
+
+        return WtbCoreUtil.getInstance().doGet(api.toString(),WtbCoreUtil.getInstance().getAccessToken(),params);
+    }
+
+    @Override
+    public JSONObject getPositionsInDepartment(Long departmentId) throws Exception {
+        Map<String,Object> params=new HashMap<String, Object>();
+        StringBuffer api=new StringBuffer();
+        api.append("/core/v4/department/");
+        api.append(departmentId+"/position");
+
+        return null;
     }
 }

@@ -24,7 +24,10 @@
         <el-tab-pane label="语境" name="context">
           <div>
             <div class="titleFont">语境</div>
-            <div style="height: 55vh; overflow-y: auto;overflow-x:auto" class="contextStyle">
+            <div
+              style="height: 50vh; overflow-y: auto; overflow-x: auto"
+              class="contextStyle"
+            >
               <!-- <el-collapse style="border: none" :value="activePanel">
                 <el-collapse-item name="organization">
                   <template slot="title"> 机构语境 </template>
@@ -79,11 +82,47 @@
                 </el-collapse-item>
               </el-collapse> -->
 
-              <v-tree :data="contextList.organizationContext" show-line> </v-tree>
-              <v-tree :data="contextList.bandContext" show-line></v-tree>
+              <v-tree
+                :data="contextList.organizationContext"
+                show-line
+                style="font-size: 16px"
+              >
+              <el-button>刷新</el-button>
+              </v-tree>
+              <v-tree
+                :data="contextList.bandContext"
+                show-line
+                style="font-size: 16px"
+              ></v-tree>
             </div>
-            <div style="height:27vh;border-style: inset">
-              <p>剧本语境</p>
+            <div style="height: 27vh; border-style: inset; width: 100%">
+              <p style="font-size:16px;font-weight:bold">剧本语境</p>
+              <div
+                v-for="(item, index) in contextList.scriptContext.scriptContextList"
+                :key="index"
+              >
+              <div style="display:inline-flex;width:100%">
+                <label-edit :text="item.key" placeholder="key" style="width:35%" v-on:text-updated-blur="keyUpdate($event,index)"></label-edit><span style="font-size:16px">:</span>
+                <label-edit :text="item.value" placeholder="value" style="width:60%" v-on:text-updated-blur="valueUpdate($event,index)"></label-edit>
+              </div>
+              </div>
+              <div style="display: inline-flex; margin-top: 2px">
+                <v-input
+                  placeholder="key"
+                  v-model="contextList.scriptContext.contextInput.key"
+                  style="width: 30%"
+                  @keyup.native="confirmKey"
+                  ref="keyInput"
+                ></v-input>
+                <span style="font-size: 18px">:</span>
+                <v-input
+                  placeholder="value"
+                  v-model="contextList.scriptContext.contextInput.value"
+                  style="width: 60%"
+                  @keyup.native="addScriptContex($event)"
+                  ref="valueInput"
+                ></v-input>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -233,6 +272,7 @@
 
 <script>
 import { trimSpaceLR, getYMD } from "../../store/common";
+import LabelEdit from 'label-edit'
 
 export default {
   data() {
@@ -315,13 +355,16 @@ export default {
               {
                 title: "帮区角色",
                 children: [],
-              }, {
+              },
+              {
                 title: "帮区资料",
                 children: [],
-              },{
-                title:"帮区消息板",
-                children:[]
-              },{
+              },
+              {
+                title: "帮区消息板",
+                children: [],
+              },
+              {
                 title: "帮区用户",
                 children: [],
               },
@@ -330,7 +373,13 @@ export default {
         ],
 
         //剧本语境
-        scriptContext: [],
+        scriptContext: {
+          scriptContextList: [],
+          contextInput: {
+            key: "",
+            value: "",
+          },
+        },
       },
 
       scriptLibrary: [],
@@ -476,7 +525,7 @@ export default {
 
     //调用剧本
     // userScript(index){
-      
+
     // },
 
     /**
@@ -516,7 +565,7 @@ export default {
         },
       }).then((res) => {
         //机构
-        let organizationData = res.data.data.organizationEnvironment.environment;
+        let organizationData = res.data.data.organizationEnvironment.all;
         this.contextList.organizationContext[0].children[0].children = this.processOrganizationInfo(
           organizationData.organizationInfo
         );
@@ -531,17 +580,26 @@ export default {
         );
 
         //帮区
-        let bandData=res.data.data.bandEnvironment.environment;
-        this.contextList.bandContext[0].children[0].children=this.processBandInfo(bandData.bandInfo);
-        this.contextList.bandContext[0].children[1].children=this.concatNameIdInArray(bandData.bandRoles);
-        this.contextList.bandContext[0].children[2].children=this.concatNameIdInArray(bandData.bandDocuments);
-        this.contextList.bandContext[0].children[3].children=this.concatNameIdInArray(bandData.bandChatrooms);
-        this.contextList.bandContext[0].children[4].children=this.concatNameIdInArray(bandData.bandUsers);
-
+        let bandData = res.data.data.bandEnvironment.all;
+        this.contextList.bandContext[0].children[0].children = this.processBandInfo(
+          bandData.bandInfo
+        );
+        this.contextList.bandContext[0].children[1].children = this.concatNameIdInArray(
+          bandData.bandRoles
+        );
+        this.contextList.bandContext[0].children[2].children = this.concatNameIdInArray(
+          bandData.bandDocuments
+        );
+        this.contextList.bandContext[0].children[3].children = this.concatNameIdInArray(
+          bandData.bandChatrooms
+        );
+        this.contextList.bandContext[0].children[4].children = this.concatNameIdInArray(
+          bandData.bandUsers
+        );
       });
     },
 
-    updateOrganizationContext(){
+    updateOrganizationContext() {
       this.$axios({
         methods: "get",
         url: `${this.global.serverUrl}/environment/initEnvironment`,
@@ -550,7 +608,7 @@ export default {
         },
       }).then((res) => {
         //机构
-        let organizationData = res.data.data.organizationEnvironment.environment;
+        let organizationData = res.data.data.organizationEnvironment.all;
         this.contextList.organizationContext[0].children[0].children = this.processOrganizationInfo(
           organizationData.organizationInfo
         );
@@ -563,19 +621,60 @@ export default {
         this.contextList.organizationContext[0].children[3].children = this.concatNameIdInArray(
           organizationData.users
         );
-      })
+      });
     },
 
-    updateBandContext(){
+    updateBandContext() {
       this.$axios({
-        methods:"get",
-        url:`${this.global.serverUrl}/environment/updateOrganizationEnvironment`,
-        params:{
-          bandId:5240552
+        methods: "get",
+        url: `${this.global.serverUrl}/environment/updateOrganizationEnvironment`,
+        params: {
+          bandId: 5240552,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+    },
+
+    //剧本语境
+    confirmKey(e) {
+      if (e.keyCode == 13) {
+        if (trimSpaceLR(this.contextList.scriptContext.contextInput.key) == "") {
+          this.contextList.scriptContext.contextInput.key = "";
+          this.$refs.keyInput.setBlur();
+          this.$refs.valueInput.setBlur();
+        } else {
+          this.$refs.keyInput.setBlur();
+          this.$refs.valueInput.setFocus();
         }
-      }).then((res)=>{
-        console.log(res)
-      })
+      }
+    },
+
+    addScriptContex(e) {
+      if (e.keyCode == 13) {
+        let param = Object.assign({}, this.contextList.scriptContext.contextInput);
+        this.contextList.scriptContext.scriptContextList.push(param);
+        this.contextList.scriptContext.contextInput.key = "";
+        this.contextList.scriptContext.contextInput.value = "";
+        this.$refs.valueInput.setBlur();
+        this.$refs.keyInput.setFocus();
+      }
+    },
+
+    keyUpdate(context,index){
+      if(trimSpaceLR(context)==""){
+        this.contextList.scriptContext.scriptContextList.splice(index,1);
+      }else{
+        this.contextList.scriptContext.scriptContextList[index].key=trimSpaceLR(context);
+      }
+    },
+
+    valueUpdate(context,index){
+      if(trimSpaceLR(context)==""){
+        this.contextList.scriptContext.scriptContextList.splice(index,1);
+      }else{
+        this.contextList.scriptContext.scriptContextList[index].value=trimSpaceLR(context);
+      }
     },
 
     //处理数组
@@ -612,12 +711,15 @@ export default {
       return array;
     },
 
-    processBandInfo(info){
+    processBandInfo(info) {
       let array = [];
       array.push({ title: "帮区名称:" + info.bandName });
       array.push({ title: "帮区Id:" + info.bandId });
       return array;
     },
+  },
+  components:{
+    "label-edit":LabelEdit
   },
   created() {
     this.$store.commit("SET_CONTEXT_PANEL_VISIBLE", false);
@@ -686,7 +788,7 @@ export default {
 }
 
 .titleFont {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
 }
 

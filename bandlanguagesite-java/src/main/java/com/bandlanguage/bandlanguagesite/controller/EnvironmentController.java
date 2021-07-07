@@ -1,6 +1,5 @@
 package com.bandlanguage.bandlanguagesite.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bandlanguage.bandlanguagesite.cache.IGlobalCache;
 import com.bandlanguage.bandlanguagesite.cache.prefix.EnvironmentKey;
 import com.bandlanguage.bandlanguagesite.constant.EnvironmentType;
@@ -50,7 +49,7 @@ public class EnvironmentController {
             result.put("organizationEnvironment", cache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId));
 
         }else{
-            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironment(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
+            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
             result.put("organizationEnvironment",oEnvironment);
         }
 
@@ -58,7 +57,7 @@ public class EnvironmentController {
             result.put("bandEnvironment",cache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
 //            System.out.println(cache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
         }else{
-            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironment(bandId, EnvironmentType.BAND_ENVIRONMENT);
+            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(bandId, EnvironmentType.BAND_ENVIRONMENT);
             result.put("bandEnvironment",bEnvironment);
         }
 
