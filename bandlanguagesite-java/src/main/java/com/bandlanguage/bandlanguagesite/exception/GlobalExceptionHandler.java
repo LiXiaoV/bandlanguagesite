@@ -31,6 +31,8 @@ public class GlobalExceptionHandler {
 
             String msg = error.getDefaultMessage();
             return Result.fail(500, "BindException:" + msg);
+        } else if(e instanceof UserLoginException){
+            return Result.fail(ResultCode.SESSION_ERROR);
         } else if(e instanceof  FormatException){
             return Result.fail(1003,"FormatException"+e.getMessage());
         } else {

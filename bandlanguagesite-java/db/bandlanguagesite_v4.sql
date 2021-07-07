@@ -535,7 +535,7 @@ CREATE TABLE `bls_sentence` (
   `sentence_id` int NOT NULL AUTO_INCREMENT,
   `name` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '句子本身',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '相关描述',
-  `paradigm` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '句型的巴克斯范式表示',
+  `paradigm` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '句型的巴科斯范式表示',
   `creator_id` bigint NOT NULL COMMENT '创建者用户ID',
   `editor_id` bigint NOT NULL COMMENT '最近一次编辑者用户ID',
   `update_time` datetime DEFAULT NULL COMMENT '最近一次更新时间',

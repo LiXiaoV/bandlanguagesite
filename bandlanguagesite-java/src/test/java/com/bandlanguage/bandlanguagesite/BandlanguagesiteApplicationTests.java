@@ -8,8 +8,7 @@ import com.bandlanguage.bandlanguagesite.mapper.*;
 import com.bandlanguage.bandlanguagesite.model.entity.*;
 import com.bandlanguage.bandlanguagesite.model.vo.SentenceVo;
 import com.bandlanguage.bandlanguagesite.model.vo.WordVo;
-import com.bandlanguage.bandlanguagesite.remote.service.CoreRemoteService;
-import com.bandlanguage.bandlanguagesite.remote.service.Impl.CoreRemoteServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +44,21 @@ class BandlanguagesiteApplicationTests {
 
     @Autowired
     private ScriptUserMapper scriptUserMapper;
+
+    @Autowired
+    private RuleMapper ruleMapper;
+
+    @Autowired
+    private RuleUserMapper ruleUserMapper;
+
+    @Autowired
+    private NodeMapper nodeMapper;
+
+    @Autowired
+    private NodeUserMapper nodeUserMapper;
+
+    @Autowired
+    private ParadigmMapper paradigmMapper;
 
     @Test
     public void testGetScenes() {
@@ -170,50 +184,130 @@ class BandlanguagesiteApplicationTests {
 
     }
 
-
+    /**
+     * 用户录入词汇时是游客，改为其真实用户名
+     */
     @Test
-    public void testDoGet() throws Exception {
-        CoreRemoteService coreRemoteService=new CoreRemoteServiceImpl();
-        List<Long> bandObjIds=new ArrayList<>();
-        bandObjIds.add(4977955L);
-        Map<String, Object> bandIdByBandObjId = coreRemoteService.getBandByBandObjId(bandObjIds);
-//        JSONObject membersByOrganizationId = coreRemoteService.getMembersByOrganizationId(4053563L);
-        System.out.println(bandIdByBandObjId);
+    public void testUpdateWordInsertUser() {
+        Long userId = 3L;
 
+        Long startNum = 118L;
+        Long endNum = 162L;
+        for (Long wordId = startNum; wordId <= endNum; wordId++) {
+            Word word = Word.builder().wordId(wordId).creatorId(userId).editorId(userId).build();
+            int res = wordMapper.updateById(word);
+            System.out.println(res > 0 ? "修改word表成功" : "修改word表失败");
+
+            QueryWrapper<WordUser> wordUserQueryWrapper = new QueryWrapper<>();
+            wordUserQueryWrapper.eq("word_id", wordId);
+            List<WordUser> wordUserList = wordUserMapper.selectList(wordUserQueryWrapper);
+            System.out.println("有 " + wordUserList.size() + " 条WordUser要更新");
+            int index = 0;
+            for (WordUser wordUser : wordUserList) {
+                index++;
+                wordUser.setUserId(userId);
+                int updateCount = wordUserMapper.updateById(wordUser);
+                System.out.println("第 " + index + " 条WordUser更新" + (updateCount > 0 ? "成功" : "失败"));
+            }
+        }
     }
 
+    /**
+     * 用户录入句型时是游客，改为其真实用户名
+     */
     @Test
-    public void testEnvironment() throws Exception{
-        CoreRemoteService coreRemoteService=new CoreRemoteServiceImpl();
-        List<Long> bandObjIds=new ArrayList<Long>();
-        bandObjIds.add(4977955L);
-        Map<String, Object> bandByBandObjId = coreRemoteService.getBandByBandObjId(bandObjIds);
+    public void testUpdateSentenceInsertUser() {
+        Long userId = 3L;
 
-        Long bandId = Long.valueOf(bandByBandObjId.get("objID").toString());
+        Long startNum = 26L;
+        Long endNum = 44L;
+        for (Long sentenceId = startNum; sentenceId <= endNum; sentenceId++) {
+            Sentence sentence = Sentence.builder().sentenceId(sentenceId).creatorId(userId).editorId(userId).build();
+            int res = sentenceMapper.updateById(sentence);
+            System.out.println(res > 0 ? "修改sentence表成功" : "修改sentence表失败");
 
-        Long organizationId = Long.valueOf(bandByBandObjId.get("organizationID").toString());
+            QueryWrapper<SentenceUser> sentenceUserQueryWrapper = new QueryWrapper<>();
+            sentenceUserQueryWrapper.eq("sentence_id", sentenceId);
+            List<SentenceUser> sentenceUserList = sentenceUserMapper.selectList(sentenceUserQueryWrapper);
+            System.out.println("有 " + sentenceUserList.size() + " 条SentenceUser要更新");
+            int index = 0;
+            for (SentenceUser sentenceUser : sentenceUserList) {
+                index++;
+                sentenceUser.setUserId(userId);
+                int updateCount = sentenceUserMapper.updateById(sentenceUser);
+                System.out.println("第 " + index + " 条SentenceUser更新" + (updateCount > 0 ? "成功" : "失败"));
+            }
 
-        Map<String,Object> result=new HashMap<String, Object>();
-
-        if(globalCache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId)!=null){
-            result.put("organizationEnvironment", globalCache.get(EnvironmentKey.instance.getPrefix()+"organization"+organizationId));
-
-        }else{
-            Map<String, Object> oEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(organizationId, EnvironmentType.ORGANIZATION_ENVIRONMENT);
-            result.put("organizationEnvironment",oEnvironment);
+            // 修改中间范式
+            QueryWrapper<Paradigm> paradigmQueryWrapper = new QueryWrapper<>();
+            paradigmQueryWrapper.eq("sentence_id", sentenceId);
+            List<Paradigm> paradigms = paradigmMapper.selectList(paradigmQueryWrapper);
+            System.out.println("有 " + paradigms.size() + " 条Paradigm要更新");
+            index = 0;
+            for (Paradigm paradigm : paradigms) {
+                index++;
+                paradigm.setCreatorId(userId);
+                paradigm.setEditorId(userId);
+                int updateCount = paradigmMapper.updateById(paradigm);
+                System.out.println("第 " + index + " 条Paradigm更新" + (updateCount > 0 ? "成功" : "失败"));
+            }
         }
-
-        System.out.println("get Organization");
-
-        if(globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId)!=null){
-            result.put("bandEnvironment",globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
-            System.out.println(globalCache.get(EnvironmentKey.instance.getPrefix()+"band"+bandId));
-        }else{
-            Map<String, Object> bEnvironment = EnvironmentManagement.getInstance().getEnvironmentInfo(bandId, EnvironmentType.BAND_ENVIRONMENT);
-            result.put("bandEnvironment",bEnvironment);
-            System.out.println(bEnvironment);
-        }
-
-        System.out.println(result);
     }
+
+    /**
+     * 用户录入规则时是游客，改为其真实用户名
+     */
+    @Test
+    public void testUpdateRuleInsertUser() {
+        Long userId = 4L;
+
+        Long startNum = 53L;
+        Long endNum = 55L;
+        for (Long ruleId = startNum; ruleId <= endNum; ruleId++) {
+            Rule rule = Rule.builder().ruleId(ruleId).creatorId(userId).editorId(userId).build();
+            int res = ruleMapper.updateById(rule);
+            System.out.println(res > 0 ? "修改rule表成功" : "修改rule表失败");
+
+            QueryWrapper<RuleUser> ruleUserQueryWrapper = new QueryWrapper<>();
+            ruleUserQueryWrapper.eq("rule_id", ruleId);
+            List<RuleUser> ruleUserList = ruleUserMapper.selectList(ruleUserQueryWrapper);
+            System.out.println("有 " + ruleUserList.size() + " 条RuleUser要更新");
+            int index = 0;
+            for (RuleUser ruleUser : ruleUserList) {
+                index++;
+                ruleUser.setUserId(userId);
+                int updateCount = ruleUserMapper.updateById(ruleUser);
+                System.out.println("第 " + index + " 条RuleUser更新" + (updateCount > 0 ? "成功" : "失败"));
+            }
+        }
+    }
+
+    /**
+     * 用户录入节点时是游客，改为其真实用户名
+     */
+    @Test
+    public void testUpdateNodeInsertUser() {
+        Long userId = 4L;
+
+        Long startNum = 53L;
+        Long endNum = 55L;
+        for (Long nodeId = startNum; nodeId <= endNum; nodeId++) {
+            Node node = Node.builder().nodeId(nodeId).creatorId(userId).editorId(userId).build();
+            int res = nodeMapper.updateById(node);
+            System.out.println(res > 0 ? "修改node表成功" : "修改node表失败");
+
+            QueryWrapper<NodeUser> nodeUserQueryWrapper = new QueryWrapper<>();
+            nodeUserQueryWrapper.eq("node_id", nodeId);
+            List<NodeUser> nodeUserList = nodeUserMapper.selectList(nodeUserQueryWrapper);
+            System.out.println("有 " + nodeUserList.size() + " 条NodeUser要更新");
+            int index = 0;
+            for (NodeUser nodeUser : nodeUserList) {
+                index++;
+                nodeUser.setUserId(userId);
+                int updateCount = nodeUserMapper.updateById(nodeUser);
+                System.out.println("第 " + index + " 条NodeUser更新" + (updateCount > 0 ? "成功" : "失败"));
+            }
+        }
+    }
+
 }

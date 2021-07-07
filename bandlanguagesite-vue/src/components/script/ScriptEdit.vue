@@ -77,7 +77,7 @@ export default {
 
       const _this = this
       let updateScript = _this.existScript
-      updateScript["userId"] = _this.$store.getters.getUser.userId
+      updateScript["userId"] = _this.$store.getters.getUser.userID
       updateScript["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',

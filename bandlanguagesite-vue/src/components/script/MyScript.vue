@@ -79,7 +79,7 @@ export default {
       const _this = this
       let deleteScript = {}
       deleteScript["scriptId"] = Number(id)
-      deleteScript["userId"] = _this.$store.getters.getUser.userId
+      deleteScript["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'delete',
         url: `${this.global.serverUrl}/script/`,
@@ -115,7 +115,7 @@ export default {
         url: `${this.global.serverUrl}/script/myScripts/`,
         params: {
           "sceneId": _this.$route.params.id,
-          "userId": _this.$store.getters.getUser.userId
+          "userId": _this.$store.getters.getUser.userID
         }
       }).then(res => {
         _this.scripts = res.data.data

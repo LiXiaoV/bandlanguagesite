@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import md5 from "js-md5";
+// import md5 from "js-md5";
 
 export default {
   name: "LoginByUsername",
@@ -33,14 +33,15 @@ export default {
     cancelLogin() {
       this.user.username = ""
       this.user.password = ""
-      this.$emit('closeLoginDialog',false)
+      this.$emit('closeLoginDialog')
     },
     confirmLogin() {
       const _this = this
       let loginUser = {}
       loginUser["username"] = _this.user.username
-      let salt = this.global.salt
-      loginUser["password"] = md5(salt.charAt(2)+salt.charAt(0)+_this.user.password+salt.charAt(1)+salt.charAt(9))
+      // let salt = this.global.salt
+      // loginUser["password"] = md5(salt.charAt(2)+salt.charAt(0)+_this.user.password+salt.charAt(1)+salt.charAt(9))
+      loginUser["password"] = _this.user.password
       this.$axios({
         method: 'post',
         url: `${this.global.serverUrl}/doLoginByUsername`,
@@ -55,7 +56,10 @@ export default {
           });
           const userInfo = res.data.data
           _this.$store.commit("SET_USERINFO",userInfo)
-          this.cancelLogin()
+          _this.$store.commit("SET_IS_LOGIN",true)
+          // console.log(_this.$store.getters.getIsLogin)
+          _this.$emit('loginStatusUpdate')
+          _this.cancelLogin()
         }
         else {
           _this.$message({

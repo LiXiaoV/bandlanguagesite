@@ -97,7 +97,7 @@ export default {
       editNodeObj["name"] = _this.nodeObj.name
       editNodeObj["package"] = _this.nodeObj.package
       editNodeObj["content"] = _this.nodeObj.content
-      editNodeObj["userId"] = _this.$store.getters.getUser.userId
+      editNodeObj["userId"] = _this.$store.getters.getUser.userID
       editNodeObj["sceneId"] = _this.sceneId
 
       if(_this.itemId > 0 && _this.itemType > 0){
@@ -156,7 +156,7 @@ export default {
       const _this = this
       let deleteNode = {}
       deleteNode["nodeId"] = id
-      deleteNode["userId"] = _this.$store.getters.getUser.userId
+      deleteNode["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'delete',
         url: `${this.global.serverUrl}/node/`,

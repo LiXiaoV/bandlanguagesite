@@ -84,7 +84,7 @@ export default {
       editParadigm["paradigmId"] = _this.paradigmId
       editParadigm["easyParadigm"] = _this.existParadigm.easyParadigm
       editParadigm["example"] = _this.existParadigm.example
-      editParadigm["userId"] = _this.$store.getters.getUser.userId
+      editParadigm["userId"] = _this.$store.getters.getUser.userID
       this.$axios({
         method: 'put',
         url: `${this.global.serverUrl}/sentence/paradigm/`,
@@ -93,7 +93,7 @@ export default {
         if(res.data.code === 0){
           _this.$message({
             showClose: true,
-            message: "修改中间泛式成功",
+            message: "修改中间范式成功",
             type: 'success'
           });
           _this.$emit('updateParadigms')
@@ -101,14 +101,14 @@ export default {
         else {
           _this.$message({
             showClose: true,
-            message: "修改中间泛式失败",
+            message: "修改中间范式失败",
             type: 'error'
           });
         }
       }).catch( () => {
         _this.$message({
           showClose: true,
-          message: "修改中间泛式失败",
+          message: "修改中间范式失败",
           type: 'error'
         });
       })

@@ -91,7 +91,7 @@ export default {
       registerNodeObj["name"] = _this.nodeObj.name
       registerNodeObj["packageName"] = _this.nodeObj.packageName
       registerNodeObj["content"] = _this.nodeObj.content
-      registerNodeObj["userId"] = _this.$store.getters.getUser.userId
+      registerNodeObj["userId"] = _this.$store.getters.getUser.userID
       registerNodeObj["sceneId"] = _this.sceneId
 
       if(_this.itemId > 0 && _this.itemType > 0){

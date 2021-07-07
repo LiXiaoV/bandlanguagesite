@@ -82,7 +82,7 @@ export default {
 
       const _this = this
       let registerParadigm = _this.newParadigm
-      registerParadigm["userId"] = _this.$store.getters.getUser.userId
+      registerParadigm["userId"] = _this.$store.getters.getUser.userID
       registerParadigm["sentenceId"] = _this.sentenceId
       this.$axios({
         method: 'post',
@@ -92,7 +92,7 @@ export default {
         if(res.data.code === 0){
           _this.$message({
             showClose: true,
-            message: "添加中间泛式成功",
+            message: "添加中间范式成功",
             type: 'success'
           });
           _this.$emit('updateParadigms')
@@ -101,14 +101,14 @@ export default {
         else {
           _this.$message({
             showClose: true,
-            message: "添加中间泛式失败",
+            message: "添加中间范式失败",
             type: 'error'
           });
         }
       }).catch( () => {
         _this.$message({
           showClose: true,
-          message: "添加中间泛式失败",
+          message: "添加中间范式失败",
           type: 'error'
         });
       })

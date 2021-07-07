@@ -103,7 +103,7 @@ export default {
       }
       const _this = this
       let updateWord = _this.existWord
-      updateWord["userId"] = _this.$store.getters.getUser.userId
+      updateWord["userId"] = _this.$store.getters.getUser.userID
       updateWord["sceneId"] = _this.$route.params.id
       this.$axios({
         method: 'put',
